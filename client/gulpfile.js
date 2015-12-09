@@ -10,36 +10,36 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify');
 
 gulp.task("default", function(){
-    gulp.watch("./less/**/*.less", ['css']);
-    gulp.watch(["./config/config.js",
-        "./exceptions/**/*.js",
-        "./models/**/*.js",
-        "./services/**/*.js",
-        "./viewmodels/**/*.js",
-        "./app.js"], ['js']);
+    gulp.watch("./src/less/**/*.less", ['css']);
+    gulp.watch(["./src/config/config.js",
+        "./src/exceptions/**/*.js",
+        "./src/models/**/*.js",
+        "./src/services/**/*.js",
+        "./src/viewmodels/**/*.js",
+        "./src/app.js"], ['js']);
 });
 
 gulp.task("js", function() {
-    gulp.src(["./config/config.js",
-        "./exceptions/**/*.js",
-        "./models/**/*.js",
-        "./services/**/*.js",
-        "./viewmodels/**/*.js",
-        "./app.js"])
+    gulp.src(["./src/config/config.js",
+        "./src/exceptions/**/*.js",
+        "./src/models/**/*.js",
+        "./src/services/**/*.js",
+        "./src/viewmodels/**/*.js",
+        "./src/app.js"])
         .pipe(jshint())
         .pipe(jshint.reporter())
         .pipe(sourcemaps.init())
         .pipe(concat("app.min.js"))
         .pipe(uglify())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest("./dist/js"))
+        .pipe(gulp.dest("./src/dist/js"))
         .pipe(notify({
             message: "js built"
         }))
 });
 
 gulp.task("css", function() {
-    gulp.src("./less/**/*.less")
+    gulp.src("./src/less/**/*.less")
         .pipe(less())
         .pipe(csslint({
             'ids': false
@@ -48,7 +48,7 @@ gulp.task("css", function() {
         .pipe(cssMinifier())
         .pipe(concat("site.css"))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest("./dist/css"))
+        .pipe(gulp.dest("./src/dist/css"))
         .pipe(notify({
             message: "css built"
         }));
