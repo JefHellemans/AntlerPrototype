@@ -6,15 +6,15 @@ var trades = [];
 var scale = 1;
 var dragging = null;
 
-function cX() {
+var cX = function() {
     return (WIDTH / 2);
-}
+};
 
-function cY() {
+var cY = function() {
     return (HEIGHT / 2);
-}
+};
 
-function sfc(x, y) {
+var sfc = function(x, y) {
     var a = (y - cY())/(x - cX());
     var d = Math.sqrt(Math.pow((x - cX()), 2) + Math.pow((y - cY()), 2));
     d = d * scale;
@@ -32,9 +32,9 @@ function sfc(x, y) {
         nY = -nY;
     }
     return [cX() - nX, cY() - nY];
-}
+};
 
-function sbfc(x, y) {
+var sbfc = function(x, y) {
     var a = (y - cY())/(x - cX());
     var d = Math.sqrt(Math.pow((x - cX()), 2) + Math.pow((y - cY()), 2));
     d = d * (1 / scale);
@@ -52,7 +52,7 @@ function sbfc(x, y) {
         nY = -nY;
     }
     return [cX() - nX, cY() - nY];
-}
+};
 
 var rect = function(l,t,w,h) {
     ctx.beginPath();
@@ -70,11 +70,11 @@ var cir = function(x, y, rad) {
     ctx.fill();
 };
 
-function clear() {
+var clear = function() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-}
+};
 
-function init() {
+var init = function() {
     canvas = document.getElementById("trades");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -95,24 +95,24 @@ function init() {
     }
 
     return setInterval(draw, 10);
-}
+};
 
-function draw() {
+var draw = function() {
     clear();
 
     for(var i = 0; i < trades.length; i++) {
         trades[i].draw();
     }
-}
+};
 
-function myMove(e) {
+var myMove = function(e) {
     if (dragging !== null) {
         dragging.scX = e.pageX;
         dragging.scY = e.pageY;
     }
-}
+};
 
-function myDown(e) {
+var myDown = function(e) {
     for(var i = trades.length - 1; i >= 0; i--) {
         var trade = trades[i];
         if((Math.pow((e.pageX - trade.scX), 2) + Math.pow((e.pageY - trade.scY), 2)) <= Math.pow((trade.rad * scale), 2)) {
@@ -123,15 +123,15 @@ function myDown(e) {
             break;
         }
     }
-}
+};
 
-function myUp() {
+var myUp = function() {
     var p = sbfc(dragging.scX, dragging.scY);
     dragging.x = p[0];
     dragging.y = p[1];
     dragging = null;
     canvas.onmousemove = null;
-}
+};
 
 init();
 canvas.onmousedown = myDown;
@@ -147,7 +147,7 @@ document.getElementById("scaleCanvas").onmousemove = function() {
     }
 };
 
-function Trade(text, x, y, scX, scY, rad, color) {
+var Trade = function(text, x, y, scX, scY, rad, color) {
     this.text = text;
     this.x = x;
     this.y = y;
@@ -155,7 +155,7 @@ function Trade(text, x, y, scX, scY, rad, color) {
     this.scY = scY;
     this.rad = rad;
     this.color = color;
-}
+};
 
 Trade.prototype.draw = function() {
     ctx.fillStyle = this.color;
