@@ -1,4 +1,4 @@
 # AntlerPrototype
----
-#server > Alles voor de backend
-#client > Alles voor de frontend
+
+#npm install gulp
+#npm install --save-dev gulp-csslint gulp-minify-css gulp-sourcemaps gulp-concat gulp-less gulp-notify gulp-jshint jshint-stylish gulp-uglify
