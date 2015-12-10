@@ -1,0 +1,19 @@
+{
+  "name": "antlerprototype",
+  "version": "1.0.0",
+  "description": "Investing In People",
+  "main": "./bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JefHellemans/AntlerPrototype.git"
+  },
+  "author": "AntlerDev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JefHellemans/AntlerPrototype/issues"
+  },
+  "homepage": "https://github.com/JefHellemans/AntlerPrototype#readme"
+}
