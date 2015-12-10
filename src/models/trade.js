@@ -18,15 +18,15 @@ function Trade(logo, x, y, scX, scY, rad) {
 Trade.prototype.draw = function() {
     if(this.logo === null) {
         ctx.fillStyle = "#ffffff";
-        cir(this.scX, this.scY, this.rad);
+        cir(this.scX + (xOff * scale), this.scY + (yOff * scale), this.rad);
         ctx.save();
         ctx.beginPath();
-        ctx.arc(this.scX, this.scY, this.rad * scale, 0, Math.PI * 2, true);
+        ctx.arc(this.scX + (xOff * scale), this.scY + (yOff * scale), this.rad * scale, 0, Math.PI * 2, true);
         ctx.clip();
-        ctx.drawImage(this.img, this.scX - (this.rad * scale), this.scY - (this.rad * scale), (this.rad * scale) * 2, (this.rad * scale) * 2);
+        ctx.drawImage(this.img, this.scX - (this.rad * scale) + (xOff * scale), this.scY - (this.rad * scale) + (yOff * scale), (this.rad * scale) * 2, (this.rad * scale) * 2);
         ctx.restore();
         ctx.beginPath();
-        ctx.arc(this.scX, this.scY, this.rad * scale, 0, Math.PI * 2, true);
+        ctx.arc(this.scX + (xOff * scale), this.scY + (yOff * scale), this.rad * scale, 0, Math.PI * 2, true);
         ctx.strokeStyle = "#eeeeee";
         ctx.lineWidth = 2;
         ctx.stroke();

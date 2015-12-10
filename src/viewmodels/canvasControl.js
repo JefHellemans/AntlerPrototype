@@ -2,9 +2,14 @@ var canvas;
 var ctx;
 var WIDTH;
 var HEIGHT;
+var xOff = 0;
+var yOff = 0;
+var mouseX = null;
+var mouseY = null;
 var trades = [];
 var scale = 1;
 var dragging = null;
+var movingCanvas = null;
 var logos = ["logo0.png", "logo1.jpg", "logo2.jpg", "logo3.png", "logo4.png"];
 
 (function() {
@@ -34,7 +39,25 @@ var logos = ["logo0.png", "logo1.jpg", "logo2.jpg", "logo3.png", "logo4.png"];
         }
     };
 
-    return setInterval(draw, 10);
+    document.getElementById("resetOffset").onclick = function() {
+        var a = yOff / xOff;
+        movingCanvas = setInterval(function() {
+            xOff -= (xOff / 30);
+            if(Math.abs(xOff) <= 1) {
+                xOff = 0;
+            }
+            yOff = (a * xOff);
+            if(Math.abs(yOff) <= 1) {
+                yOff = 0;
+            }
+            if(xOff === 0 && yOff === 0) {
+                clearInterval(movingCanvas);
+            }
+        }, 10);
+    };
+
+    setInterval(draw, 10);
+
 })();
 
 var cX = function() {
@@ -115,22 +138,34 @@ function draw() {
 }
 
 function myMove(e) {
-    if (dragging !== null) {
-        dragging.scX = e.pageX;
-        dragging.scY = e.pageY;
+    if(dragging === canvas) {
+        xOff += (e.pageX - mouseX) * (1 / scale);
+        yOff += (e.pageY - mouseY) * (1 / scale);
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+    } else if(dragging !== null) {
+        dragging.scX = (e.pageX - (xOff * scale));
+        dragging.scY = (e.pageY - (yOff * scale));
     }
 }
 
 function myDown(e) {
+    clearInterval(movingCanvas);
     for(var i = trades.length - 1; i >= 0; i--) {
         var trade = trades[i];
-        if((Math.pow((e.pageX - trade.scX), 2) + Math.pow((e.pageY - trade.scY), 2)) <= Math.pow((trade.rad * scale), 2)) {
+        if((Math.pow((e.pageX - (trade.scX + (xOff * scale))), 2) + Math.pow((e.pageY - (trade.scY + (yOff * scale))), 2)) <= Math.pow((trade.rad * scale), 2)) {
             dragging = trade;
             trades.splice(i, 1);
             trades.push(trade);
             canvas.onmousemove = myMove;
             break;
         }
+    }
+    if(dragging === null) {
+        dragging = canvas;
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+        canvas.onmousemove = myMove;
     }
 }
 
@@ -139,5 +174,7 @@ function myUp() {
     dragging.x = p[0];
     dragging.y = p[1];
     dragging = null;
+    mouseX = null;
+    mouseY = null;
     canvas.onmousemove = null;
 }
