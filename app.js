@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var flash = require("connect-flash");
 
+
 var morgan = require("morgan");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -37,6 +38,14 @@ app.use(flash());
 
 //laad de routes
 require('./app/routes.js')(app, passport);
+
+
+//API ROUTES EN CONTROLLERS
+var main = require("./api/main.js");
+var tradeController = require('./api/controllers/tradeController.js');
+
+app.use('/api', main);
+app.use('/api/trade', tradeController);
 
 app.listen(port);
 console.log("Server started on port: " + port);
