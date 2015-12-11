@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
     <title>Antler</title>
     <link href="dist/css/site.css" rel="stylesheet" />
 </head>
-<body>
+<body ng-controller="mainController">
+
+
+    <section id="header">
+
+    </section>
 
     <canvas id="trades">Your browser seems to be too old to run Antler.</canvas>
 
@@ -13,6 +18,9 @@
     <input id="resetOffset" type="button" value="Center"/>
 
     <script src="dist/js/app.min.js"></script>
-
+    <script src="lib/Angular/angular.js"></script>
+    <script src="lib/Angular/angular-route.js"></script>
+    <script src="app.js"></script>
+    <script src="controllers/mainController.js"></script>
 </body>
 </html>
