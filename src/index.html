@@ -12,10 +12,25 @@
 
 
     <section id="header">
-        <div>
-            test<img src="">
+        <div  class="col-sm-4">
+            <img src="images/logo.png" alt="Antler logo">
+        </div>
+        <div class="dropdown col-sm-4">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                <span>Current balance: €2000</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">test</a></li>
+                <li><a href="#">test2</a></li>
+                <li><a href="#">test3</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            <a id="logout" href="/logout" >Log out</a>
         </div>
     </section>
+
 
     <canvas id="trades">Your browser seems to be too old to run Antler.</canvas>
 
