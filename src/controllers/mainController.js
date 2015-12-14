@@ -4,7 +4,7 @@
     var mainController = function($scope){
 
         console.log("dit is de main controller");
-        //new code goes here
+        //new code goes
 
     };
 
