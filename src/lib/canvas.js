@@ -14,8 +14,16 @@ var Canvas = function(x, y, id, color, el) {
 
     this.objs = el;
 
+    var mouseTime = 0;
+    var trackMouseDownTime = null;
+
+    var animationTick = 0;
+    var animationTimer = null;
+
     var movingCanvas = null;
+
     var dragging = null;
+    var hover = null;
 
     var mouseX = null;
     var mouseY = null;
@@ -36,13 +44,23 @@ var Canvas = function(x, y, id, color, el) {
         for(var j = 0; j < self.objs.length; j++) {
             self.objs[j].draw(self);
         }
+
+        if(hover !== null) {
+            if(typeof hover.postDraw === 'function') {
+                if(animationTimer === null) {
+                    hover.postDraw(self, 1);
+                } else {
+                    hover.postDraw(self, animationTick);
+                }
+            }
+        }
     };
     this.drawCanvas = function() {
         draw();
     };
 
     var myMove = function(e) {
-        var newPos = new Vector2D(e.pageX, e.pageY - 100);
+        var newPos = new Vector2D(e.pageX, e.pageY - 50);
         var prevPos = new Vector2D(mouseX, mouseY);
         newPos = newPos.subVector(prevPos);
         if(dragging === c) {
@@ -59,26 +77,22 @@ var Canvas = function(x, y, id, color, el) {
             }
         }
         mouseX = e.pageX;
-        mouseY = e.pageY - 100;
+        mouseY = e.pageY - 50;
         draw();
     };
-
-    var hovers = function(e) {
-        var mousePos = new Vector2D(e.pageX, e.pageY - 100);
-
-    };
-
-    c.onmousemove = hovers;
 
     c.onmousedown = function(e) {
         clearInterval(movingCanvas);
         movingCanvas = null;
+        trackMouseDownTime = setInterval(function() {
+            mouseTime++;
+        }, 10);
         mouseX = e.pageX;
-        mouseY = e.pageY - 100;
+        mouseY = e.pageY - 50;
         for(var i = self.objs.length - 1; i >= 0; i--) {
             var obj = self.objs[i];
             var oPos = obj.actualPos;
-            var mousePos = new Vector2D(e.pageX, e.pageY - 100);
+            var mousePos = new Vector2D(e.pageX, e.pageY - 50);
             mousePos = mousePos.subVector(oPos);
             if(mousePos.length() <= (obj.rad * self.scale)) {
                 dragging = obj;
@@ -94,15 +108,49 @@ var Canvas = function(x, y, id, color, el) {
         }
     };
 
-    c.onmouseup = function() {
-        if(typeof dragging.reverse === 'function') {
-            dragging.reverse(self);
+    c.onmouseup = function(e) {
+        clearInterval(trackMouseDownTime);
+        if(mouseTime <= 30) {
+            animationTimer = setInterval(function() {
+                animationTick += (1 / 10);
+                draw();
+                if(animationTick >= 1) {
+                    clearInterval(animationTimer);
+                    animationTimer = null;
+                    animationTick = 0;
+                    hover = null;
+                }
+            }, 10);
+            var found = false;
+            for(var i = self.objs.length - 1; i >= 0; i--) {
+                var obj = self.objs[i];
+                for(var j = obj.traders.length - 1; j >= 0; j--) {
+                    var trader = obj.traders[j];
+                    var oPos = trader.actualPos;
+                    var mousePos = new Vector2D(e.pageX, e.pageY - 50);
+                    mousePos = mousePos.subVector(oPos);
+                    if(mousePos.length() <= (25 * self.scale)) {
+                        hover = trader;
+                        found = true;
+                        break;
+                    }
+                }
+                if(found) {
+                    break;
+                }
+            }
+        }
+        mouseTime = 0;
+        if(dragging !== null) {
+            if(typeof dragging.reverse === 'function') {
+                dragging.reverse(self);
+            }
         }
         draw();
         dragging = null;
         mouseX = null;
         mouseY = null;
-        c.onmousemove = hovers;
+        c.onmousemove = null;
     };
 
     document.getElementById("scaleCanvas").onmousemove = function() {
@@ -116,6 +164,7 @@ var Canvas = function(x, y, id, color, el) {
     document.getElementById("resetOffset").onclick = function() {
         if(movingCanvas === null) {
             movingCanvas = setInterval(function() {
+                console.log("movingCanvas");
                 if(self.offset.x === 0 && self.offset.y === 0) {
                     clearInterval(movingCanvas);
                     movingCanvas = null;

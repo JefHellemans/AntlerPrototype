@@ -34,6 +34,19 @@ Trader.prototype.draw = function(c) {
             c.ctx.fillStyle = "#2C3E50";
         }
         c.ctx.fillStyle =
-        c.cir(this.actualPos.x, this.actualPos.y, (Math.abs(this.difference) * 15) + 5);
+        c.cir(this.actualPos.x, this.actualPos.y, (Math.abs(this.difference) * 20) + 5);
     }
+};
+
+Trader.prototype.postDraw = function(c, tick) {
+    var size = 12 * tick;
+    c.ctx.font = size + "pt SourceSansPro";
+    var txtSize = c.ctx.measureText(this.comment).width;
+    c.ctx.fillStyle = "#ffffff";
+    c.ctx.beginPath();
+    c.ctx.rect(this.actualPos.x + (25 * c.scale), this.actualPos.y - size - (25 * c.scale) - 20, txtSize + 20, size + 20);
+    c.ctx.closePath();
+    c.ctx.fill();
+    c.ctx.fillStyle = "#2C3E50";
+    c.ctx.fillText(this.comment, this.actualPos.x + (25 * c.scale) + 10, this.actualPos.y - size - (25 * c.scale));
 };
