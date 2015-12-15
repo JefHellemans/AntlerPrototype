@@ -1,5 +1,6 @@
 @headerHeight: 50px;
 @antlerBlue: #2980b9;
+@warningColor: #ff353d;
 
 body {
   margin: 0;
@@ -46,4 +47,8 @@ section#header div p a {
   padding-top: 15px;
   display: block;
   color: @antlerBlue;
+}
+
+.profileForm input.ng-invalid {
+  background-color: @warningColor;
 }
