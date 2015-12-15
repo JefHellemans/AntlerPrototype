@@ -1,7 +1,7 @@
 (function (){
     "use strict";
 
-    var mainController = function($scope){
+    var balanceController = function($scope, $routeParams){
         //new code goes here
 
         $scope.user = {};
@@ -12,5 +12,5 @@
 
     };
 
-    angular.module("app").controller("mainController", [ "$scope", mainController]);
+    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", balanceController]);
 })();

@@ -1,15 +1,25 @@
 (function (){
     "use strict";
 
-    var profileController = function($scope, $routeParams){
+    var profileController = function($scope, $routeParams, $window){
         //new code goes here
-        console.log($routeParams.id);
 
-        $scope.firstName = "Marijn";
-        $scope.lastName = "Hosten";
-        $scope.passw1 = "";
-        $scope.passw2 = "";
+        $scope.user = {
+            "firstName": "Marijn",
+            "lastName": "Hosten",
+            "passw1": "123456",
+            "passw2": "123456"
+        };
+
+        $scope.isEnabled = function (){
+            return false;
+        };
+
+        $scope.submitForm = function(user) {
+            alert("changes saved");
+            $window.location.hash = "/home.html";
+        };
     };
 
-    angular.module("app").controller("profileController", [ "$scope", "$routeParams", profileController]);
+    angular.module("app").controller("profileController", [ "$scope", "$routeParams", "$window", profileController]);
 })();
