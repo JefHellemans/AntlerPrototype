@@ -59,8 +59,26 @@ Trade.prototype.preDraw = function(c) {
 Trade.prototype.draw = function(c) {
     if(this.img !== null) {
         c.cirLogo(this.actualPos.x, this.actualPos.y, this.rad, this.img);
+        var overall = 0;
         for(var i = 0; i < this.traders.length; i++) {
-            this.traders[i].draw(c);
+            var t = this.traders[i];
+            overall += t.totalPercentage * t.percentage * t.difference;
+            t.draw(c);
         }
+        var text = Math.floor(overall * c.startingBudget * 100) / 100;
+        var onePromille = c.startingBudget / 1000;
+        if(text < onePromille) {
+            c.ctx.fillStyle = "#E74C3C";
+        } else if(text > onePromille) {
+            c.ctx.fillStyle = "#36B5DB";
+        } else {
+            c.ctx.fillStyle = "#2C3E50";
+        }
+        var size = 12 * c.scale;
+        c.ctx.font = size + "pt SourceSansPro";
+        var txtSize = c.ctx.measureText(text).width;
+        c.rect(this.actualPos.x, this.actualPos.y + ((this.rad * c.scale) / 2), txtSize + (20 * c.scale), size + (20 * c.scale));
+        c.ctx.fillStyle = "#ffffff";
+        c.ctx.fillText(text, this.actualPos.x - (txtSize / 2), this.actualPos.y + ((this.rad * c.scale) / 2) + (10 * c.scale));
     }
 };

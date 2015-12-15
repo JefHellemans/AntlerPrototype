@@ -6,6 +6,8 @@ var Canvas = function(x, y, id, color, el) {
     c.height = y;
     var bg = color;
 
+    this.startingBudget = 2000;
+
     this.ctx = c.getContext("2d");
 
     this.center = new Vector2D(x / 2, y / 2);
@@ -164,7 +166,6 @@ var Canvas = function(x, y, id, color, el) {
     document.getElementById("resetOffset").onclick = function() {
         if(movingCanvas === null) {
             movingCanvas = setInterval(function() {
-                console.log("movingCanvas");
                 if(self.offset.x === 0 && self.offset.y === 0) {
                     clearInterval(movingCanvas);
                     movingCanvas = null;

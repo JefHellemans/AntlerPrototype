@@ -1,4 +1,5 @@
-function Trader(imgSrc, totalPercentage, difference, comment) {
+function Trader(name, imgSrc, totalPercentage, difference, comment) {
+    this.name = name;
     this.img = null;
     this.imgSrc = imgSrc;
     this.totalPercentage = totalPercentage;
@@ -33,20 +34,32 @@ Trader.prototype.draw = function(c) {
         } else {
             c.ctx.fillStyle = "#2C3E50";
         }
-        c.ctx.fillStyle =
         c.cir(this.actualPos.x, this.actualPos.y, (Math.abs(this.difference) * 20) + 5);
     }
 };
 
 Trader.prototype.postDraw = function(c, tick) {
     var size = 12 * tick;
-    c.ctx.font = size + "pt SourceSansPro";
-    var txtSize = c.ctx.measureText(this.comment).width;
+    c.ctx.font = "bold " + size + "pt SourceSansPro";
+    var txtSize = 0;
+    var text = this.comment.split('\n');
+    text.unshift(this.name);
+    for(var i = 0; i < text.length; i++) {
+        var s = c.ctx.measureText(text[i]).width;
+        if(txtSize < s) {
+            txtSize = s;
+        }
+    }
     c.ctx.fillStyle = "#ffffff";
     c.ctx.beginPath();
-    c.ctx.rect(this.actualPos.x + (25 * c.scale), this.actualPos.y - size - (25 * c.scale) - 20, txtSize + 20, size + 20);
+    c.ctx.rect(this.actualPos.x + (25 * c.scale), this.actualPos.y - (size * text.length) - (size * (text.length - 1) * 1.2) - (25 * c.scale) - 20, txtSize + 20, (size * text.length) + (size * (text.length - 1) * 1.2) + 20);
     c.ctx.closePath();
     c.ctx.fill();
     c.ctx.fillStyle = "#2C3E50";
-    c.ctx.fillText(this.comment, this.actualPos.x + (25 * c.scale) + 10, this.actualPos.y - size - (25 * c.scale));
+    for(var j = 0; j < text.length; j++) {
+        if(j > 0) {
+            c.ctx.font = size + "pt SourceSansPro";
+        }
+        c.ctx.fillText(text[j], this.actualPos.x + (25 * c.scale) + 10, this.actualPos.y - (size * (text.length - j)) - (size * (text.length - 1) * 1.2)+ (j * 1.2 * size) - (25 * c.scale));
+    }
 };
