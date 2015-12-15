@@ -23,7 +23,7 @@ Trade.prototype.reverse = function(c) {
     pos = pos.subVector(c.center);
     pos = pos.div(c.scale);
     this.savedPos = pos;
-    var angle = 160 / (this.traders.length + 1);
+    var angle = 180 / (this.traders.length + 1);
     for(var i = 0; i < this.traders.length; i++) {
         var alpha = angle * (i + 1 - ((this.traders.length + 1) / 2));
         this.traders[i].calculate(c.scale, this.rad, alpha, this.actualPos);
@@ -58,7 +58,7 @@ Trade.prototype.preDraw = function(c) {
 
 Trade.prototype.draw = function(c) {
     if(this.img !== null) {
-        c.cirImg(this.actualPos.x, this.actualPos.y, this.rad, this.img);
+        c.cirLogo(this.actualPos.x, this.actualPos.y, this.rad, this.img);
         for(var i = 0; i < this.traders.length; i++) {
             this.traders[i].draw(c);
         }

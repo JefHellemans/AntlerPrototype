@@ -1,20 +1,21 @@
 var trades = [];
 var traders = [];
-var logos = ["logo0.png", "logo1.jpg", "logo2.jpg", "logo3.png", "logo4.png"];
+var logos = ["logo0.png", "logo1.svg", "logo2.jpg", "logo3.png", "logo4.png"];
 var people = ["trader0.jpg", "trader1.jpg", "trader2.jpg", "trader3.jpg"];
 
 (function() {
     for(var j = 0; j < 4; j++) {
-        var totalPercentage = (Math.random() * 0.15) + 0.10;
+        var totalPercentage = (Math.random() * 0.15) + 0.1;
         traders.push(new Trader("dist/images/" + people[j], totalPercentage));
     }
     for(var i = 0; i < 5; i++) {
         var x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
         var y = Math.floor(Math.random() * (window.innerHeight - 100) - ((window.innerHeight - 100) / 2));
-        var r = Math.floor((Math.random() * 4) + 1);
+        var r = Math.floor((Math.random() * 3) + 1);
+        var d = Math.random() - 0.5;
         var ppl = [];
         for(var k = 0; k < r; k++) {
-            var t = new Trader(traders[k].imgSrc, traders[k].totalPercentage);
+            var t = new Trader(traders[k].imgSrc, traders[k].totalPercentage, d, "This just looks good!");
             t.percentage = (Math.random() * 0.4) + 0.1;
             ppl.push(t);
         }

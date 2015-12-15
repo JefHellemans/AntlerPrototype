@@ -52,7 +52,7 @@ var Canvas = function(x, y, id, color, el) {
             }
         } else if(dragging !== null) {
             dragging.actualPos = dragging.actualPos.addVector(newPos);
-            var angle = 160 / (dragging.traders.length + 1);
+            var angle = 180 / (dragging.traders.length + 1);
             for(var j = 0; j < dragging.traders.length; j++) {
                 var alpha = angle * (j + 1 - ((dragging.traders.length + 1) / 2));
                 dragging.traders[j].calculate(self.scale, dragging.rad, alpha, dragging.actualPos);
@@ -62,6 +62,13 @@ var Canvas = function(x, y, id, color, el) {
         mouseY = e.pageY - 100;
         draw();
     };
+
+    var hovers = function(e) {
+        var mousePos = new Vector2D(e.pageX, e.pageY - 100);
+
+    };
+
+    c.onmousemove = hovers;
 
     c.onmousedown = function(e) {
         clearInterval(movingCanvas);
@@ -73,7 +80,7 @@ var Canvas = function(x, y, id, color, el) {
             var oPos = obj.actualPos;
             var mousePos = new Vector2D(e.pageX, e.pageY - 100);
             mousePos = mousePos.subVector(oPos);
-            if(mousePos.length() <= obj.rad) {
+            if(mousePos.length() <= (obj.rad * self.scale)) {
                 dragging = obj;
                 self.objs.splice(i, 1);
                 self.objs.push(obj);
@@ -95,7 +102,7 @@ var Canvas = function(x, y, id, color, el) {
         dragging = null;
         mouseX = null;
         mouseY = null;
-        c.onmousemove = null;
+        c.onmousemove = hovers;
     };
 
     document.getElementById("scaleCanvas").onmousemove = function() {
@@ -154,7 +161,38 @@ Canvas.prototype.cirImg = function(x, y, rad, img) {
     this.ctx.beginPath();
     this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
     this.ctx.clip();
-    this.ctx.drawImage(img, x - (rad * this.scale), y - (rad * this.scale), (rad * this.scale) * 2, (rad * this.scale) * 2);
+    var w = 1;
+    if(img.width > img.height) {
+        w = img.width / img.height;
+        this.ctx.drawImage(img, x - (rad * w * this.scale), y - (rad * this.scale), (rad * w * this.scale) * 2, (rad * this.scale) * 2);
+    } else {
+        w = img.height / img.width;
+        this.ctx.drawImage(img, x - (rad * this.scale), y - (rad * w * this.scale), (rad * this.scale) * 2, (rad * w * this.scale) * 2);
+    }
+    this.ctx.restore();
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
+    this.ctx.strokeStyle = "#eeeeee";
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+    this.ctx.closePath();
+};
+
+Canvas.prototype.cirLogo = function(x, y, rad, img) {
+    this.ctx.fillStyle = "#ffffff";
+    this.cir(x, y, rad);
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
+    this.ctx.clip();
+    var w = 1;
+    if(img.width < img.height) {
+        w = img.width / img.height;
+        this.ctx.drawImage(img, x - (rad * w * this.scale), y - (rad * this.scale), (rad * w * this.scale) * 2, (rad * this.scale) * 2);
+    } else {
+        w = img.height / img.width;
+        this.ctx.drawImage(img, x - (rad * this.scale), y - (rad * w * this.scale), (rad * this.scale) * 2, (rad * w * this.scale) * 2);
+    }
     this.ctx.restore();
     this.ctx.beginPath();
     this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
