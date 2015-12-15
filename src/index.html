@@ -4,17 +4,35 @@
     <meta charset="UTF-8">
     <title>Antler</title>
     <link href="dist/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="lib/Bootstrap/css/bootstrap.min.css">
+    <script src="lib/Bootstrap/js/jquery-1.11.3.min.js"></script>
+    <script src="lib/Bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body ng-controller="mainController">
 
 
-    <section id="header">
-
-    </section>
-
+<section id="header">
+    <div  class="col-sm-4">
+        <img src="images/logo.png" alt="Antler logo">
+    </div>
+    <div class="dropdown col-sm-4">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <span>Current balance: €2000</span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="pages/testpage.html">test</a></li>
+            <li><a href="#">test2</a></li>
+            <li><a href="#">test3</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-4">
+        <a id="logout" href="#">Log out</a>
+    </div>
+</section>
     <canvas id="trades">Your browser seems to be too old to run Antler.</canvas>
 
-    <input id="scaleCanvas" type="range" min="0.4" max="1.8" step="0.01" value="1"/>
+    <input id="scaleCanvas" type="range" min="0.4" max="1.8" step="0.1" value="1"/>
     <input id="resetOffset" type="button" value="Center"/>
 
     <script src="lib/Angular/angular.js"></script>
