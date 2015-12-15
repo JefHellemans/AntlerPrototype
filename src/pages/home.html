@@ -1,0 +1,24 @@
+<section id="header">
+    <div  class="col-sm-4">
+        <p><a ng-href="#/profile/{{userId}}" ng-bind="firstName + ' ' + lastName"></a></p>
+    </div>
+    <div class="dropdown col-sm-4">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <span>Current balance: €2000</span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#home">test</a></li>
+            <li><a href="#home">test2</a></li>
+            <li><a href="#home">test3</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-4">
+        <p><a id="logout" href="#home">Log out</a></p>
+    </div>
+</section>
+
+<canvas id="trades">Your browser seems to be too old to run Antler.</canvas>
+
+<input id="scaleCanvas" type="range" min="0.4" max="1.8" step="0.1" value="1"/>
+<input id="resetOffset" type="button" value="Center"/>

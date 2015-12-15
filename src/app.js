@@ -5,13 +5,16 @@
 
     app.config(function ($routeProvider) {
         $routeProvider
-            .when("/", {
-                templateUrl: "index.html",
-                controller: 'headerController'
+            .when("/home", {
+                templateUrl: "pages/home.html",
+                controller: "mainController"
+            })
+            .when("/profile/:id", {
+                templateUrl: "pages/profile.html",
+                controller: "profileController"
             })
             .otherwise({
-                redirectTo: "index.html"
+                redirectTo: "/home"
             });
     });
-
 })();
