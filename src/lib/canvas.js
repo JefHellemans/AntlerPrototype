@@ -190,8 +190,8 @@ var Canvas = function(x, y, id, color, el) {
 
 Canvas.prototype.rect = function(l, t, w, h) {
     this.ctx.beginPath();
-    var x = l - (w / 2);
-    var y = t - (h / 2);
+    var x = l - (w * this.scale / 2);
+    var y = t - (h * this.scale / 2);
     this.ctx.rect(x, y, w * this.scale, h * this.scale);
     this.ctx.closePath();
     this.ctx.fill();

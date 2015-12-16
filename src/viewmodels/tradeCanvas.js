@@ -7,7 +7,8 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     for(var j = 0; j < 4; j++) {
         var totalPercentage = (Math.random() * 0.15) + 0.1;
         var d = Math.random() - 0.5;
-        traders.push(new Trader(people[j][0], "dist/images/" + people[j][1], totalPercentage, d, "This just looks good!\nI can even put a second line here\n\nMultiline spaces are supported"));
+        var type = Math.floor(Math.random() * (1 + 1));
+        traders.push(new Trader(people[j][0], "dist/images/" + people[j][1], totalPercentage, d, "This just looks good!\nI can even put a second line here\n\nMultiline spaces are supported", type));
     }
     for(var i = 0; i < 5; i++) {
         var x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
@@ -15,7 +16,7 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         var r = Math.ceil(Math.random() * 4);
         var ppl = [];
         for(var k = 0; k < r; k++) {
-            var t = new Trader(traders[k].name, traders[k].imgSrc, traders[k].totalPercentage, traders[k].difference, traders[k].comment);
+            var t = new Trader(traders[k].name, traders[k].imgSrc, traders[k].totalPercentage, traders[k].difference, traders[k].comment, traders[k].type);
             t.percentage = (Math.random() * 0.4) + 0.1;
             ppl.push(t);
         }

@@ -67,18 +67,30 @@ Trade.prototype.draw = function(c) {
         }
         var text = Math.floor(overall * c.startingBudget * 100) / 100;
         var onePromille = c.startingBudget / 1000;
-        if(text < onePromille) {
+        if(text < -onePromille) {
             c.ctx.fillStyle = "#E74C3C";
         } else if(text > onePromille) {
             c.ctx.fillStyle = "#36B5DB";
         } else {
             c.ctx.fillStyle = "#2C3E50";
         }
+        if(text < 0) {
+            text = "- € " + Math.abs(text);
+        } else {
+            text = "€ " + text;
+        }
         var size = 12 * c.scale;
-        c.ctx.font = size + "pt SourceSansPro";
-        var txtSize = c.ctx.measureText(text).width;
-        c.rect(this.actualPos.x, this.actualPos.y + ((this.rad * c.scale) / 2), txtSize + (20 * c.scale), size + (20 * c.scale));
-        c.ctx.fillStyle = "#ffffff";
-        c.ctx.fillText(text, this.actualPos.x - (txtSize / 2), this.actualPos.y + ((this.rad * c.scale) / 2) + (10 * c.scale));
+        if(size >= 8) {
+            c.ctx.font = size + "pt SourceSansPro";
+            var txtSize = c.ctx.measureText(text).width;
+            c.ctx.beginPath();
+            c.ctx.rect(this.actualPos.x - (txtSize / 2) - (10 * c.scale), this.actualPos.y + ((this.rad * c.scale) / 2) - (size / 2) - (10 * c.scale), txtSize + (20 * c.scale), size + (20 * c.scale));
+            c.ctx.closePath();
+            c.ctx.fill();
+            c.ctx.fillStyle = "#ffffff";
+            c.ctx.fillText(text, this.actualPos.x - (txtSize / 2), this.actualPos.y + ((this.rad * c.scale) / 2) + (size / 2));
+        } else {
+            c.cir(this.actualPos.x, this.actualPos.y + ((this.rad * c.scale) / 2), (this.rad * c.scale * Math.abs(overall) * 10) + (this.rad * c.scale * 0.1));
+        }
     }
 };
