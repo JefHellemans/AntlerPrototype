@@ -4,7 +4,7 @@ var port = process.env.PORT = 3000;
 var mongoose = require("mongoose");
 var passport = require("passport");
 var flash = require("connect-flash");
-
+var path = require("path");
 
 var morgan = require("morgan");
 var cookieParser = require('cookie-parser');
@@ -25,7 +25,9 @@ app.use(bodyParser.urlencoded({
     extended:true
 }));
 
-app.set('view engine','ejs');
+
+app.set('views', __dirname + "/src/pages");
+app.set('view engine', 'html');
 
 app.use(session({
     secret:'ilovemoosemoosemoose',//sesion secret
@@ -39,6 +41,7 @@ app.use(flash());
 //laad de routes
 require('./app/routes.js')(app, passport);
 
+app.use(express.static(path.join(__dirname, '/src')));
 
 //API ROUTES EN CONTROLLERS
 var main = require("./api/main.js");
