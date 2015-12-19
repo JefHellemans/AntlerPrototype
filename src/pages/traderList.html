@@ -1,0 +1,10 @@
+<section>
+    <div id="traderList">
+        <h3>You can follow these traders</h3>
+        <ul>
+            <li ng-repeat="t in traders">
+                <a ng-href="#/profile/{{t.id}}">{{t.firstName}}</a>
+            </li>
+        </ul>
+    </div>
+</section>

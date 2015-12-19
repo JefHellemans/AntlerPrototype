@@ -25,7 +25,9 @@ gulp.task("js", function() {
         "./src/models/**/*.js",
         "./src/services/**/*.js",
         "./src/viewmodels/**/*.js",
-        "./src/app.js"])
+        "./src/app.js",
+        "./src/controllers/**/*.js"
+        ])
         .pipe(jshint())
         .pipe(jshint.reporter())
         .pipe(sourcemaps.init())

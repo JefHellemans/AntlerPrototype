@@ -4,11 +4,14 @@
     var profileController = function($scope, $routeParams, $window){
         //new code goes here
 
+
         $scope.user = {
+            "id": 1,
             "firstName": "Marijn",
             "lastName": "Hosten",
             "passw1": "123456",
-            "passw2": "123456"
+            "passw2": "123456",
+            "currentAmount": 2000
         };
 
         $scope.isEnabled = function (){
@@ -17,7 +20,7 @@
 
         $scope.submitForm = function(user) {
             alert("changes saved");
-            $window.location.hash = "/home.html";
+            $window.location.hash = "/home";
         };
     };
 

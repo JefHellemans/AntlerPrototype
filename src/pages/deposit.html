@@ -1,4 +1,16 @@
 <section>
-    <p>This is the deposit page</p>
+    <form class="form-horizontal depositForm" novalidate>
+        <h3>Deposit</h3>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Amount: €</label>
+            <div class="col-sm-10">
+                <input type="number" name="amount" ng-model="user.depositAmount" required>
+            </div>
+        </div>
+        <div>
+            <input type="submit" class="btn btn-primary" value="Save" ng-disabled="isEnabled()" ng-click="deposit(user)" >
+        </div>
+    </form>
+
     <p><a ng-href="#/home">Go home</a></p>
 </section>

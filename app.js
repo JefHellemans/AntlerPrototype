@@ -50,5 +50,6 @@ var tradeController = require('./api/controllers/tradeController.js');
 app.use('/api', main);
 app.use('/api/trade', tradeController);
 
+
 app.listen(port);
 console.log("Server started on port: " + port);
