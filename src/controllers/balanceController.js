@@ -22,10 +22,8 @@
             }else {
                 return false;
             }
-        }
+        };
     };
 
-
-
-    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", "$window",balanceController]);
+    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", "$window", balanceController]);
 })();

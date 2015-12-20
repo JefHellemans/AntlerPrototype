@@ -32,7 +32,6 @@ body {
 }
 
 canvas {
-  top: 50px;
   top: @headerHeight;
   position: absolute;
   z-index: -1;
@@ -97,5 +96,16 @@ section div#traderList {
   ul li {
     display: inline-block;
     margin-right: 20px;
+    text-align: center;
+
+    img{
+      width: @headerHeight;
+      height: @headerHeight;
+      display: block;
+    }
+
+    span {
+      text-align: center;
+    }
   }
 }

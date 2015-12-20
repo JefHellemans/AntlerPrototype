@@ -23,7 +23,6 @@ gulp.task("js", function() {
     gulp.src(["./src/config/config.js",
         "./src/exceptions/**/*.js",
         "./src/models/**/*.js",
-        "./src/services/**/*.js",
         "./src/viewmodels/**/*.js",
         "./src/app.js",
         "./src/controllers/**/*.js"

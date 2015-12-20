@@ -3,12 +3,11 @@
 
     var mainController = function($scope){
         //new code goes here
-
         $scope.user = {};
         $scope.user.userId = "1";
         $scope.user.firstName = "Marijn";
         $scope.user.lastName = "Hosten";
-        $scope.user.currentAmount = 2000
+        $scope.user.currentAmount = 2000;
 
         var Anna = {id: 9, firstName: "Anna", lastName: "Abcd", followers: 27};
         var Bob = {id: 2, firstName: "Bob", lastName: "Abcd", followers: 28};

@@ -3,7 +3,11 @@
         <h3>You can follow these traders</h3>
         <ul>
             <li ng-repeat="t in traders">
-                <a ng-href="#/profile/{{t.id}}">{{t.firstName}}</a>
+
+                <a ng-href="#/profile/{{t.id}}">
+                    <img src="../images/logo.png" alt="profilepicture">
+                    <span>{{t.firstName}}</span>
+                </a>
             </li>
         </ul>
     </div>
