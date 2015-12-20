@@ -12,7 +12,7 @@
 
         var getById = function(id){
 
-            // API call via $http.get(localhost://8000/api/users/id)
+            // API call via $http.get(localhost://8000/api/users/+id)
 
             return {
                 firstName: "Anna",
