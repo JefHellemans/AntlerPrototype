@@ -1,253 +1,137 @@
-var Canvas = function(x, y, id, color, el) {
-    var self = this;
+var Canvas = function(x, y, width, height, elementId, objects) {
+    this.width = width;
+    this.height = height;
+    this.margin = new Vector2D(x, y);
+    this.ctx = document.getElementById(elementId).getContext("2d");
+    this.ctx.canvas.width = width;
+    this.ctx.canvas.height = height;
 
-    var c = document.getElementById(id);
-    c.width = x;
-    c.height = y;
-    var bg = color;
-
-    this.startingBudget = 2000;
-
-    this.ctx = c.getContext("2d");
-
-    this.center = new Vector2D(x / 2, y / 2);
+    this.center = new Vector2D(width / 2, height / 2);
     this.offset = new Vector2D(0, 0);
     this.scale = 1;
 
-    this.objs = el;
+    this.objects = objects;
+    this.selected = null;
 
-    var mouseTime = 0;
-    var trackMouseDownTime = null;
+    this.mousePos = new Vector2D(0, 0);
+    this.focus = null;
 
-    var animationTick = 0;
-    var animationTimer = null;
+    this.movingCanvas = null;
 
-    var movingCanvas = null;
-
-    var dragging = null;
-    var hover = null;
-
-    var mouseX = null;
-    var mouseY = null;
-
-    var clear = function() {
-        self.ctx.clearRect(0, 0, c.width, c.height);
-        self.ctx.fillStyle = bg;
-        self.ctx.fillRect(0, 0, c.width, c.height);
-    };
-
-    var draw = function() {
-        clear();
-
-        for(var i = 0; i < self.objs.length; i++) {
-            self.objs[i].preDraw(self);
-        }
-
-        for(var j = 0; j < self.objs.length; j++) {
-            self.objs[j].draw(self);
-        }
-
-        if(hover !== null) {
-            if(typeof hover.postDraw === 'function') {
-                if(animationTimer === null) {
-                    hover.postDraw(self, 1);
-                } else {
-                    hover.postDraw(self, animationTick);
-                }
+    var me = this;
+    setInterval(function() {
+        var redraw = false;
+        for(var i = 0, l = me.objects.length; i < l; i++) {
+            if(me.objects[i].requestRedraw()) {
+                redraw = true;
             }
         }
-    };
-    this.drawCanvas = function() {
-        draw();
-    };
-
-    var myMove = function(e) {
-        var newPos = new Vector2D(e.pageX, e.pageY - 50);
-        var prevPos = new Vector2D(mouseX, mouseY);
-        newPos = newPos.subVector(prevPos);
-        if(dragging === c) {
-            self.offset = self.offset.addVector(newPos);
-            for(var i = 0; i < self.objs.length; i++) {
-                self.objs[i].calculate(self);
-            }
-        } else if(dragging !== null) {
-            dragging.actualPos = dragging.actualPos.addVector(newPos);
-            var angle = 180 / (dragging.traders.length + 1);
-            for(var j = 0; j < dragging.traders.length; j++) {
-                var alpha = angle * (j + 1 - ((dragging.traders.length + 1) / 2));
-                dragging.traders[j].calculate(self.scale, dragging.rad, alpha, dragging.actualPos);
-            }
+        if(redraw) {
+            me.draw();
         }
-        mouseX = e.pageX;
-        mouseY = e.pageY - 50;
-        draw();
-    };
+    }, 10);
+};
 
-    c.onmousedown = function(e) {
-        clearInterval(movingCanvas);
-        movingCanvas = null;
-        trackMouseDownTime = setInterval(function() {
-            mouseTime++;
+Canvas.prototype.clear = function() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+};
+
+Canvas.prototype.draw = function(cb) {
+    this.clear();
+    this.ctx.save();
+    this.ctx.textBaseline = "hanging";
+    var c = this.center.addVector(this.offset);
+    this.ctx.setTransform(this.scale, 0, 0, this.scale, c.x, c.y);
+    var i = 0, l = 0;
+    for(i = 0, l = this.objects.length; i < l; i++) {
+        this.objects[i].draw(this.ctx, this.scale);
+    }
+    for(i = 0, l = this.objects.length; i < l; i++) {
+        this.objects[i].postDraw(this.ctx, this.scale);
+    }
+    this.ctx.restore();
+    if(typeof cb === 'function') {
+        cb();
+    }
+};
+
+Canvas.prototype.findObjectOnCanvas = function(cb) {
+    var found = false;
+    for(var i = this.objects.length - 1; i >= 0; i--) {
+        var o = this.objects[i].interaction(this.mousePos, this.scale);
+        if(o !== false) {
+            cb(o);
+            found = true;
+            break;
+        }
+    }
+    if(!found) {
+        cb(null);
+    }
+};
+
+Canvas.prototype.moveToCenter = function(cb) {
+    if(this.movingCanvas === null) {
+        var me = this;
+        this.movingCanvas = setInterval(function() {
+            if(me.offset.x === 0 && me.offset.y === 0) {
+                clearInterval(me.movingCanvas);
+                me.movingCanvas = null;
+            }
+            var d = me.offset;
+            d = d.div(30);
+            me.offset = me.offset.subVector(d);
+            if(Math.abs(me.offset.x) <= 1) {
+                me.offset.x = 0;
+            }
+            if(Math.abs(me.offset.y) <= 1) {
+                me.offset.y = 0;
+            }
+            if(typeof cb === 'function') {
+                cb();
+            }
+            me.draw();
         }, 10);
-        mouseX = e.pageX;
-        mouseY = e.pageY - 50;
-        for(var i = self.objs.length - 1; i >= 0; i--) {
-            var obj = self.objs[i];
-            var oPos = obj.actualPos;
-            var mousePos = new Vector2D(e.pageX, e.pageY - 50);
-            mousePos = mousePos.subVector(oPos);
-            if(mousePos.length() <= (obj.rad * self.scale)) {
-                dragging = obj;
-                self.objs.splice(i, 1);
-                self.objs.push(obj);
-                c.onmousemove = myMove;
-                break;
-            }
-        }
-        if(dragging === null) {
-            dragging = c;
-            c.onmousemove = myMove;
-        }
-    };
-
-    c.onmouseup = function(e) {
-        clearInterval(trackMouseDownTime);
-        if(mouseTime <= 30) {
-            animationTimer = setInterval(function() {
-                animationTick += (1 / 10);
-                draw();
-                if(animationTick >= 1) {
-                    clearInterval(animationTimer);
-                    animationTimer = null;
-                    animationTick = 0;
-                    hover = null;
-                }
-            }, 10);
-            var found = false;
-            for(var i = self.objs.length - 1; i >= 0; i--) {
-                var obj = self.objs[i];
-                for(var j = obj.traders.length - 1; j >= 0; j--) {
-                    var trader = obj.traders[j];
-                    var oPos = trader.actualPos;
-                    var mousePos = new Vector2D(e.pageX, e.pageY - 50);
-                    mousePos = mousePos.subVector(oPos);
-                    if(mousePos.length() <= (25 * self.scale)) {
-                        hover = trader;
-                        found = true;
-                        break;
-                    }
-                }
-                if(found) {
-                    break;
-                }
-            }
-        }
-        mouseTime = 0;
-        if(dragging !== null) {
-            if(typeof dragging.reverse === 'function') {
-                dragging.reverse(self);
-            }
-        }
-        draw();
-        dragging = null;
-        mouseX = null;
-        mouseY = null;
-        c.onmousemove = null;
-    };
-
-    document.getElementById("scaleCanvas").onmousemove = function() {
-        self.scale = this.value;
-        for(var i = 0; i < self.objs.length; i++) {
-            self.objs[i].calculate(self);
-        }
-        draw();
-    };
-
-    document.getElementById("resetOffset").onclick = function() {
-        if(movingCanvas === null) {
-            movingCanvas = setInterval(function() {
-                if(self.offset.x === 0 && self.offset.y === 0) {
-                    clearInterval(movingCanvas);
-                    movingCanvas = null;
-                }
-                var d = self.offset;
-                d = d.div(30);
-                self.offset = self.offset.subVector(d);
-                if(Math.abs(self.offset.x) <= 1) {
-                    self.offset.x = 0;
-                }
-                if(Math.abs(self.offset.y) <= 1) {
-                    self.offset.y = 0;
-                }
-                for(var i = 0; i < self.objs.length; i++) {
-                    self.objs[i].calculate(self);
-                }
-                draw();
-            }, 10);
-        }
-    };
-};
-
-Canvas.prototype.rect = function(l, t, w, h) {
-    this.ctx.beginPath();
-    var x = l - (w * this.scale / 2);
-    var y = t - (h * this.scale / 2);
-    this.ctx.rect(x, y, w * this.scale, h * this.scale);
-    this.ctx.closePath();
-    this.ctx.fill();
-};
-
-Canvas.prototype.cir = function(x, y, rad) {
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, rad * this.scale, 0, 2 * Math.PI, false);
-    this.ctx.closePath();
-    this.ctx.fill();
-};
-
-Canvas.prototype.cirImg = function(x, y, rad, img) {
-    this.ctx.fillStyle = "#ffffff";
-    this.cir(x, y, rad);
-    this.ctx.save();
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
-    this.ctx.clip();
-    var w = 1;
-    if(img.width > img.height) {
-        w = img.width / img.height;
-        this.ctx.drawImage(img, x - (rad * w * this.scale), y - (rad * this.scale), (rad * w * this.scale) * 2, (rad * this.scale) * 2);
-    } else {
-        w = img.height / img.width;
-        this.ctx.drawImage(img, x - (rad * this.scale), y - (rad * w * this.scale), (rad * this.scale) * 2, (rad * w * this.scale) * 2);
     }
-    this.ctx.restore();
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
-    this.ctx.strokeStyle = "#eeeeee";
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
-    this.ctx.closePath();
 };
 
-Canvas.prototype.cirLogo = function(x, y, rad, img) {
-    this.ctx.fillStyle = "#ffffff";
-    this.cir(x, y, rad);
-    this.ctx.save();
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
-    this.ctx.clip();
-    var w = 1;
-    if(img.width < img.height) {
-        w = img.width / img.height;
-        this.ctx.drawImage(img, x - (rad * w * this.scale), y - (rad * this.scale), (rad * w * this.scale) * 2, (rad * this.scale) * 2);
-    } else {
-        w = img.height / img.width;
-        this.ctx.drawImage(img, x - (rad * this.scale), y - (rad * w * this.scale), (rad * this.scale) * 2, (rad * w * this.scale) * 2);
+Canvas.prototype.interactionStart = function(e, cb) {
+    clearInterval(this.movingCanvas);
+    this.movingCanvas = null;
+    this.mousePos = new Vector2D(e.pageX, e.pageY);
+    this.mousePos = this.mousePos.subVector(this.margin);
+    this.mousePos = this.mousePos.subVector(this.center);
+    this.mousePos = this.mousePos.subVector(this.offset);
+    var mousePos = this.mousePos;
+    var offset = this.offset;
+    this.findObjectOnCanvas(function(found) {
+        var selected = found;
+        if(selected === null) {
+            selected = "self";
+            mousePos = mousePos.addVector(offset);
+        }
+        if(typeof cb === 'function') {
+            cb(selected, mousePos);
+        }
+    });
+};
+
+Canvas.prototype.interactionMove = function(e, cb) {
+    var newPos = new Vector2D(e.pageX, e.pageY);
+    newPos = newPos.subVector(this.margin);
+    newPos = newPos.subVector(this.center);
+    var difference = newPos.subVector(this.mousePos);
+    this.mousePos = newPos;
+    if(this.selected === "self") {
+        this.offset = this.offset.addVector(difference);
+        this.draw();
+    } else if(this.selected !== null) {
+        this.mousePos = this.mousePos.subVector(this.offset);
+        cb(this.selected, this.mousePos);
     }
-    this.ctx.restore();
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, rad * this.scale, 0, Math.PI * 2, true);
-    this.ctx.strokeStyle = "#eeeeee";
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
-    this.ctx.closePath();
+};
+
+Canvas.prototype.interactionStop = function() {
+    this.selected = null;
+    this.mousePos = new Vector2D(0, 0);
 };
