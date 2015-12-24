@@ -40,32 +40,19 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         trade.drawable.textColor = "#ffffff";
         trade.drawable.textFont = "SourceSansPro";
         trade.drawable.textAnchor = new Vector2D(0.5, 0.5);
-        trade.drawable.textPos = new Vector2D(0, trade.drawable.radius / 2);
+        trade.drawable.textPos = new Vector2D(0, 0.5);
         trade.drawable.textBackground = "#36B5DB";
         trade.drawable.textPadding = new Vector2D(10, 10);
         trades.push(trade);
     }
     var canvas = new Canvas(0, 50, window.innerWidth, window.innerHeight - 50, "trades", trades);
     canvas.draw();
-    document.getElementById("trades").addEventListener("click", function(e) {
-        canvas.interactionStart(e, function(object) {
+    document.getElementById("trades").addEventListener("mousedown", function(e) {
+        canvas.interactionStart(e, function(object, mousePos) {
             if(object instanceof Trade) {
                 var index = canvas.objects.indexOf(object);
                 canvas.objects.push(canvas.objects.splice(index, 1)[0]);
-                for(var i = 0, l = canvas.objects.length; i < l; i++) {
-                    if(canvas.objects[i].open && canvas.objects[i] !== object) {
-                        canvas.objects[i].clicked();
-                    }
-                }
             }
-            if(typeof object.clicked === 'function') {
-                object.clicked();
-            }
-            canvas.interactionStop(e);
-        });
-    });
-    document.getElementById("trades").addEventListener("mousedown", function(e) {
-        canvas.interactionStart(e, function(object, mousePos) {
             canvas.selected = object;
             canvas.mousePos = mousePos;
         });
@@ -78,10 +65,27 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
             }
         });
     });
-    document.getElementById("trades").addEventListener("mouseup", function(e) {
-        canvas.interactionStop(e);
+    document.getElementById("trades").addEventListener("mouseup", function() {
+        canvas.interactionStop(function(object) {
+            if(object !== null) {
+                if (object instanceof Trade) {
+                    for (var i = 0, l = canvas.objects.length; i < l; i++) {
+                        if (canvas.objects[i].open && canvas.objects[i] !== object) {
+                            canvas.objects[i].clicked();
+                        }
+                    }
+                }
+                if (typeof object.clicked === 'function') {
+                    object.clicked();
+                }
+            }
+        });
     });
     document.getElementById("resetOffset").addEventListener("click", function() {
         canvas.moveToCenter();
     });
+    document.getElementById("scaleCanvas").addEventListener("mousemove", function() {
+        canvas.scale = this.value;
+        canvas.draw();
+    })
 })();

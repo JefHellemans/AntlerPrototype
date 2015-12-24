@@ -15,7 +15,7 @@ var Trade = function(stockPrice, traders) {
     this.drawable.imgFill = false;
 
     this.interaction = function(mousePos, scale) {
-        var mouseDifference = mousePos.subVector(this.drawable.pos);
+        var mouseDifference = mousePos.subVector(this.drawable.pos.mul(scale));
         var difference = 0;
         if(this.drawable.radius !== 0) {
             difference = this.drawable.radius * scale;
@@ -26,7 +26,7 @@ var Trade = function(stockPrice, traders) {
         if (mouseDifference.length() <= difference) {
             return this;
         }
-        var relPos = mousePos.subVector(this.drawable.pos);
+        var relPos = mousePos.subVector(this.drawable.pos.mul(scale));
         var angle = 180 / (this.traders.length + 1);
         for(var i = 0, l = this.traders.length; i < l; i++) {
             var alpha = angle * (i + 1 - ((this.traders.length + 1) / 2));

@@ -76,7 +76,7 @@ function Trader(name, totalPercentage, inAt, percentage, comment, type) {
     };
 
     this.interaction = function(mousePos, scale, alpha) {
-        var mouseDifference = mousePos.subVector(this.drawable.pos.rotate(alpha - 90));
+        var mouseDifference = mousePos.subVector(this.drawable.pos.rotate(alpha - 90).mul(scale));
         var difference = 0;
         if (this.drawable.radius !== 0) {
             difference = this.drawable.radius * scale;

@@ -13,6 +13,7 @@ var Canvas = function(x, y, width, height, elementId, objects) {
     this.objects = objects;
     this.selected = null;
 
+    this.startPos = new Vector2D(0, 0);
     this.mousePos = new Vector2D(0, 0);
     this.focus = null;
 
@@ -126,12 +127,19 @@ Canvas.prototype.interactionMove = function(e, cb) {
         this.offset = this.offset.addVector(difference);
         this.draw();
     } else if(this.selected !== null) {
+        this.startPos = this.startPos.addVector(difference);
         this.mousePos = this.mousePos.subVector(this.offset);
-        cb(this.selected, this.mousePos);
+        cb(this.selected, this.mousePos.mul(1 / this.scale));
     }
 };
 
-Canvas.prototype.interactionStop = function() {
+Canvas.prototype.interactionStop = function(cb) {
+    if(this.startPos.length() <= 10) {
+        cb(this.selected);
+    } else {
+        cb(null);
+    }
+    this.startPos = new Vector2D(0, 0);
     this.selected = null;
     this.mousePos = new Vector2D(0, 0);
 };

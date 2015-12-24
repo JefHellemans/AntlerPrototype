@@ -152,7 +152,11 @@ var Drawable = function() {
             }
             if (this.textBackground !== null) {
                 ctx.fillStyle = this.textBackground;
-                var blockSize = this.textPadding.mul(2).addVector(new Vector2D(w, h));
+                var padding = this.textPadding;
+                if(!this.textScaling) {
+                    padding = padding.mul(1 / scale);
+                }
+                var blockSize = padding.mul(2).addVector(new Vector2D(w, h));
                 var txtPos = this.textPos;
                 if(this.radius !== 0) {
                     txtPos = txtPos.mul(this.radius);
@@ -162,7 +166,7 @@ var Drawable = function() {
                 }
                 var blockPos = txtPos.subVector(blockSize.mulVector(this.textAnchor));
                 ctx.fillRect(blockPos.x, blockPos.y, blockSize.x, blockSize.y);
-                paragraphPos = blockPos.addVector(this.textPadding);
+                paragraphPos = blockPos.addVector(padding);
             }
             for (i = 0, l = this.text.length; i < l; i++) {
                 ctx.fillStyle = this.textColor;
@@ -236,7 +240,7 @@ Drawable.prototype.setText = function(text) {
 };
 
 Drawable.prototype.interaction = function(mousePos, scale) {
-    var mouseDifference = mousePos.subVector(this.pos);
+    var mouseDifference = mousePos.subVector(this.pos.mul(scale));
     var difference = 0;
     if(this.radius !== 0) {
         difference = this.radius * scale;
