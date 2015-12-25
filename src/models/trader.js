@@ -1,96 +1,93 @@
-function Trader(name, imgSrc, totalPercentage, difference, comment, type) {
+function Trader(name, totalPercentage, inAt, percentage, comment, type) {
     this.name = name;
-    this.img = null;
-    this.imgSrc = imgSrc;
     this.totalPercentage = totalPercentage;
-    this.percentage = 0;
-    this.difference = difference;
-    this.actualPos = null;
+    this.percentage = percentage;
+    this.inAt = inAt;
     this.comment = comment;
     this.type = type;
-    var me = this;
-    var thumbImg = new Image();
-    thumbImg.src = this.imgSrc;
-    thumbImg.onload = function() {
-        me.img = thumbImg;
+    this.drawable = new Drawable();
+
+    this.drawable.color = "#ffffff";
+
+    this.drawable.borderColor = "#eeeeee";
+    this.drawable.borderWidth = 2;
+    this.drawable.borderScaling = false;
+
+    this.drawable.setText("[b]" + this.name + "[/b][align=right]Test[/align]\n" + comment);
+    this.drawable.textFont = "SourceSansPro";
+    this.drawable.textAnchor = new Vector2D(0, 1);
+    this.drawable.textBackground = "#ffffff";
+    this.drawable.textPadding = new Vector2D(0, 0);
+    this.drawable.textScaling = false;
+    this.drawable.textPos = new Vector2D(1, -1);
+    this.drawable.textColor = "#36B5DB";
+
+    this.drawable.pos = new Vector2D(0, 0);
+
+    this.drawable.radius = 25;
+
+    this.drawable.show = false;
+
+    this.open = false;
+
+    this.draw = function(ctx, scale, alpha) {
+        if(this.drawable.show) {
+            var p = this.drawable.pos;
+            this.drawable.pos = this.drawable.pos.rotate(alpha - 90);
+            ctx.save();
+            ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
+            this.drawable.drawCircle(ctx);
+            this.drawable.drawImageInCircle(ctx);
+            this.drawable.drawBorderForCircle(ctx);
+            ctx.restore();
+            this.drawable.pos = p;
+        }
+    };
+
+    this.postDraw = function(ctx, scale, alpha) {
+        if(this.drawable.show) {
+            var p = this.drawable.pos;
+            this.drawable.pos = this.drawable.pos.rotate(alpha - 90);
+            ctx.save();
+            ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
+            this.drawable.drawText(ctx, scale);
+            ctx.restore();
+            this.drawable.pos = p;
+        }
+    };
+
+    this.clicked = function() {
+        var me = this;
+        if(!this.open) {
+            this.drawable.animate("textSize", 12, 200, "easeInOut", null);
+            this.drawable.animateVector("textPadding", new Vector2D(10, 10), 200, "easeInOut", function(finished, element) {
+                if(finished) {
+                    me.open = true;
+                }
+            });
+        } else {
+            this.drawable.animate("textSize", 0, 200, "easeInOut", null);
+            this.drawable.animateVector("textPadding", new Vector2D(0, 0), 200, "easeInOut", function(finished, element) {
+                if(finished) {
+                    me.open = false;
+                }
+            });
+        }
+    };
+
+    this.interaction = function(mousePos, scale, alpha) {
+        var mouseDifference = mousePos.subVector(this.drawable.pos.rotate(alpha - 90).mul(scale));
+        var difference = 0;
+        if (this.drawable.radius !== 0) {
+            difference = this.drawable.radius * scale;
+        }
+        if (this.drawable.size.length() !== 0) {
+            difference = this.drawable.size.length() * scale;
+        }
+        if (mouseDifference.length() <= difference && this.drawable.show) {
+            return this;
+        } else {
+            return false;
+        }
     };
 }
-
-Trader.prototype.calculate = function(scale, rad, alpha, from) {
-    var pos = new Vector2D(0, 30);
-    pos = pos.addVector(new Vector2D(0, rad));
-    pos = pos.mul(scale);
-    pos = pos.rotate(alpha - 90);
-    pos = pos.addVector(from);
-    this.actualPos = pos;
-};
-
-Trader.prototype.draw = function(c) {
-    if(this.img !== null) {
-        c.cirImg(this.actualPos.x, this.actualPos.y, 25, this.img);
-        var onePromille = c.startingBudget / 1000;
-        var diff = Math.floor(c.startingBudget * this.totalPercentage * this.percentage * this.difference * 100) / 100;
-        if(diff < -onePromille) {
-            c.ctx.fillStyle = "#E74C3C";
-        } else if(diff > onePromille) {
-            c.ctx.fillStyle = "#36B5DB";
-        } else {
-            c.ctx.fillStyle = "#2C3E50";
-        }
-        c.cir(this.actualPos.x, this.actualPos.y, (Math.abs(this.difference) * 20) + 5);
-    }
-};
-
-Trader.prototype.postDraw = function(c, tick) {
-    var size = 12 * tick;
-    c.ctx.font = "bold " + size + "pt SourceSansPro";
-    var txtSize = 0;
-    var text = this.comment.split('\n');
-    if(this.type === 0) {
-        text.unshift("xx long at € xx,xx");
-    } else if(this.type === 1) {
-        text.unshift("xx short at € xx,xx");
-    }
-    var diff = Math.floor(c.startingBudget * this.totalPercentage * this.percentage * this.difference * 100) / 100;
-    text.unshift(this.name + "\p€ " + Math.abs(diff));
-    for(var i = 0; i < text.length; i++) {
-        var s = c.ctx.measureText(text[i]).width;
-        if(txtSize < s) {
-            txtSize = s;
-        }
-    }
-    c.ctx.fillStyle = "#ffffff";
-    c.ctx.beginPath();
-    c.ctx.rect(this.actualPos.x + (25 * c.scale), this.actualPos.y - (size * text.length) - (size * (text.length - 1) * 1.2) - (25 * c.scale) - 20, txtSize + 20, (size * text.length) + (size * (text.length - 1) * 1.2) + 20);
-    c.ctx.closePath();
-    c.ctx.fill();
-    for(var j = 0; j < text.length; j++) {
-        if(j > 0) {
-            c.ctx.font = size + "pt SourceSansPro";
-        }
-        if(j === 1 && this.type === 0) {
-            c.ctx.fillStyle = "#36B5DB";
-        } else if (j === 1 && this.type === 1) {
-            c.ctx.fillStyle = "#E74C3C";
-        } else {
-            c.ctx.fillStyle = "#2C3E50";
-        }
-
-        if(j === 0) {
-            var onePromille = c.startingBudget / 1000;
-            var intro = text[j].split('\p');
-            c.ctx.fillText(intro[0], this.actualPos.x + (25 * c.scale) + 10, this.actualPos.y - (size * (text.length - j)) - (size * (text.length - 1) * 1.2)+ (j * 1.2 * size) - (25 * c.scale));
-            if(diff < -onePromille) {
-                c.ctx.fillStyle = "#E74C3C";
-                intro[1] = "- " + intro[1];
-            } else if(diff > onePromille) {
-                c.ctx.fillStyle = "#36B5DB";
-            } else {
-                c.ctx.fillStyle = "#2C3E50";
-            }
-            c.ctx.fillText(intro[1], this.actualPos.x + (25 * c.scale) + 10 + txtSize - c.ctx.measureText(intro[1]).width, this.actualPos.y - (size * (text.length - j)) - (size * (text.length - 1) * 1.2)+ (j * 1.2 * size) - (25 * c.scale));
-        } else {
-            c.ctx.fillText(text[j], this.actualPos.x + (25 * c.scale) + 10, this.actualPos.y - (size * (text.length - j)) - (size * (text.length - 1) * 1.2)+ (j * 1.2 * size) - (25 * c.scale));
-        }
-    }
-};
