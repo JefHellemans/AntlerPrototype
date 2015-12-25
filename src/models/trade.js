@@ -11,8 +11,25 @@ var Trade = function(stockPrice, traders) {
     }
 
     this.open = false;
-    this.drawable.textSize = 12;
+    this.drawable.textSize = 10;
     this.drawable.imgFill = false;
+    var x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
+    var y = Math.floor(Math.random() * (window.innerHeight - 50) - ((window.innerHeight - 50) / 2));
+    this.drawable.pos = new Vector2D(x, y);
+    this.drawable.radius = Math.floor((Math.random() * 35) + 35);
+    this.drawable.color = "#ffffff";
+    this.drawable.borderWidth = 2;
+    this.drawable.borderColor = "#eeeeee";
+    this.drawable.borderScaling = false;
+    this.drawable.setText(stockPrice + "");
+    this.drawable.textColor = "#ffffff";
+    this.drawable.textFont = "SourceSansPro";
+    this.drawable.textAnchor = new Vector2D(0.5, 0.5);
+    this.drawable.textPos = new Vector2D(0, 0.5);
+    this.drawable.textBackground = "#36B5DB";
+    this.drawable.textPadding = new Vector2D(10, 10);
+    this.drawable.textReplaceColor = "#36B5DB";
+    this.drawable.textReplace = 15;
 
     this.interaction = function(mousePos, scale) {
         var mouseDifference = mousePos.subVector(this.drawable.pos.mul(scale));
@@ -42,6 +59,18 @@ var Trade = function(stockPrice, traders) {
             }
         }
         return false;
+    };
+
+    this.preDraw = function(ctx, scale) {
+        if(this.drawable.show) {
+            ctx.strokeStyle = "#2C3E50";
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(this.drawable.pos.x, this.drawable.pos.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
     };
 
     this.draw = function(ctx, scale) {

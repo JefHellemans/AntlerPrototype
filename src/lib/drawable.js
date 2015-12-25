@@ -11,12 +11,15 @@ var Drawable = function() {
     this.textItalic = false;
     this.textBold = false;
     this.textSize = 0;
+    this.textMinSize = 6;
     this.textFont = "Arial";
     this.textAlign = "left";
     this.textColor = "#000000";
     this.textPos = new Vector2D(0, 0);
     this.textAnchor = new Vector2D(0, 0);
     this.textBackground = null;
+    this.textReplace = 20;
+    this.textReplaceColor = null;
     this.textSpacing = 1.2;
     this.textPadding = new Vector2D(0, 0);
     this.textScaling = true;
@@ -109,7 +112,7 @@ var Drawable = function() {
                 p = p.subVector(ratio.mulVector(s).div(2));
                 p = p.addVector(ratio.mul(this.radius));
             }
-            ctx.drawImage(this.img, clip.x, clip.y, this.img.width - clip.x, this.img.height - clip.y, p.x, p.y, s.x, s.y);
+            ctx.drawImage(this.img, clip.x, clip.y, this.img.width - (clip.x * 2), this.img.height - (clip.y * 2), p.x, p.y, s.x, s.y);
             ctx.closePath();
             ctx.restore();
         } else {
@@ -131,53 +134,74 @@ var Drawable = function() {
 
     this.drawText = function(ctx, scale) {
         if(this.text !== null) {
-            var w = 0;
-            var h = 0;
-            var i = 0;
-            var l = 0;
-            var paragraphPos = new Vector2D(0, 0);
-            for(l = this.text.length; i < l; i++) {
-                var paragraphSize = this.text[i].measure(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textScaling);
-                if(paragraphSize.x > w) {
-                    w = paragraphSize.x;
-                }
-                h += paragraphSize.y;
-                if(l - i > 1) {
-                    var spacing = this.textSpacing * this.textSize;
-                    if (!this.textScaling) {
-                        spacing *= 1 / scale;
+            var textSize = this.textSize;
+            if(this.textScaling) {
+                textSize *= scale;
+            }
+            if(textSize >= this.textMinSize) {
+                var w = 0;
+                var h = 0;
+                var i = 0;
+                var l = 0;
+                var paragraphPos = new Vector2D(0, 0);
+                for(l = this.text.length; i < l; i++) {
+                    var paragraphSize = this.text[i].measure(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textScaling);
+                    if (paragraphSize.x > w) {
+                        w = paragraphSize.x;
                     }
-                    h += spacing;
+                    h += paragraphSize.y;
+                    if (l - i > 1) {
+                        var spacing = this.textSpacing * this.textSize;
+                        if (!this.textScaling) {
+                            spacing *= 1 / scale;
+                        }
+                        h += spacing;
+                    }
                 }
-            }
-            if (this.textBackground !== null) {
-                ctx.fillStyle = this.textBackground;
-                var padding = this.textPadding;
-                if(!this.textScaling) {
-                    padding = padding.mul(1 / scale);
+                if(this.textBackground !== null) {
+                    ctx.fillStyle = this.textBackground;
+                    var padding = this.textPadding;
+                    if(!this.textScaling) {
+                        padding = padding.mul(1 / scale);
+                    }
+                    var blockSize = padding.mul(2).addVector(new Vector2D(w, h));
+                    var txtPos = this.textPos;
+                    if(this.radius !== 0) {
+                        txtPos = txtPos.mul(this.radius);
+                    }
+                    if(this.size.length() !== 0) {
+                        txtPos = txtPos.mulVector(this.size);
+                    }
+                    var blockPos = txtPos.subVector(blockSize.mulVector(this.textAnchor));
+                    ctx.fillRect(blockPos.x, blockPos.y, blockSize.x, blockSize.y);
+                    paragraphPos = blockPos.addVector(padding);
                 }
-                var blockSize = padding.mul(2).addVector(new Vector2D(w, h));
-                var txtPos = this.textPos;
-                if(this.radius !== 0) {
-                    txtPos = txtPos.mul(this.radius);
+                for(i = 0, l = this.text.length; i < l; i++) {
+                    ctx.fillStyle = this.textColor;
+                    var height = this.text[i].measure(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textScaling).y;
+                    var space = this.textSpacing * this.textSize;
+                    if (!this.textScaling) {
+                        space *= 1 / scale;
+                    }
+                    height += space;
+                    this.text[i].draw(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textAlign, this.textColor, this.textScaling, paragraphPos, w);
+                    paragraphPos = paragraphPos.addVector(new Vector2D(0, height));
                 }
-                if(this.size.length() !== 0) {
-                    txtPos = txtPos.mulVector(this.size);
+            } else {
+                if(this.textReplaceColor !== null) {
+                    ctx.fillStyle = this.textReplaceColor;
+                    var replacePos;
+                    if(this.textReplace instanceof Vector2D) {
+                        replacePos = this.textPos.mulVector(this.size).subVector(this.textReplace.mulVector(this.textAnchor));
+                        ctx.fillRect(replacePos.x, replacePos.y, this.textReplace.x, this.textReplace.y);
+                    } else if(this.textReplace > 0) {
+                        replacePos = this.textPos.mul(this.radius).subVector(this.textAnchor.sub(0.5).mul(this.textReplace));
+                        ctx.beginPath();
+                        ctx.arc(replacePos.x, replacePos.y, this.textReplace, 0, 2 * Math.PI, false);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
                 }
-                var blockPos = txtPos.subVector(blockSize.mulVector(this.textAnchor));
-                ctx.fillRect(blockPos.x, blockPos.y, blockSize.x, blockSize.y);
-                paragraphPos = blockPos.addVector(padding);
-            }
-            for (i = 0, l = this.text.length; i < l; i++) {
-                ctx.fillStyle = this.textColor;
-                var height = this.text[i].measure(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textScaling).y;
-                var space = this.textSpacing * this.textSize;
-                if(!this.textScaling) {
-                    space *= 1 / scale;
-                }
-                height += space;
-                this.text[i].draw(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textAlign, this.textColor, this.textScaling, paragraphPos, w);
-                paragraphPos = paragraphPos.addVector(new Vector2D(0, height));
             }
         } else {
             console.log("[DRAWABLE][drawText]: Could not draw text for", this, "since this.text is null");
@@ -232,7 +256,6 @@ Drawable.prototype.setImage = function(imgSrc, cb) {
     }
 };
 Drawable.prototype.setText = function(text) {
-    this.txt = text;
     var txt = text.split('\n');
     for (var i = 0, l = txt.length; i < l; i++) {
         this.text.push(new Paragraph(txt[i]));

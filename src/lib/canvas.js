@@ -23,8 +23,15 @@ var Canvas = function(x, y, width, height, elementId, objects) {
     setInterval(function() {
         var redraw = false;
         for(var i = 0, l = me.objects.length; i < l; i++) {
-            if(me.objects[i].requestRedraw()) {
-                redraw = true;
+            if(typeof me.objects[i].requestRedraw === 'function') {
+                if(me.objects[i].requestRedraw()) {
+                    redraw = true;
+                }
+            } else {
+                if(me.objects[i].requestRedraw) {
+                    redraw = true;
+                    me.objects[i].requestRedraw = false;
+                }
             }
         }
         if(redraw) {
@@ -43,12 +50,19 @@ Canvas.prototype.draw = function(cb) {
     this.ctx.textBaseline = "hanging";
     var c = this.center.addVector(this.offset);
     this.ctx.setTransform(this.scale, 0, 0, this.scale, c.x, c.y);
-    var i = 0, l = 0;
+    var i, l;
+    for(i = 0, l = this.objects.length; i < l; i++) {
+        if(typeof this.objects[i].preDraw === 'function') {
+            this.objects[i].preDraw(this.ctx, this.scale);
+        }
+    }
     for(i = 0, l = this.objects.length; i < l; i++) {
         this.objects[i].draw(this.ctx, this.scale);
     }
     for(i = 0, l = this.objects.length; i < l; i++) {
-        this.objects[i].postDraw(this.ctx, this.scale);
+        if(typeof this.objects[i].postDraw === 'function') {
+            this.objects[i].postDraw(this.ctx, this.scale);
+        }
     }
     this.ctx.restore();
     if(typeof cb === 'function') {

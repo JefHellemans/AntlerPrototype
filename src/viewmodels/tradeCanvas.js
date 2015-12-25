@@ -1,9 +1,16 @@
 var trades = [];
 var traders = [];
+var profile = new Drawable();
 var logos = ["logo0.svg", "logo1.svg", "logo2.svg", "logo3.svg", "logo4.svg"];
 var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"], ["Nicolsh Lavanda", "trader2.jpg"], ["xXrobke69Xx", "trader3.jpg"]];
 
 (function() {
+    profile.setImage("dist/images/profile.jpg");
+    profile.radius = 100;
+    profile.color = "#ffffff";
+    profile.borderColor = "#eeeeee";
+    profile.borderScaling = false;
+    profile.borderWidth = 2;
     for(var j = 0; j < 4; j++) {
         var totalPercentage = (Math.random() * 0.15) + 0.1;
         var percentage = (Math.random() * 0.4) + 0.1;
@@ -13,8 +20,6 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         traders.push(trader);
     }
     for(var i = 0; i < 5; i++) {
-        var x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
-        var y = Math.floor(Math.random() * (window.innerHeight - 50) - ((window.innerHeight - 50) / 2));
         var r = Math.ceil(Math.random() * 4);
         var ppl = [];
         var stockPrice = Math.floor((Math.random() * 200) * 100) / 100;
@@ -27,25 +32,18 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
             ppl.push(t);
         }
         var trade = new Trade(stockPrice, ppl);
-        trade.drawable.pos = new Vector2D(x, y);
-        trade.drawable.radius = Math.floor((Math.random() * 50) + 50);
-        trade.drawable.color = "#ffffff";
-        trade.drawable.borderWidth = 2;
-        trade.drawable.borderColor = "#eeeeee";
-        trade.drawable.borderScaling = false;
         trade.drawable.setImage("dist/images/" + logos[i], function() {
             canvas.draw();
         });
-        trade.drawable.setText(stockPrice + "");
-        trade.drawable.textColor = "#ffffff";
-        trade.drawable.textFont = "SourceSansPro";
-        trade.drawable.textAnchor = new Vector2D(0.5, 0.5);
-        trade.drawable.textPos = new Vector2D(0, 0.5);
-        trade.drawable.textBackground = "#36B5DB";
-        trade.drawable.textPadding = new Vector2D(10, 10);
         trades.push(trade);
     }
+    trades.push(profile);
     var canvas = new Canvas(0, 50, window.innerWidth, window.innerHeight - 50, "trades", trades);
+    profile.draw = function(ctx, scale) {
+        this.drawCircle(ctx);
+        this.drawImageInCircle(ctx);
+        this.drawBorderForCircle(ctx, scale);
+    };
     canvas.draw();
     document.getElementById("trades").addEventListener("mousedown", function(e) {
         canvas.interactionStart(e, function(object, mousePos) {
@@ -68,14 +66,22 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     document.getElementById("trades").addEventListener("mouseup", function() {
         canvas.interactionStop(function(object) {
             if(object !== null) {
-                if (object instanceof Trade) {
-                    for (var i = 0, l = canvas.objects.length; i < l; i++) {
+                var i, l;
+                if(object instanceof Trade) {
+                    for (i = 0, l = canvas.objects.length; i < l; i++) {
                         if (canvas.objects[i].open && canvas.objects[i] !== object) {
                             canvas.objects[i].clicked();
                         }
                     }
                 }
-                if (typeof object.clicked === 'function') {
+                if(object === "self") {
+                    for (i = 0, l = canvas.objects.length; i < l; i++) {
+                        if (canvas.objects[i].open) {
+                            canvas.objects[i].clicked();
+                        }
+                    }
+                }
+                if(typeof object.clicked === 'function') {
                     object.clicked();
                 }
             }
