@@ -20,8 +20,8 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         var trader = [totalPercentage, percentage, inAt, type];
         traders.push(trader);
     }
-    for(var i = 0; i < 5; i++) {
-        var r = Math.ceil(Math.random() * 4);
+    for(var i = 0; i < 1; i++) {
+        var r = Math.ceil(Math.random() * 1);
         var ppl = [];
         var stockPrice = Math.floor((Math.random() * 200) * 100) / 100;
         for(var k = 0; k < r; k++) {
@@ -46,6 +46,13 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     };
     canvas.draw();
     document.getElementById("trades").addEventListener("mousedown", function(e) {
+        interactionStart(e);
+    });
+    document.getElementById("trades").addEventListener("touchstart", function(e) {
+        var touch = e.touches[0];
+        interactionStart(touch);
+    });
+    var interactionStart = function(e) {
         canvas.interactionStart(e, function(object, mousePos) {
             if(object instanceof Trade) {
                 var index = canvas.objects.indexOf(object);
@@ -54,16 +61,32 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
             canvas.selected = object;
             canvas.mousePos = mousePos;
         });
-    });
+    };
     document.getElementById("trades").addEventListener("mousemove", function(e) {
+        interactionMove(e);
+    });
+    document.getElementById("trades").addEventListener("touchmove", function(e) {
+        var touch = e.touches[0];
+        interactionMove(touch);
+    });
+    var interactionMove = function(e) {
         canvas.interactionMove(e, function(object, mousePos) {
             if(object instanceof Trade) {
                 object.drawable.pos = mousePos;
                 canvas.draw();
             }
         });
-    });
+    };
     document.getElementById("trades").addEventListener("mouseup", function() {
+        interactionStop();
+    });
+    document.getElementById("trades").addEventListener("touchend", function() {
+        interactionStop();
+    });
+    document.body.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+    });
+    var interactionStop = function() {
         canvas.interactionStop(function(object) {
             if(object !== null) {
                 var i, l;
@@ -86,7 +109,7 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
                 }
             }
         });
-    });
+    };
     document.getElementById("resetOffset").addEventListener("click", function() {
         canvas.moveToCenter();
     });

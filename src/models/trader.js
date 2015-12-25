@@ -13,7 +13,7 @@ function Trader(name, totalPercentage, inAt, percentage, comment, type) {
     this.drawable.borderWidth = 2;
     this.drawable.borderScaling = false;
 
-    this.drawable.setText("[b]" + this.name + "[/b][align=right]Test[/align]\n" + comment);
+    this.drawable.setText("[b]" + this.name + "[/b][i][align=right][color=#E74C3C]Test[/color][/align][/i]\n" + comment);
     this.drawable.textFont = "SourceSansPro";
     this.drawable.textAnchor = new Vector2D(0, 1);
     this.drawable.textBackground = "#ffffff";

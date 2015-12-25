@@ -53,7 +53,7 @@ Paragraph.prototype.draw = function(ctx, scale, italic, bold, size, font, align,
     if(typeof this.color !== 'undefined') {
         color = this.color;
     }
-    if(this.parts.length === 1) {
+    if(this.parts.length === 1 && !(this.parts[0] instanceof Paragraph)) {
         if(!scaling) {
             f[2] *= 1 / scale;
         }
@@ -111,23 +111,32 @@ Paragraph.prototype.checkForStyle = function(text, opening, closing, style) {
     var temp = text.split(opening);
     if(temp.length >= 2) {
         var t = temp.shift();
-        if(t.length > 0) {
+        if(t.length > 0 && !(t instanceof Paragraph)) {
+            this.parts.push(new Paragraph(t));
+        } else if(t instanceof Paragraph) {
             this.parts.push(t);
         }
         for(var i = 0, l = temp.length; i < l; i++) {
             var p = temp[i].split(closing);
-            var styled = new Paragraph(p[0]);
             if(opening.indexOf("=") > -1) {
                 p[0] = p[0].split("]");
                 var v = p[0].shift();
-                p[0] = p[0][0];
+                var split = "";
+                for(var j = 0, m = p[0].length; j < m; j++) {
+                    split += p[0][j];
+                    if(j < m - 1) {
+                        split += "]";
+                    }
+                }
+                p[0] = split;
             }
+            var styled = new Paragraph(p[0]);
 
-            if(p[1].length === 0 && t.length === 0) {
-                this.parts = [p[0]];
-                styled = this;
-            } else if (p[1].length === 0) {
+            if(p[1].length === 0 && !(p[1] instanceof Paragraph)) {
                 this.parts.push(styled);
+            } else if(p[1] instanceof Paragraph) {
+                this.parts.push(styled);
+                this.parts.push(p[1]);
             } else {
                 this.parts.push(styled);
                 this.parts.push(new Paragraph(p[1]));
