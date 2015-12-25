@@ -11,21 +11,28 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     profile.borderColor = "#eeeeee";
     profile.borderScaling = false;
     profile.borderWidth = 2;
+    profile.textSize = 12;
+    profile.textColor = "#ffffff";
+    profile.textFont = "SourceSansPro";
+    profile.textAnchor = new Vector2D(0.5, 0.5);
+    profile.textPos = new Vector2D(0, 0.5);
+    profile.textPadding = new Vector2D(10, 10);
+    profile.textReplace = 15;
     trades.push(profile);
     for(var j = 0; j < 4; j++) {
-        var totalPercentage = (Math.random() * 0.15) + 0.1;
-        var percentage = (Math.random() * 0.4) + 0.1;
-        var inAt = Math.random() * 200;
-        var type = Math.floor(Math.random() * (1 + 1));
-        var trader = [totalPercentage, percentage, inAt, type];
+        var amount = Math.floor(Math.random() * 50);
+        var inAt = Math.floor((Math.random() * 20000)) / 100;
+        var type = Math.floor(Math.random() * 2);
+        var trader = [amount, inAt, type];
         traders.push(trader);
     }
-    for(var i = 0; i < 1; i++) {
-        var r = Math.ceil(Math.random() * 1);
+    var diff = 0;
+    for(var i = 0; i < 5; i++) {
+        var r = Math.ceil(Math.random() * 4);
         var ppl = [];
         var stockPrice = Math.floor((Math.random() * 200) * 100) / 100;
         for(var k = 0; k < r; k++) {
-            var t = new Trader(people[k][0], traders[k][0], traders[k][2], traders[k][1], "This looks good!\nI can even put a second line\n\nAnd even more", traders[k][3]);
+            var t = new Trader(people[k][0], traders[k][0], traders[k][1], traders[k][2], "This looks good!\nI can even put a second line\n\nAnd even more");
             t.drawable.setImage("dist/images/" + people[k][1], function() {
                 canvas.draw();
             });
@@ -33,16 +40,41 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
             ppl.push(t);
         }
         var trade = new Trade(stockPrice, ppl);
+        diff += trade.difference;
         trade.drawable.setImage("dist/images/" + logos[i], function() {
             canvas.draw();
         });
         trades.push(trade);
     }
+    if(diff >= 0) {
+        profile.textBackground = "#36B5DB";
+        profile.textReplaceColor = "#36B5DB";
+    } else {
+        profile.textBackground = "#E74C3C";
+        profile.textReplaceColor = "#E74C3C";
+    }
+    profile.setText((Math.floor(diff * 100) / 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}));
     var canvas = new Canvas(0, 50, window.innerWidth, window.innerHeight - 50, "trades", trades);
+    canvas.partialCallback = function() {
+        var diff = 0;
+        for(var i = 1, l = canvas.objects.length; i < l; i++) {
+            diff += canvas.objects[i].difference;
+        }
+        if(diff >= 0) {
+            canvas.objects[0].textBackground = "#36B5DB";
+            canvas.objects[0].textReplaceColor = "#36B5DB";
+        } else {
+            canvas.objects[0].textBackground = "#E74C3C";
+            canvas.objects[0].textReplaceColor = "#E74C3C";
+        }
+        canvas.objects[0].setText((Math.floor(diff * 100) / 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}));
+        canvas.objects[0].drawText(canvas.ctx, canvas.scale);
+    };
     profile.draw = function(ctx, scale) {
         this.drawCircle(ctx);
         this.drawImageInCircle(ctx);
         this.drawBorderForCircle(ctx, scale);
+        this.drawText(ctx, scale);
     };
     canvas.draw();
     document.getElementById("trades").addEventListener("mousedown", function(e) {

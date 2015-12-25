@@ -19,13 +19,25 @@ var Canvas = function(x, y, width, height, elementId, objects) {
 
     this.movingCanvas = null;
 
+    this.drawCallback = null;
+    this.partialCallback = null;
+
     var me = this;
     setInterval(function() {
         var redraw = false;
+        me.ctx.save();
+        me.ctx.textBaseline = "hanging";
+        var c = me.center.addVector(me.offset);
+        me.ctx.setTransform(me.scale, 0, 0, me.scale, c.x, c.y);
         for(var i = 0, l = me.objects.length; i < l; i++) {
             if(typeof me.objects[i].requestRedraw === 'function') {
                 if(me.objects[i].requestRedraw()) {
                     redraw = true;
+                } else if(typeof me.objects[i].requestPartial === 'function') {
+                    if(me.objects[i].requestPartial()) {
+                        me.objects[i].partial(me.ctx, me.scale);
+                        me.partialCallback();
+                    }
                 }
             } else {
                 if(me.objects[i].requestRedraw) {
@@ -34,6 +46,7 @@ var Canvas = function(x, y, width, height, elementId, objects) {
                 }
             }
         }
+        me.ctx.restore();
         if(redraw) {
             me.draw();
         }
@@ -67,6 +80,9 @@ Canvas.prototype.draw = function(cb) {
     this.ctx.restore();
     if(typeof cb === 'function') {
         cb();
+    }
+    if(typeof this.drawCallback === 'function') {
+        this.drawCallback();
     }
 };
 
@@ -138,6 +154,7 @@ Canvas.prototype.interactionMove = function(e, cb) {
     var difference = newPos.subVector(this.mousePos);
     this.mousePos = newPos;
     if(this.selected === "self") {
+        this.startPos = this.startPos.addVector(difference);
         this.offset = this.offset.addVector(difference);
         this.draw();
     } else if(this.selected !== null) {

@@ -1,10 +1,10 @@
-function Trader(name, totalPercentage, inAt, percentage, comment, type) {
+function Trader(name, amount, inAt, type, comment) {
     this.name = name;
-    this.totalPercentage = totalPercentage;
-    this.percentage = percentage;
+    this.amount = amount;
     this.inAt = inAt;
     this.comment = comment;
     this.type = type;
+    this.difference = 0;
     this.drawable = new Drawable();
 
     this.drawable.color = "#ffffff";
@@ -12,15 +12,13 @@ function Trader(name, totalPercentage, inAt, percentage, comment, type) {
     this.drawable.borderColor = "#eeeeee";
     this.drawable.borderWidth = 2;
     this.drawable.borderScaling = false;
-
-    this.drawable.setText("[b]" + this.name + "[/b][i][align=right][color=#E74C3C]Test[/color][/align][/i]\n" + comment);
     this.drawable.textFont = "SourceSansPro";
     this.drawable.textAnchor = new Vector2D(0, 1);
     this.drawable.textBackground = "#ffffff";
     this.drawable.textPadding = new Vector2D(0, 0);
     this.drawable.textScaling = false;
     this.drawable.textPos = new Vector2D(1, -1);
-    this.drawable.textColor = "#36B5DB";
+    this.drawable.textColor = "#2C3E50";
 
     this.drawable.pos = new Vector2D(0, 0);
 
@@ -29,6 +27,38 @@ function Trader(name, totalPercentage, inAt, percentage, comment, type) {
     this.drawable.show = false;
 
     this.open = false;
+    this.requestPartial = false;
+
+    this.changeStockPrice = function(stockPrice) {
+        var preset = "[b]" + this.name + "[/b][align=right][color=";
+        var diff = Math.floor((stockPrice - this.inAt) * this.amount * 100) / 100;
+        var pos = "#36B5DB";
+        var neg = "#E74C3C";
+        if(this.type === 0) {
+            this.difference = diff;
+        } else {
+            this.difference = -diff;
+        }
+        if(this.difference >= 0) {
+            preset += pos + "]";
+        } else {
+            preset += neg + "]";
+        }
+        preset += this.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/align]\n[i][color=";
+        if(this.type === 0) {
+            preset += pos + "]";
+        } else {
+            preset += neg + "]";
+        }
+        preset += amount;
+        if(this.type === 0) {
+            preset += " long at ";
+        } else {
+            preset += " short at ";
+        }
+        preset += inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/i]\n";
+        this.drawable.setText(preset + this.comment);
+    };
 
     this.draw = function(ctx, scale, alpha) {
         if(this.drawable.show) {

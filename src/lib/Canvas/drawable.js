@@ -256,6 +256,7 @@ Drawable.prototype.setImage = function(imgSrc, cb) {
     }
 };
 Drawable.prototype.setText = function(text) {
+    this.text = [];
     var txt = text.split('\n');
     for (var i = 0, l = txt.length; i < l; i++) {
         this.text.push(new Paragraph(txt[i]));
