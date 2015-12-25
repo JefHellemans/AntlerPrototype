@@ -10,6 +10,8 @@ var Trade = function(stockPrice, traders) {
         t.pos = new Vector2D(0, 0);
     }
 
+    this.new = true;
+    this.lineColor = "#B3B369";
     this.open = false;
     this.drawable.textSize = 10;
     this.drawable.imgFill = false;
@@ -19,7 +21,7 @@ var Trade = function(stockPrice, traders) {
     this.drawable.radius = Math.floor((Math.random() * 35) + 35);
     this.drawable.color = "#ffffff";
     this.drawable.borderWidth = 2;
-    this.drawable.borderColor = "#eeeeee";
+    this.drawable.borderColor = "#B3B369";
     this.drawable.borderScaling = false;
     this.drawable.setText(stockPrice + "");
     this.drawable.textColor = "#ffffff";
@@ -41,6 +43,11 @@ var Trade = function(stockPrice, traders) {
             difference = this.drawable.size.length() * scale;
         }
         if (mouseDifference.length() <= difference) {
+            if(this.new) {
+                this.new = false;
+                this.drawable.borderColor = "#eeeeee";
+                this.lineColor = "#2C3E50";
+            }
             return this;
         }
         var relPos = mousePos.subVector(this.drawable.pos.mul(scale));
@@ -63,7 +70,7 @@ var Trade = function(stockPrice, traders) {
 
     this.preDraw = function(ctx, scale) {
         if(this.drawable.show) {
-            ctx.strokeStyle = "#2C3E50";
+            ctx.strokeStyle = this.lineColor;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(0, 0);
@@ -84,7 +91,7 @@ var Trade = function(stockPrice, traders) {
             }
             this.drawable.drawCircle(ctx);
             this.drawable.drawImageInCircle(ctx);
-            this.drawable.drawBorderForCircle(ctx);
+            this.drawable.drawBorderForCircle(ctx, scale);
             this.drawable.drawText(ctx, scale);
             ctx.restore();
         }

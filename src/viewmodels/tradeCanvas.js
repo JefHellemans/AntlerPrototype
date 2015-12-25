@@ -11,6 +11,7 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     profile.borderColor = "#eeeeee";
     profile.borderScaling = false;
     profile.borderWidth = 2;
+    trades.push(profile);
     for(var j = 0; j < 4; j++) {
         var totalPercentage = (Math.random() * 0.15) + 0.1;
         var percentage = (Math.random() * 0.4) + 0.1;
@@ -37,7 +38,6 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         });
         trades.push(trade);
     }
-    trades.push(profile);
     var canvas = new Canvas(0, 50, window.innerWidth, window.innerHeight - 50, "trades", trades);
     profile.draw = function(ctx, scale) {
         this.drawCircle(ctx);

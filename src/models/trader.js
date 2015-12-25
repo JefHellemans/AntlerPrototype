@@ -38,7 +38,7 @@ function Trader(name, totalPercentage, inAt, percentage, comment, type) {
             ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
             this.drawable.drawCircle(ctx);
             this.drawable.drawImageInCircle(ctx);
-            this.drawable.drawBorderForCircle(ctx);
+            this.drawable.drawBorderForCircle(ctx, scale);
             ctx.restore();
             this.drawable.pos = p;
         }
