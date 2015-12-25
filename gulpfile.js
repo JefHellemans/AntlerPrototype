@@ -17,6 +17,7 @@ gulp.task("default", function(){
         "./src/services/**/*.js",
         "./src/viewmodels/**/*.js",
         "./src/app.js"], ['js']);
+    gulp.watch(["./src/lib/Canvas/**/*.js"], ['canvas']);
 });
 
 gulp.task("js", function() {
@@ -36,6 +37,24 @@ gulp.task("js", function() {
         .pipe(gulp.dest("./src/dist/js"))
         .pipe(notify({
             message: "js built"
+        }))
+});
+
+gulp.task("canvas", function() {
+    gulp.src(["./src/lib/Canvas/math.js",
+        "./src/lib/Canvas/animation.js",
+        "./src/lib/Canvas/paragraph.js",
+        "./src/lib/Canvas/drawable.js",
+        "./src/lib/Canvas/canvas.js"])
+        .pipe(jshint())
+        .pipe(jshint.reporter())
+        .pipe(sourcemaps.init())
+        .pipe(concat("canvas.min.js"))
+        .pipe(uglify())
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest("./src/dist/js"))
+        .pipe(notify({
+            message: "canvas built"
         }))
 });
 
