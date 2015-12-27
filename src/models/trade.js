@@ -17,8 +17,6 @@ var Trade = function(stockPrice, traders) {
         this.drawable.textBackground = "#E74C3C";
         this.drawable.textReplaceColor = "#E74C3C";
     }
-    this.reqPartial = false;
-    this.new = true;
     this.lineColor = "#B3B369";
     this.open = false;
 
@@ -71,7 +69,7 @@ var Trade = function(stockPrice, traders) {
             me.drawable.textBackground = "#2C3E50";
             me.drawable.setText(me.stockPrice.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
         }
-        me.reqPartial = true;
+        me.drawable.requestRedraw = true;
     }, 2000);
 
     this.interaction = function(mousePos, scale) {
@@ -84,18 +82,11 @@ var Trade = function(stockPrice, traders) {
             difference = this.drawable.size.length() * scale;
         }
         if (mouseDifference.length() <= difference) {
-            if(this.new) {
-                this.new = false;
-                this.drawable.borderColor = "#eeeeee";
-                this.lineColor = "#2C3E50";
-            }
             return this;
         }
         var relPos = mousePos.subVector(this.drawable.pos.mul(scale));
-        var angle = 180 / (this.traders.length + 1);
         for(var i = 0, l = this.traders.length; i < l; i++) {
-            var alpha = angle * (i + 1 - ((this.traders.length + 1) / 2));
-            var o = this.traders[i].interaction(relPos, scale, alpha);
+            var o = this.traders[i].interaction(relPos, scale);
             if(o !== false) {
                 for(var j = 0, m = this.traders.length; j < m; j++) {
                     t = this.traders[j];
@@ -109,15 +100,38 @@ var Trade = function(stockPrice, traders) {
         return false;
     };
 
+    this.calcTraders = function() {
+        var angle = 180 / (this.traders.length + 1);
+        for(var i = 0, l = this.traders.length; i < l; i++) {
+            var alpha = (angle * (i + 1 - ((this.traders.length + 1) / 2))) - 90;
+            this.traders[i].drawable.animate("rotation", alpha, 300, "easeInOut", null);
+        }
+    };
+    this.calcTraders();
+
     this.preDraw = function(ctx, scale) {
         if(this.drawable.show) {
+            ctx.save();
+            ctx.globalAlpha *= this.drawable.opacity;
             ctx.strokeStyle = this.lineColor;
             ctx.lineWidth = 0.5;
+            var newTrader = false;
+            for(var i = 0, l = this.traders.length; i < l; i++) {
+                if(this.traders[i].new) {
+                    newTrader = true;
+                }
+            }
+            if(newTrader) {
+                this.lineColor = "#B3B369"
+            } else {
+                this.lineColor = "#2C3E50";
+            }
             ctx.beginPath();
             ctx.moveTo(0, 0);
             ctx.lineTo(this.drawable.pos.x, this.drawable.pos.y);
             ctx.closePath();
             ctx.stroke();
+            ctx.restore();
         }
     };
 
@@ -125,10 +139,18 @@ var Trade = function(stockPrice, traders) {
         if(this.drawable.show) {
             ctx.save();
             ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
-            var angle = 180 / (this.traders.length + 1);
+            ctx.globalAlpha *= this.drawable.opacity;
+            var newTrader = false;
             for(var i = 0, l = this.traders.length; i < l; i++) {
-                var alpha = angle * (i + 1 - ((this.traders.length + 1) / 2));
-                this.traders[i].draw(ctx, scale, alpha);
+                this.traders[i].draw(ctx, scale);
+                if(this.traders[i].new) {
+                    newTrader = true;
+                }
+            }
+            if(newTrader) {
+                this.drawable.borderColor = "#B3B369"
+            } else {
+                this.drawable.borderColor = "#eeeeee";
             }
             this.drawable.drawCircle(ctx);
             this.drawable.drawImageInCircle(ctx);
@@ -138,30 +160,30 @@ var Trade = function(stockPrice, traders) {
         }
     };
 
-    this.postDraw = function(ctx, scale) {
-        if(this.drawable.show) {
-            ctx.save();
-            ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
-            var angle = 180 / (this.traders.length + 1);
-            for(var i = 0, l = this.traders.length; i < l; i++) {
-                var alpha = angle * (i + 1 - ((this.traders.length + 1) / 2));
-                this.traders[i].postDraw(ctx, scale, alpha);
-            }
-            ctx.restore();
+    this.delete = function(trades) {
+        var index = trades.indexOf(this);
+        for(var i = 0, l = this.traders.length; i < l; i++) {
+            this.traders[0].delete(trades, index);
         }
     };
 
-    this.partial = function(ctx, scale) {
+    this.animateDelete = function(trades, index) {
+        this.drawable.animate("textSize", 0, 300, "easeInOut", null);
+        this.drawable.animate("textReplace", 0, 300, "easeInOut", null);
+        this.drawable.animateVector("textPadding", new Vector2D(0, 0), 300, "easeInOut", null);
+        this.drawable.animate("opacity", 0, 300, "easeInOut", null);
+        this.drawable.animate("radius", 0, 300, "easeInOut", function() {
+            trades.splice(index, 1);
+        });
+    };
+
+    this.postDraw = function(ctx, scale) {
         if(this.drawable.show) {
             ctx.save();
+            ctx.globalAlpha *= this.drawable.opacity;
             ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
-            var angle = 180 / (this.traders.length + 1);
             for(var i = 0, l = this.traders.length; i < l; i++) {
-                var alpha = angle * (i + 1 - ((this.traders.length + 1) / 2));
-                this.traders[i].postDraw(ctx, scale, alpha);
-            }
-            if((this.drawable.textSize * scale) >= this.drawable.textMinSize) {
-                this.drawable.drawText(ctx, scale);
+                this.traders[i].postDraw(ctx, scale);
             }
             ctx.restore();
         }
@@ -178,6 +200,9 @@ var Trade = function(stockPrice, traders) {
             this.drawable.animateVector("textPadding", new Vector2D(0, 0), 150, "easeIn", function(done, drawable) {
                 drawable.animateVector("textPadding", new Vector2D(10, 10), 150, "easeOut", null);
             });
+            this.drawable.animate("textReplace", 0, 150, "easeIn", function(done, drawable) {
+                drawable.animate("textReplace", 15, 150, "easeOut", null);
+            });
             this.drawable.animate("textSize", 0, 150, "easeIn", function(done, drawable) {
                 drawable.textBackground = "#2C3E50";
                 drawable.setText(me.stockPrice.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
@@ -190,10 +215,15 @@ var Trade = function(stockPrice, traders) {
                 if(t.open) {
                     t.clicked();
                 }
-                t.drawable.animateVector("pos", new Vector2D(0, 0), 300, "easeInOut", null);
+                t.drawable.animateVector("pos", new Vector2D(0, 0), 300, "easeInOut", function(done, drawable) {
+                    drawable.show = false;
+                });
             }
             this.drawable.animateVector("textPadding", new Vector2D(0, 0), 150, "easeIn", function(done, drawable) {
                 drawable.animateVector("textPadding", new Vector2D(10, 10), 150, "easeOut", null);
+            });
+            this.drawable.animate("textReplace", 0, 150, "easeIn", function(done, drawable) {
+                drawable.animate("textReplace", 15, 150, "easeOut", null);
             });
             this.drawable.animate("textSize", 0, 150, "easeIn", function(done, drawable) {
                 drawable.setText(me.difference.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
@@ -221,13 +251,4 @@ var Trade = function(stockPrice, traders) {
         }
         return false;
     };
-
-    this.requestPartial = function() {
-        for(var i = 0, l = this.traders.length; i < l; i++) {
-            if(this.traders[i].requestPartial) {
-                return true;
-            }
-        }
-        return this.reqPartial;
-    }
 };

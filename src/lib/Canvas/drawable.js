@@ -2,6 +2,7 @@ var Drawable = function() {
     this.color = "#000000";
     this.img = null;
     this.imgFill = true;
+    this.scale = true;
 
     this.borderColor = "#000000";
     this.borderWidth = 0;
@@ -24,6 +25,8 @@ var Drawable = function() {
     this.textPadding = new Vector2D(0, 0);
     this.textScaling = true;
 
+    this.opacity = 1;
+    this.rotation = 0;
     this.pos = new Vector2D(0, 0);
     this.radius = 0;
     this.size = new Vector2D(0, 0);
@@ -55,6 +58,9 @@ var Drawable = function() {
             }
             var clip = new Vector2D(this.img.width, this.img.height).div(div).mulVector(this.size).subVector(this.size).mul(-.5);
             var p = new Vector2D(0, 0).subVector(this.size.div(2));
+            if(!this.scale) {
+                clip.mul()
+            }
             ctx.drawImage(this.img, clip.x, clip.y, this.size.x, this.size.y, p.x, p.y, this.size.x, this.size.y);
         } else {
             console.log("[DRAWABLE][drawImage]: Could not draw image for", this, "since this.img is null");
@@ -264,7 +270,7 @@ Drawable.prototype.setText = function(text) {
 };
 
 Drawable.prototype.interaction = function(mousePos, scale) {
-    var mouseDifference = mousePos.subVector(this.pos.mul(scale));
+    var mouseDifference = mousePos.subVector(this.pos.rotate(this.rotation).mul(scale));
     var difference = 0;
     if(this.radius !== 0) {
         difference = this.radius * scale;

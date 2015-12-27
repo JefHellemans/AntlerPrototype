@@ -9,7 +9,7 @@ function Trader(name, amount, inAt, type, comment) {
 
     this.drawable.color = "#ffffff";
 
-    this.drawable.borderColor = "#eeeeee";
+    this.drawable.borderColor = "#B3B369";
     this.drawable.borderWidth = 2;
     this.drawable.borderScaling = false;
     this.drawable.textFont = "SourceSansPro";
@@ -26,8 +26,8 @@ function Trader(name, amount, inAt, type, comment) {
 
     this.drawable.show = false;
 
+    this.new = true;
     this.open = false;
-    this.requestPartial = false;
 
     this.changeStockPrice = function(stockPrice) {
         var preset = "[b]" + this.name + "[/b][align=right][color=";
@@ -60,29 +60,27 @@ function Trader(name, amount, inAt, type, comment) {
         this.drawable.setText(preset + this.comment);
     };
 
-    this.draw = function(ctx, scale, alpha) {
+    this.draw = function(ctx, scale) {
         if(this.drawable.show) {
-            var p = this.drawable.pos;
-            this.drawable.pos = this.drawable.pos.rotate(alpha - 90);
+            var p = this.drawable.pos.rotate(this.drawable.rotation);
             ctx.save();
-            ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
+            ctx.globalAlpha *= this.drawable.opacity;
+            ctx.translate(p.x, p.y);
             this.drawable.drawCircle(ctx);
             this.drawable.drawImageInCircle(ctx);
             this.drawable.drawBorderForCircle(ctx, scale);
             ctx.restore();
-            this.drawable.pos = p;
         }
     };
 
-    this.postDraw = function(ctx, scale, alpha) {
+    this.postDraw = function(ctx, scale) {
         if(this.drawable.show) {
-            var p = this.drawable.pos;
-            this.drawable.pos = this.drawable.pos.rotate(alpha - 90);
+            var p = this.drawable.pos.rotate(this.drawable.rotation);
             ctx.save();
-            ctx.translate(this.drawable.pos.x, this.drawable.pos.y);
+            ctx.globalAlpha *= this.drawable.opacity;
+            ctx.translate(p.x, p.y);
             this.drawable.drawText(ctx, scale);
             ctx.restore();
-            this.drawable.pos = p;
         }
     };
 
@@ -105,8 +103,29 @@ function Trader(name, amount, inAt, type, comment) {
         }
     };
 
-    this.interaction = function(mousePos, scale, alpha) {
-        var mouseDifference = mousePos.subVector(this.drawable.pos.rotate(alpha - 90).mul(scale));
+    this.delete = function(trades, index) {
+        var i = 0;
+        if(!(typeof index === 'undefined')) {
+            i = index;
+        }
+        for(var l = trades.length; i < l; i++) {
+            if(!(typeof trades[i].traders === 'undefined')) {
+                var ind = trades[i].traders.indexOf(this);
+                if (ind > -1) {
+                    trades[i].traders.splice(ind, 1);
+                    trades[i].calcTraders();
+                    if(trades[i].traders.length === 0) {
+                        trades[i].animateDelete(trades, i);
+                    }
+                    break;
+                }
+
+            }
+        }
+    };
+
+    this.interaction = function(mousePos, scale) {
+        var mouseDifference = mousePos.subVector(this.drawable.pos.rotate(this.drawable.rotation).mul(scale));
         var difference = 0;
         if (this.drawable.radius !== 0) {
             difference = this.drawable.radius * scale;
@@ -115,6 +134,10 @@ function Trader(name, amount, inAt, type, comment) {
             difference = this.drawable.size.length() * scale;
         }
         if (mouseDifference.length() <= difference && this.drawable.show) {
+            if(this.new) {
+                this.new = false;
+                this.drawable.borderColor = "#eeeeee";
+            }
             return this;
         } else {
             return false;

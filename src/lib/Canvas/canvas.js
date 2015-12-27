@@ -20,7 +20,6 @@ var Canvas = function(x, y, width, height, elementId, objects) {
     this.movingCanvas = null;
 
     this.drawCallback = null;
-    this.partialCallback = null;
 
     var me = this;
     setInterval(function() {
@@ -33,17 +32,10 @@ var Canvas = function(x, y, width, height, elementId, objects) {
             if(typeof me.objects[i].requestRedraw === 'function') {
                 if(me.objects[i].requestRedraw()) {
                     redraw = true;
-                } else if(typeof me.objects[i].requestPartial === 'function') {
-                    if(me.objects[i].requestPartial()) {
-                        me.objects[i].partial(me.ctx, me.scale);
-                        me.partialCallback();
-                    }
                 }
-            } else {
-                if(me.objects[i].requestRedraw) {
-                    redraw = true;
-                    me.objects[i].requestRedraw = false;
-                }
+            } else if(me.objects[i].requestRedraw) {
+                redraw = true;
+                me.objects[i].requestRedraw = false;
             }
         }
         me.ctx.restore();
@@ -58,6 +50,9 @@ Canvas.prototype.clear = function() {
 };
 
 Canvas.prototype.draw = function(cb) {
+    if(typeof this.drawCallback === 'function') {
+        this.drawCallback();
+    }
     this.clear();
     this.ctx.save();
     this.ctx.textBaseline = "hanging";
@@ -80,9 +75,6 @@ Canvas.prototype.draw = function(cb) {
     this.ctx.restore();
     if(typeof cb === 'function') {
         cb();
-    }
-    if(typeof this.drawCallback === 'function') {
-        this.drawCallback();
     }
 };
 
@@ -160,15 +152,15 @@ Canvas.prototype.interactionMove = function(e, cb) {
     } else if(this.selected !== null) {
         this.startPos = this.startPos.addVector(difference);
         this.mousePos = this.mousePos.subVector(this.offset);
-        cb(this.selected, this.mousePos.mul(1 / this.scale));
+        cb(this.selected, this.mousePos.mul(1 / this.scale), difference.subVector(this.offset));
     }
 };
 
 Canvas.prototype.interactionStop = function(cb) {
     if(this.startPos.length() <= 10) {
-        cb(this.selected);
+        cb(true, this.selected);
     } else {
-        cb(null);
+        cb(false, this.selected);
     }
     this.startPos = new Vector2D(0, 0);
     this.selected = null;
