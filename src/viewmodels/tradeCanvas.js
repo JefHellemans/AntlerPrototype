@@ -19,7 +19,6 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     profile.textPos = new Vector2D(0, 0.5);
     profile.textPadding = new Vector2D(10, 10);
     profile.textReplace = 15;
-    trades.push(profile);
 
     trash.setImage("dist/images/misc/trash.svg");
     trash.radius = 50;
@@ -56,6 +55,7 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         });
         trades.push(trade);
     }
+    trades.push(profile);
     trades.push(trash);
     if(diff >= 0) {
         profile.textBackground = "#36B5DB";
@@ -212,8 +212,20 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         canvas.draw();
     };
     document.getElementById("trades").addEventListener("wheel", function(e) {
-        var scale = canvas.scale + (e.wheelDelta / 300);
+        scrollInteraction(e);
+    });
+    document.getElementById("trades").addEventListener("DOMMouseScroll", function(e) {
+        scrollInteraction(e);
+    });
+    var scrollInteraction = function(e) {
         e.preventDefault();
+        var delta = 0;
+        if(typeof e.wheelDelta !== 'undefined') {
+            delta = e.wheelDelta / 300;
+        } else {
+            delta = -e.detail / 50;
+        }
+        var scale = canvas.scale + delta;
         if(scale > 1.8) {
             scale = 1.8;
         }
@@ -225,13 +237,14 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         trash.radius = 50 / canvas.scale;
         document.getElementById("scaleCanvas").value = canvas.scale;
         canvas.draw();
-    });
-    document.getElementById("resetOffset").addEventListener("click", function() {
-        canvas.moveToCenter();
-    });
+    };
     document.getElementById("scaleCanvas").addEventListener("mousemove", function() {
         canvas.scale = parseFloat(this.value);
         trash.radius = 50 / canvas.scale;
         canvas.draw();
     });
+    document.getElementById("resetOffset").addEventListener("click", function() {
+        canvas.moveToCenter();
+    });
+
 })();
