@@ -19,7 +19,6 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     profile.textPos = new Vector2D(0, 0.5);
     profile.textPadding = new Vector2D(10, 10);
     profile.textReplace = 15;
-    trades.push(profile);
 
     trash.setImage("dist/images/misc/trash.svg");
     trash.radius = 50;
@@ -49,13 +48,14 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
             t.percentage = (Math.random() * 0.4) + 0.1;
             ppl.push(t);
         }
-        var trade = new Trade(stockPrice, ppl);
+        var trade = new Trade(stockPrice, ppl, null);
         diff += trade.difference;
         trade.drawable.setImage("dist/images/logos/" + logos[i], function() {
             canvas.draw();
         });
         trades.push(trade);
     }
+    trades.push(profile);
     trades.push(trash);
     if(diff >= 0) {
         profile.textBackground = "#36B5DB";
@@ -69,7 +69,7 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     canvas.drawCallback = function() {
         var diff = 0;
         for(var i = 0, l = canvas.objects.length; i < l; i++) {
-            if(!(typeof canvas.objects[i].difference === 'undefined')) {
+            if(typeof canvas.objects[i].difference !== 'undefined') {
                 diff += canvas.objects[i].difference;
             }
         }
@@ -140,11 +140,11 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
     var interactionMove = function(e) {
         canvas.interactionMove(e, function(object, mousePos, difference) {
             if(object instanceof Trade) {
-                object.drawable.opacity = .5;
+                object.drawable.opacity = 0.5;
                 object.drawable.pos = mousePos;
             }
             if(object instanceof Trader) {
-                object.drawable.opacity = .5;
+                object.drawable.opacity = 0.5;
                 object.drawable.pos = object.drawable.pos.addVector(difference.rotate(-object.drawable.rotation).mul(1 / canvas.scale));
             }
             if(trash.interaction(new Vector2D(e.pageX, e.pageY))) {
@@ -218,5 +218,5 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         canvas.scale = this.value;
         trash.radius = 50 / canvas.scale;
         canvas.draw();
-    })
+    });
 })();

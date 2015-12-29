@@ -1,4 +1,4 @@
-var Trade = function(stockPrice, traders) {
+var Trade = function(stockPrice, traders, pos) {
     this.stockPrice = stockPrice;
     this.traders = traders;
     this.drawable = new Drawable();
@@ -21,11 +21,20 @@ var Trade = function(stockPrice, traders) {
     this.open = false;
 
     this.drawable.textSize = 10;
-    this.drawable.imgFill = false;
-    var x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
-    var y = Math.floor(Math.random() * (window.innerHeight - 50) - ((window.innerHeight - 50) / 2));
-    this.drawable.pos = new Vector2D(x, y);
     this.drawable.radius = Math.floor((Math.random() * 35) + 35);
+    this.drawable.imgFill = false;
+    if(pos === null) {
+        var x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
+        var y = Math.floor(Math.random() * (window.innerHeight - 50) - ((window.innerHeight - 50) / 2));
+        while(new Vector2D(x, y).length() < (100 + this.drawable.radius) || new Vector2D(x, y).length() > (new Vector2D(window.innerWidth, window.innerHeight - 50).div(2).length() - this.drawable.radius)) {
+            x = Math.floor(Math.random() * window.innerWidth - (window.innerWidth / 2));
+            y = Math.floor(Math.random() * (window.innerHeight - 50) - ((window.innerHeight - 50) / 2));
+        }
+        this.drawable.animateVector("pos", new Vector2D(x, y), 1000, "easeInOut", null);
+    }
+    else {
+        this.drawable.animateVector("pos", pos, 1000, "easeInOut", null);
+    }
     this.drawable.color = "#ffffff";
     this.drawable.borderWidth = 2;
     this.drawable.borderColor = "#B3B369";
@@ -122,7 +131,7 @@ var Trade = function(stockPrice, traders) {
                 }
             }
             if(newTrader) {
-                this.lineColor = "#B3B369"
+                this.lineColor = "#B3B369";
             } else {
                 this.lineColor = "#2C3E50";
             }
@@ -148,7 +157,7 @@ var Trade = function(stockPrice, traders) {
                 }
             }
             if(newTrader) {
-                this.drawable.borderColor = "#B3B369"
+                this.drawable.borderColor = "#B3B369";
             } else {
                 this.drawable.borderColor = "#eeeeee";
             }
@@ -210,14 +219,15 @@ var Trade = function(stockPrice, traders) {
                 drawable.animate("textSize", 10, 150, "easeOut", null);
             });
         } else {
+            var f = function(done, drawable) {
+                drawable.show = false;
+            };
             for(l = this.traders.length; i < l; i++) {
                 t = this.traders[i];
                 if(t.open) {
                     t.clicked();
                 }
-                t.drawable.animateVector("pos", new Vector2D(0, 0), 300, "easeInOut", function(done, drawable) {
-                    drawable.show = false;
-                });
+                t.drawable.animateVector("pos", new Vector2D(0, 0), 300, "easeInOut", f);
             }
             this.drawable.animateVector("textPadding", new Vector2D(0, 0), 150, "easeIn", function(done, drawable) {
                 drawable.animateVector("textPadding", new Vector2D(10, 10), 150, "easeOut", null);

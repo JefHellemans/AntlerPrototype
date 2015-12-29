@@ -105,11 +105,11 @@ function Trader(name, amount, inAt, type, comment) {
 
     this.delete = function(trades, index) {
         var i = 0;
-        if(!(typeof index === 'undefined')) {
+        if(typeof index !== 'undefined') {
             i = index;
         }
         for(var l = trades.length; i < l; i++) {
-            if(!(typeof trades[i].traders === 'undefined')) {
+            if(typeof trades[i].traders !== 'undefined') {
                 var ind = trades[i].traders.indexOf(this);
                 if (ind > -1) {
                     trades[i].traders.splice(ind, 1);
