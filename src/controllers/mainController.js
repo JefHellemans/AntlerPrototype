@@ -19,6 +19,8 @@
         var Harold = {id: 8,firstName: "Harold", lastName: "Abcd", followers: 4};
 
         $scope.traders = [Anna, Bob, Christine, Dave, Eric, Francis, Gaben, Harold];
+
+        tradeCanvas();
     };
 
     angular.module("app").controller("mainController", [ "$scope", mainController]);
