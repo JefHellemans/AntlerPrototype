@@ -1,12 +1,9 @@
 @headerHeight: 50px;
-@antlerBlue: #2980b9;
-@warningColor: #ff353d;
+@antlerDarkBlue: #2C3E50;
+@antlerStandardBlue: #2980b9;
+@antlerLightBlue: #36B5DB;
+@antlerSoftRed: #ff353d;
 @lightgrey: #eeeeee;
-
-body {
-  margin: 0;
-  padding: 0;
-}
 
 @font-face {
   font-family: 'SourceSansPro';
@@ -32,11 +29,49 @@ body {
   src: url("SourceSansPro-BoldItalic.ttf");
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'SourceSansPro', Helvetica, Arial, sans-serif;
+  color: @antlerDarkBlue;
+}
+
 canvas {
   position: absolute;
   z-index: -1;
   top: @headerHeight;
   background-color: @lightgrey;
+}
+
+table {
+  width: 80%;
+  margin: 100px auto;
+
+  th {
+    padding: 20px 20px;
+    font-size: 18px;
+    border-bottom: 2px solid @antlerDarkBlue;
+    &.right {
+      text-align: right;
+    }
+  }
+  td {
+    padding: 20px 20px;
+    &.right {
+      text-align: right;
+    }
+    &.positive {
+      text-align: right;
+      color: @antlerLightBlue;
+    }
+    &.negative {
+      text-align: right;
+      color: @antlerSoftRed;
+    }
+  }
+  tr:nth-child(even) {
+    background-color: @lightgrey;
+  }
 }
 
 input#scaleCanvas{
@@ -61,7 +96,7 @@ section#header div img{
 section#header div button{
   width: 100%;
   margin-top: 10px;
-  background-color: @antlerBlue;
+  background-color: @antlerStandardBlue;
 }
 
 section#header div ul{
@@ -72,11 +107,11 @@ section#header div ul{
 section#header div p a {
   padding-top: 15px;
   display: block;
-  color: @antlerBlue;
+  color: @antlerStandardBlue;
 }
 
 .profileForm input.ng-invalid {
-  background-color: @warningColor;
+  background-color: @antlerSoftRed;
 }
 
 section div#traderList {
@@ -112,7 +147,7 @@ section div#traderList {
   h3 {
     margin: 5px 0 5px 10px;
     font-size: 16px;
-    border-right: 1px solid @antlerBlue;
+    border-right: 1px solid @antlerStandardBlue;
   }
 
   ul {

@@ -1,5 +1,6 @@
+<div ng-include="'/pages/header.html'"></div>
+
 <section>
-    <p>This is the trade history page</p>
     <p><a ng-href="#/home">Go home</a></p>
     <table>
         <tr>
@@ -14,9 +15,10 @@
             <td>{{trade.date}}</td>
             <td>{{trade.shares}}</td>
             <td>{{trade.type}}</td>
-            <td>{{trade.inAt}}</td>
-            <td>{{trade.outAt}}</td>
-            <td>{{trade.difference}}</td>
+            <td class="right">{{trade.inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
+            <td class="right">{{trade.outAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
+            <td ng-if="trade.difference < 0" class="negative">{{trade.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
+            <td ng-if="trade.difference >= 0" class="positive">{{trade.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
         </tr>
     </table>
 </section>

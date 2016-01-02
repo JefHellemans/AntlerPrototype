@@ -1,14 +1,16 @@
+<div ng-include="'/pages/header.html'"></div>
+
 <section>
-    <p>This is the balance history page</p>
     <p><a ng-href="#/home">Go home</a></p>
     <table>
         <tr>
             <th>Date</th>
-            <th>Change</th>
+            <th class="right">Change</th>
         </tr>
         <tr ng-repeat="transaction in transactions">
             <td>{{transaction.date}}</td>
-            <td>{{transaction.change}}</td>
+            <td ng-if="transaction.change >= 0" class="positive">{{transaction.change.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
+            <td ng-if="transaction.change < 0" class="negative">{{transaction.change.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
         </tr>
     </table>
 </section>

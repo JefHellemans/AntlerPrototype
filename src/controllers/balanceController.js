@@ -12,10 +12,10 @@
         $scope.user.currentAmount = 2000;
 
         $scope.transactions = [];
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
 
         $scope.deposit = function(user) {
             $scope.user.currentAmount += user.depositAmount;

@@ -4,6 +4,13 @@
     var tradeController = function($scope, $routeParams, $window) {
         //new code goes here
 
+        $scope.user = {};
+        $scope.user.userId = "1";
+        $scope.user.firstName = "Marijn";
+        $scope.user.lastName = "Hosten";
+        $scope.user.depositAmount = 0;
+        $scope.user.currentAmount = 2000;
+
         $scope.trades = [];
         for(var i = 0; i < 5; i++) {
             var shares = Math.floor(Math.random() * 200);
@@ -20,9 +27,9 @@
             $scope.trades.push({"date": new Date().toLocaleString(),
                 "shares": shares,
                 "type": type,
-                "inAt": inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}),
-                "outAt": outAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}),
-                "difference": difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})
+                "inAt": inAt,
+                "outAt": outAt,
+                "difference": difference
             });
         }
 
