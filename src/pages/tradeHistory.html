@@ -4,14 +4,26 @@
     <p><a ng-href="#/home">Go home</a></p>
     <table>
         <tr>
-            <th>Date</th>
-            <th>Shares</th>
-            <th>Long/Short</th>
-            <th>In at</th>
-            <th>Out at</th>
-            <th>Total win/loss</th>
+            <th ng-click="sortType = 'date'; sortReverse = !sortReverse">Date
+                <span ng-show="sortType == 'date' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'date' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'shares'; sortReverse = !sortReverse">Shares
+                <span ng-show="sortType == 'shares' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'shares' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'type'; sortReverse = !sortReverse">Long/Short
+                <span ng-show="sortType == 'type' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'type' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'inAt'; sortReverse = !sortReverse">In at
+                <span ng-show="sortType == 'inAt' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'inAt' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'outAt'; sortReverse = !sortReverse">Out at
+                <span ng-show="sortType == 'outAt' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'outAt' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'difference'; sortReverse = !sortReverse">Total win/loss
+                <span ng-show="sortType == 'difference' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'difference' && sortReverse" class="dropup"><span class="caret"></span></span></th>
         </tr>
-        <tr ng-repeat="trade in trades">
+        <tr ng-repeat="trade in trades | orderBy:sortType:sortReverse">
             <td>{{trade.date}}</td>
             <td>{{trade.shares}}</td>
             <td>{{trade.type}}</td>

@@ -46,6 +46,7 @@ canvas {
 table {
   width: 80%;
   margin: 100px auto;
+  table-layout: fixed;
 
   th {
     padding: 20px 20px;
@@ -53,6 +54,20 @@ table {
     border-bottom: 2px solid @antlerDarkBlue;
     &.right {
       text-align: right;
+    }
+    span.caret-down {
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid @antlerDarkBlue;
+    }
+    span.caret-up {
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 12px solid @antlerDarkBlue;
     }
   }
   td {
@@ -137,7 +152,7 @@ section div#traderList {
     cursor: pointer;
 
     &:hover {
-      color: @antlerBlue;
+      color: @antlerStandardBlue;
     }
 
     h3 {

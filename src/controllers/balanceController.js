@@ -11,6 +11,9 @@
         $scope.user.depositAmount = 0;
         $scope.user.currentAmount = 2000;
 
+        $scope.sortType = 'date';
+        $scope.sortReverse = false;
+
         $scope.transactions = [];
         $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
         $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});

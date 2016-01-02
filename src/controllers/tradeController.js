@@ -11,6 +11,9 @@
         $scope.user.depositAmount = 0;
         $scope.user.currentAmount = 2000;
 
+        $scope.sortType = 'date';
+        $scope.sortReverse = false;
+
         $scope.trades = [];
         for(var i = 0; i < 5; i++) {
             var shares = Math.floor(Math.random() * 200);
