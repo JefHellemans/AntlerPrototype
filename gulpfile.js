@@ -14,9 +14,7 @@ gulp.task("default", function(){
     gulp.watch(["./src/config/config.js",
         "./src/exceptions/**/*.js",
         "./src/models/**/*.js",
-        "./src/services/**/*.js",
-        "./src/viewmodels/**/*.js",
-        "./src/app.js"], ['js']);
+        "./src/viewmodels/**/*.js"], ['js']);
     gulp.watch(["./src/lib/Canvas/**/*.js"], ['canvas']);
 });
 
@@ -24,10 +22,7 @@ gulp.task("js", function() {
     gulp.src(["./src/config/config.js",
         "./src/exceptions/**/*.js",
         "./src/models/**/*.js",
-        "./src/viewmodels/**/*.js",
-        "./src/app.js",
-        "./src/controllers/**/*.js"
-        ])
+        "./src/viewmodels/**/*.js"])
         .pipe(jshint())
         .pipe(jshint.reporter())
         .pipe(sourcemaps.init())

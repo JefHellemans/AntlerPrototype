@@ -1,12 +1,14 @@
-var trades = [];
-var traders = [];
-var profile = new Drawable();
-var trash = new Drawable();
-var logos = ["logo0.svg", "logo1.svg", "logo2.svg", "logo3.svg", "logo4.svg"];
-var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"], ["Nicolsh Lavanda", "trader2.jpg"], ["xXrobke69Xx", "trader3.jpg"]];
-
-(function() {
+var tradeCanvas = function() {
+    console.log("viewmodel ingeladen");
+    console.log(document.getElementById("trades"));
     if(document.getElementById("trades") !== null) {
+        var trades = [];
+        var traders = [];
+        var profile = new Drawable();
+        var trash = new Drawable();
+        var logos = ["logo0.svg", "logo1.svg", "logo2.svg", "logo3.svg", "logo4.svg"];
+        var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"], ["Nicolsh Lavanda", "trader2.jpg"], ["xXrobke69Xx", "trader3.jpg"]];
+
         profile.setImage("dist/images/profiles/profile.jpg");
         profile.radius = 100;
         profile.color = "#ffffff";
@@ -249,4 +251,4 @@ var people = [["Crazy Heffe", "trader0.jpg"], ["Marino Hostino", "trader1.jpg"],
         });
     }
 
-})();
+};
