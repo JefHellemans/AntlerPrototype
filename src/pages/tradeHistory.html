@@ -1,0 +1,22 @@
+<section>
+    <p>This is the trade history page</p>
+    <p><a ng-href="#/home">Go home</a></p>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Shares</th>
+            <th>Long/Short</th>
+            <th>In at</th>
+            <th>Out at</th>
+            <th>Total win/loss</th>
+        </tr>
+        <tr ng-repeat="trade in trades">
+            <td>{{trade.date}}</td>
+            <td>{{trade.shares}}</td>
+            <td>{{trade.type}}</td>
+            <td>{{trade.inAt}}</td>
+            <td>{{trade.outAt}}</td>
+            <td>{{trade.difference}}</td>
+        </tr>
+    </table>
+</section>

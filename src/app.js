@@ -25,6 +25,10 @@
                 templateUrl: "pages/withdraw.html",
                 controller: "balanceController"
             })
+            .when("/tradeHistory/:id", {
+                templateUrl: "pages/tradeHistory.html",
+                controller: "tradeController"
+            })
             .otherwise({
                 redirectTo: "/home"
             });

@@ -1,7 +1,7 @@
 (function (){
     "use strict";
 
-    var balanceController = function($scope, $routeParams, $window){
+    var balanceController = function($scope, $routeParams, $window) {
         //new code goes here
 
         $scope.user = {};
@@ -11,17 +11,19 @@
         $scope.user.depositAmount = 0;
         $scope.user.currentAmount = 2000;
 
-        $scope.deposit = function(user){
+        $scope.transactions = [];
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100).toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})});
+
+        $scope.deposit = function(user) {
             $scope.user.currentAmount += user.depositAmount;
             $window.location.hash = "/home";
         };
 
-        $scope.isEnabled = function(){
-            if($scope.user.depositAmount === 0 || typeof $scope.user.depositAmount == "undefined"){
-                return true;
-            }else {
-                return false;
-            }
+        $scope.isEnabled = function() {
+            return ($scope.user.depositAmount === 0 || typeof $scope.user.depositAmount == "undefined");
         };
     };
 
