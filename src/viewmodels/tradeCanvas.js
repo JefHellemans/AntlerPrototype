@@ -1,6 +1,4 @@
 var tradeCanvas = function() {
-    console.log("viewmodel ingeladen");
-    console.log(document.getElementById("trades"));
     if(document.getElementById("trades") !== null) {
         var trades = [];
         var traders = [];

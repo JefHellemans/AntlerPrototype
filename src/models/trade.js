@@ -11,8 +11,6 @@ var Trade = function(stockPrice, traders, pos) {
     this.difference = Math.floor(this.difference * 100) / 100;
     this.drawable.setText(this.difference.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
     if(this.difference >= 0) {
-        console.log("kmqjsdf");
-        console.log("kmqjsdf");
         this.drawable.textBackground = "#36B5DB";
         this.drawable.textReplaceColor = "#36B5DB";
     } else {

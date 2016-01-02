@@ -22,7 +22,8 @@
                 "type": type,
                 "inAt": inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}),
                 "outAt": outAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}),
-                "difference": difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})})
+                "difference": difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})
+            });
         }
 
     };
