@@ -9,6 +9,8 @@
         $scope.user.lastName = "Hosten";
         $scope.user.currentAmount = 2000;
 
+        $scope.isNewTrade = true;
+
         var Anna = {id: 9, firstName: "Anna", lastName: "Abcd", followers: 27};
         var Bob = {id: 2, firstName: "Bob", lastName: "Abcd", followers: 28};
         var Christine = {id: 3, firstName: "Christine", lastName: "Abcd", followers: 105};
@@ -19,6 +21,15 @@
         var Harold = {id: 8,firstName: "Harold", lastName: "Abcd", followers: 4};
 
         $scope.traders = [Anna, Bob, Christine, Dave, Eric];
+
+        $scope.newTrade = function(){
+            //nieuwe trade maken via slide animation
+            return $scope.isNewTrade = false;
+        };
+
+        $scope.confirmTrade = function () {
+            return $scope.isNewTrade = true;
+        };
 
         tradeCanvas();
     };

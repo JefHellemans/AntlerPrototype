@@ -23,9 +23,13 @@
                 </li>
             </ul>
         </div>
-        <div>
+        <div ng-show="isNewTrade" ng-click="newTrade()">
             <h3>Make a new trade</h3>
-            <p><a href="#">+</a></p>
+            <p>+</a></p>
+        </div>
+        <div ng-hide="isNewTrade">
+            <p>this is a new trade</p>
+            <button ng-click="confirmTrade()">confirm</button>
         </div>
     </div>
 </section>
