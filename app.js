@@ -44,11 +44,20 @@ require('./app/routes.js')(app, passport);
 app.use(express.static(path.join(__dirname, '/src')));
 
 //API ROUTES EN CONTROLLERS
-var main = require("./api/main.js");
+var router = express.Router();
+var authController = require('./api/controllers/auth.js');
 var tradeController = require('./api/controllers/tradeController.js');
 
-app.use('/api', main);
-app.use('/api/trade', tradeController);
+
+router.route('/trades')
+    .post(authController.isAuthenticated, tradeController.postTrade);
+
+
+router.route('/trades/:trade_id')
+    .get(authController.isAuthenticated, tradeController.getTrade);
+
+
+app.use('/api',router);
 
 
 app.listen(port);

@@ -1,10 +1,10 @@
-var express = require('express');
-var app = express();
-var router = express.Router();
+//var Trade = require('../../app/models/trade');
 
-router.get("/",function(req,res){
-    res.send("Welcome to tradecontroller");
-});
+exports.postTrade=function(req,res){
 
+    res.json({message:'Trade added to db'});
+};
 
-module.exports=router;
+exports.getTrade=function(req,res){
+  res.json({trade:'this is a trade'});
+};
