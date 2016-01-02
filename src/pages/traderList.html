@@ -1,14 +1,31 @@
 <section>
     <div id="traderList">
-        <h3>You can follow these traders</h3>
-        <ul>
-            <li ng-repeat="t in traders">
+        <div>
+            <h3>Current traders</h3>
+            <ul>
+                <li ng-repeat="t in traders">
 
-                <a ng-href="#/profile/{{t.id}}">
-                    <img src="../images/logo.png" alt="profilepicture">
-                    <span>{{t.firstName}}</span>
-                </a>
-            </li>
-        </ul>
+                    <a ng-href="#/profile/{{t.id}}">
+                        <img src="../images/logo.png" alt="profilepicture">
+                        <span>{{t.firstName}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3>New traders you can follow</h3>
+            <ul>
+                <li ng-repeat="t in traders">
+                    <a ng-href="#/profile/{{t.id}}">
+                        <img src="../images/logo.png" alt="profilepicture">
+                        <span>{{t.firstName}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3>Make a new trade</h3>
+            <p><a href="#">+</a></p>
+        </div>
     </div>
 </section>

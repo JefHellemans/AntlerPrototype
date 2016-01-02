@@ -80,19 +80,44 @@ section#header div p a {
 }
 
 section div#traderList {
-  height: 150px;
-  top: 650px;
+  height: 100px;
+  bottom: 0;
   position: absolute;
   display: block;
   background-color: white;
-  width: 100%;
+  width: auto;
+  padding: 0 10px 0 10px;
+
+  div{
+    float: left;
+    margin: 0 10px 0 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+  
+  div:nth-child(3){
+    h3 {
+      border: none;
+    }
+
+    p {
+      font-size: 26px;
+      text-align: center;
+      margin: 20px 0 0 0;
+    }
+  }
 
   h3 {
-    margin: 5px 0 0 10px;
+    margin: 5px 0 5px 10px;
+    font-size: 16px;
+    border-right: 1px solid @antlerBlue;
   }
 
   ul {
-    margin: 20px 0 0 0;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
   }
 
   ul li {

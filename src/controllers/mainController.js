@@ -18,7 +18,7 @@
         var Gaben = {id: 7,firstName: "Gaben", lastName: "Abcd", followers: 299};
         var Harold = {id: 8,firstName: "Harold", lastName: "Abcd", followers: 4};
 
-        $scope.traders = [Anna, Bob, Christine, Dave, Eric, Francis, Gaben, Harold];
+        $scope.traders = [Anna, Bob, Christine, Dave, Eric];
 
         tradeCanvas();
     };
