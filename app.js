@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var flash = require("connect-flash");
 var path = require("path");
+var jwt = require("jsonwebtoken");
 
 var morgan = require("morgan");
 var cookieParser = require('cookie-parser');
@@ -17,6 +18,7 @@ mongoose.connect(configDB.url);
 
 require('./config/passport')(passport);
 
+app.set('superSecret', 'ilovethemoosemoosemoose');
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -45,16 +47,117 @@ app.use(express.static(path.join(__dirname, '/src')));
 
 //API ROUTES EN CONTROLLERS
 var router = express.Router();
-var authController = require('./api/controllers/auth.js');
 var tradeController = require('./api/controllers/tradeController.js');
+var userController = require('./api/controllers/userController.js');
 
+
+
+router.use(function(req, res, next) {
+
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    // decode token
+    if (token) {
+
+        // verifies secret and checks exp
+        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+
+    } else {
+
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+
+    }
+});
+
+
+
+
+router.route('/users')
+    .get(userController.getUsers);
 
 router.route('/trades')
-    .post(authController.isAuthenticated, tradeController.postTrade);
+    .post(tradeController.postTrade);
 
 
 router.route('/trades/:trade_id')
-    .get(authController.isAuthenticated, tradeController.getTrade);
+    .get(tradeController.getTrade);
+
+
+var User = require('./app/models/user');
+
+router.post('/authenticate', function(req, res) {
+
+    // find the user
+    User.findOne({email: req.body.email}, function(err, user) {
+
+        if (err) throw err;
+
+        if (!user) {
+            res.json({ success: false, message: 'Authentication failed. User not found.' });
+        } else if (user) {
+
+            // check if password matches
+            user.verifyPassword(req.body.password, function (err, isMatch) {
+                var errortje = false;
+                if (err) {
+                    //res.json({ success: false, message: 'Something went wrong' + err });
+                    errortje = true;
+                }
+
+                // Password did not match
+                if (!isMatch) {
+                    //res.json({ success: false, message: 'Password did not match' });
+                    errortje = true;
+                }
+
+
+                //success
+                // if user is found and password is right
+                // create a token
+
+                if(!errortje){
+                    var token = jwt.sign(user, app.get('superSecret'), {
+                        expiresInMinutes: 1440 // expires in 24 hours
+                    });
+
+                    // return the information including token as JSON
+                    res.json({
+                        success: true,
+                        message: 'Enjoy your token!',
+                        token: token
+                    });
+                }
+                else{
+                    res.json({success:false,message:'Error'});
+                }
+
+
+            });
+        }
+
+
+
+    });
+});
+
+
+
+
+
 
 
 app.use('/api',router);
