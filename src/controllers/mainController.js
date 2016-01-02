@@ -20,6 +20,10 @@
 
         $scope.traders = [Anna, Bob, Christine, Dave, Eric];
 
+        $scope.newTrade = function(){
+            //nieuwe trade maken via slide animation
+        };
+
         tradeCanvas();
     };
 
