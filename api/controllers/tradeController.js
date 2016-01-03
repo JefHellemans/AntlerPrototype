@@ -1,8 +1,63 @@
-//var Trade = require('../../app/models/trade');
+var Trade = require('../../app/models/trade');
+var User = require('../../app/models/user');
+var Company = require('../../app/models/company');
+
 
 exports.postTrade=function(req,res){
+    var trade = new Trade();
 
-    res.json({message:'Trade added to db'});
+    if(req.body.CompanyId===undefined){
+        res.json({message:"CompanyId is missing"});
+    }
+    else if(req.user===undefined){
+        res.json({success:false, message:'Authentication failed, log in again'});
+    }
+    else{
+        trade.AmountInvested = req.body.AmountInvested;
+        trade.PercentageInvested = req.body.PercentageInvested;
+        trade.StartStockPrice= req.body.StartStockPrice;
+        trade.IsShort = req.body.IsShort;
+        trade.Comment = req.body.Comment;
+        trade.StopStockPrice = -1;
+        trade.Company=req.body.CompanyId;
+
+        trade.save(function(err){
+            if(err)
+                res.send(err);
+            User.update({_id:req.user._id}, {$push: {trades:trade}},{safe:true,upsert:true},function(err,model){
+               console.log(err);
+            });
+
+            res.json({message:'trade added', data:trade});
+
+        });
+    }
+
+
+};
+
+exports.getTradesFromCurrentUser = function(req,res){
+    if(req.user===undefined){
+        res.json({success:false, message:'Authentication failed, log in again'});
+    }
+    else{
+
+
+
+
+
+        User.findOne({_id:req.user._id},function(err,user){
+            if (!user) {
+                res.json({success: false, message: 'User not found.'});
+            }
+            else{
+                res.json(user.trades);
+            }
+
+        }).populate('trades');
+
+    }
+
 };
 
 exports.getTrade=function(req,res){

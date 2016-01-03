@@ -1,6 +1,7 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var TradeSchema = require('./trade.js');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -9,8 +10,13 @@ var userSchema = mongoose.Schema({
         lastname     : String,
         email        : String,
         password     : String,
-
-
+        trades :[
+                    {
+                        type:mongoose.Schema.Types.ObjectId, ref: 'Trade'
+                    }
+               ],
+        canBeFound : Boolean,
+        admin:Boolean
 });
 
 // methods ======================

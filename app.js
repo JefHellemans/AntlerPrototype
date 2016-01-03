@@ -49,56 +49,12 @@ app.use(express.static(path.join(__dirname, '/src')));
 var router = express.Router();
 var tradeController = require('./api/controllers/tradeController.js');
 var userController = require('./api/controllers/userController.js');
+var companyController = require('./api/controllers/companyController.js');
 
 
 
-router.use(function(req, res, next) {
-
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
-    // decode token
-    if (token) {
-
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
-            }
-        });
-
-    } else {
-
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-
-    }
-});
-
-
-
-
-router.route('/users')
-    .get(userController.getUsers);
-
-router.route('/trades')
-    .post(tradeController.postTrade);
-
-
-router.route('/trades/:trade_id')
-    .get(tradeController.getTrade);
-
-
+//token authenticate function
 var User = require('./app/models/user');
-
 router.post('/authenticate', function(req, res) {
 
     // find the user
@@ -154,7 +110,57 @@ router.post('/authenticate', function(req, res) {
     });
 });
 
+/*
+//deze functie wordt gebruikt om api te beveiligen
+router.use(function(req, res, next) {
 
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    // decode token
+    if (token) {
+
+        // verifies secret and checks exp
+        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+
+    } else {
+
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+
+    }
+});
+//einde beveiligfunctie
+*/
+
+//maak hier de api routes
+
+router.route('/companies')
+    .get(companyController.getCompanies)
+    .post(companyController.postCompany);
+
+router.route('/users')
+    .get(userController.getUsers);
+
+router.route('/trades')
+    .get(tradeController.getTradesFromCurrentUser)
+    .post(tradeController.postTrade);
+
+
+router.route('/trades/:trade_id')
+    .get(tradeController.getTrade);
 
 
 
