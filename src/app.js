@@ -5,15 +5,15 @@
 
     app.config(function ($routeProvider, $locationProvider) {
         $routeProvider
-            .when("/home", {
+            .when("/", {
                 templateUrl: "pages/home.html",
                 controller: "mainController"
             })
-            .when("/profile/:id", {
+            .when("/user/:id", {
                 templateUrl: "pages/profile.html",
                 controller: "profileController"
             })
-            .when("/profile", {
+            .when("/user", {
                 templateUrl: "pages/ownProfile.html",
                 controller: "profileController"
             })
@@ -34,8 +34,9 @@
                 controller: "tradeController"
             })
             .otherwise({
-                redirectTo: "/home"
+                redirectTo: "/"
             });
+        $locationProvider.html5Mode(true);
     });
 
 })();

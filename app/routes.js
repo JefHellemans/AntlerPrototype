@@ -3,8 +3,8 @@ module.exports = function(app, passport) {
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
-    app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.jade file
+    app.get('/', isLoggedIn, function(req, res) {
+        res.render('renderHome.jade');
     });
 
     // =====================================
@@ -50,11 +50,11 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
+    /*app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             user : req.user // get the user out of session and pass to template
         });
-    });
+    });*/
 
     // =====================================
     // LOGOUT ==============================
@@ -72,8 +72,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.render('index.ejs');
 }
 
 exports.index = function(req, res){
