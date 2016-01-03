@@ -1,7 +1,7 @@
 <section id="header">
     <div class="col-sm-4">
-        <a ng-href="#/home" class="home" ng-hide="homepage"><span>Home</span></a>
-        <p><a ng-href="#/profile/{{user._id}}"><img ng-src="{{user.profilepicture}}"/><span>{{user.firstname}}</span></a></p>
+        <a ng-href="home" class="home" ng-hide="homepage"><span>Home</span></a>
+        <p><a ng-href="user/{{user._id}}"><img ng-src="{{user.profilepicture}}"/><span>{{user.firstname}}</span></a></p>
     </div>
     <div class="dropdown col-sm-4">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -10,13 +10,13 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a ng-href="#/tradeHistory">Trade history</a></li>
-            <li><a ng-href="#/balanceHistory">Balance history</a></li>
-            <li><a ng-href="#/deposit">Deposit an amount</a></li>
-            <li><a ng-href="#/withdraw">Withdraw an amount</a></li>
+            <li><a ng-href="trades">Trade history</a></li>
+            <li><a ng-href="balance">Balance overview</a></li>
+            <li><a ng-href="deposit">Deposit an amount</a></li>
+            <li><a ng-href="withdraw">Withdraw an amount</a></li>
         </ul>
     </div>
     <div class="col-sm-4">
-        <p><a id="logout" href="/logout"><span>Log out</span></a></p>
+        <p><a id="logout" href="logout" target="_self"><span>Log out</span></a></p>
     </div>
 </section>

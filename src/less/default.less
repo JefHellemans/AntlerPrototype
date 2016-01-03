@@ -40,9 +40,40 @@ canvas {
   background-color: @lightgrey;
 }
 
+section.balanceOverview {
+  margin: 60px auto 0 auto;
+  width: 80%;
+
+  ul {
+    padding: 0;
+    list-style: none;
+    font-size: 20px;
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    li {
+      float: left;
+      width: calc(~"100% / 3");
+      text-align: left;
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+
+      &:nth-child(3) {
+        text-align: right;
+      }
+    }
+  }
+}
+
 table {
   width: 80%;
-  margin: 100px auto;
+  margin: 50px auto;
   table-layout: fixed;
 
   th {
@@ -250,7 +281,27 @@ section div#traderList {
     }
   }
 
-  button {
-    margin: 0 10px 0 10px;
+
+  div#newTrade {
+    width: 10%;
+    height: auto;
+    margin: 0 10px 0 0;
+
+    h3 {
+      margin: 5px -20px 20px 10px;
+    }
+
+    button {
+      margin: 0 10px 40px 10px;
+    }
+
+    input {
+      margin: auto auto 15px 10px;
+    }
+
+    label {
+      margin: auto auto auto 10px;
+    }
+
   }
 }

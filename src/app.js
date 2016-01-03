@@ -17,7 +17,7 @@
                 templateUrl: "pages/ownProfile.html",
                 controller: "profileController"
             })
-            .when("/balanceHistory", {
+            .when("/balance", {
                 templateUrl: "pages/balanceHistory.html",
                 controller: "balanceController"
             })
@@ -29,7 +29,7 @@
                 templateUrl: "pages/withdraw.html",
                 controller: "balanceController"
             })
-            .when("/tradeHistory", {
+            .when("/trades", {
                 templateUrl: "pages/tradeHistory.html",
                 controller: "tradeController"
             })

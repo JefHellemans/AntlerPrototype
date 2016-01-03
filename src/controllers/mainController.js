@@ -33,12 +33,18 @@
             console.log(err);
         };
 
+
+
         $scope.newTrade = function(){
             return $scope.isNewTrade = false;
         };
 
+
         $scope.confirmTrade = function (trade) {
             console.log(trade);
+
+            //post met trade info naar trade api
+            //tradeService.makeTrade(trade);
 
             return $scope.isNewTrade = true;
         };
