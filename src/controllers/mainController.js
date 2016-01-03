@@ -3,12 +3,8 @@
 
     var mainController = function($scope, userService){
         //new code goes here
-        $scope.user = {};
-        $scope.user._id = "1";
-        $scope.user.firstName = "Jef";
-        $scope.user.lastName = "Hellemans";
-        $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
-        $scope.user.currentAmount = 2000;
+
+
 
         $scope.isNewTrade = true;
 
@@ -44,7 +40,7 @@
         var onLoggedIn = function(response){
             $scope.user = response;
             $scope.user.currentAmount = 2000;
-
+            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
         };
 
         var onLoggedError = function(err){

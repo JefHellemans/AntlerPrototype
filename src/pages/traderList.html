@@ -5,9 +5,9 @@
             <ul>
                 <li ng-repeat="t in traders">
 
-                    <a ng-href="#/profile/{{t.id}}">
+                    <a ng-href="#/profile/{{t._id}}">
                         <img src="../dist/images/logos/antlerlogo.png" alt="profilepicture">
-                        <span>{{t.firstName}}</span>
+                        <span>{{t.firstname}}</span>
                     </a>
                 </li>
             </ul>
@@ -16,9 +16,9 @@
             <h3>New traders you can follow</h3>
             <ul>
                 <li ng-repeat="t in traders">
-                    <a ng-href="#/profile/{{t.id}}">
+                    <a ng-href="#/profile/{{t._id}}">
                         <img src="../dist/images/logos/antlerlogo.png" alt="profilepicture">
-                        <span>{{t.firstName}}</span>
+                        <span>{{t.firstname}}</span>
                     </a>
                 </li>
             </ul>
@@ -28,7 +28,7 @@
             <p>+</a></p>
         </div>
         <div ng-hide="isNewTrade">
-            <p>this is a new trade</p>
+            <h3>New trade</h3>
             <button ng-click="confirmTrade()">confirm</button>
         </div>
     </div>
