@@ -39,16 +39,15 @@ exports.getAllFollowing = function(req,res){
 };
 
 exports.getAllFollowers = function(req,res){
-
+    User.findOne({_id:req.user._id}, function(err,person){
+        res.json(person.followers);
+    }).populate('followers');
 };
 
 exports.unFollow = function(req,res){
 
     var myId = req.user._id; // not req.body._id
     var personId = req.params.person_id; // not req.body._id
-
-
-
 
 
     User.findOne({_id:myId}, function(err,user){

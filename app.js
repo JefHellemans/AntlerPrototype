@@ -183,9 +183,6 @@ router.route('/followers')
     .get(followersController.getAllFollowers);
 
 
-
-
-
 app.use('/api',router);
 
 app.use(function(req, res){

@@ -10,7 +10,10 @@ var tradeSchema = mongoose.Schema({
     PercentageInvested: Number,
     StartStockPrice: Number,
     IsShort: Boolean,
-    Comment: String
+    Comment: String,
+    ParentTrade:{
+        type:mongoose.Schema.Types.ObjectId, ref: 'Trade'
+    }
 
 });
 
