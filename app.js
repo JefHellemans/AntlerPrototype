@@ -167,7 +167,8 @@ router.route('/trades/:trade_id')
     .get(tradeController.getTrade);
 
 router.route('/transactions')
-    .post(transactionController.postTransaction);
+    .post(transactionController.postTransaction)
+    .get(transactionController.getTransactionsFromUser);
 
 
 

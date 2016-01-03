@@ -23,6 +23,7 @@ var userSchema = mongoose.Schema({
                         }
                      ],
         balance:Number
+
 });
 
 // methods ======================

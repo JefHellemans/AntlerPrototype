@@ -31,3 +31,13 @@ exports.postTransaction = function(req,res){
     });
 };
 
+exports.getTransactionsFromUser =  function(req,res){
+    if(req.user===undefined){
+        res.json({success:false, message:'Please log in'});
+    }else{
+        User.findOne({_id:req.user._id},function(err,user){
+            res.json(user.transactions);
+        })
+            .populate('transactions');
+    }
+};

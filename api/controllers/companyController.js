@@ -29,6 +29,6 @@ exports.postCompany = function(req,res){
 
 exports.getCompanies = function(req,res){
     Company.find(function(err,companies){
-        res.json({companies:companies});
+        res.json(companies);
     });
 };
