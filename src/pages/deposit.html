@@ -1,3 +1,6 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'/pages/balanceOverview.html'"></div>
+
 <section>
     <form class="form-horizontal depositForm" novalidate>
         <h3>Deposit</h3>
@@ -11,6 +14,4 @@
             <input type="submit" class="btn btn-primary" value="Save" ng-disabled="isEnabled()" ng-click="deposit(user)" >
         </div>
     </form>
-
-    <p><a ng-href="#/home">Go home</a></p>
 </section>

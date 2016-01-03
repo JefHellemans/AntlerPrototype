@@ -1,0 +1,8 @@
+<section>
+    <ul>
+        <li>Available: {{user.currentAmount.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</li>
+        <li>Idle with traders: {{user.traders.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</li>
+        <li>Invested in stock: {{user.invested.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</li>
+    </ul>
+    <h2>Total: {{user.total.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</h2>
+</section>

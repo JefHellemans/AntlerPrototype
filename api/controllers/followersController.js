@@ -8,11 +8,27 @@ exports.makeNewFollow = function(req,res){
 
 
         User.update({_id:req.user._id}, {$push: {following:person}},{safe:true,upsert:true},function(err,model){
-            res.json({success:true,'message':'following new person'});
+            //res.json({success:true,'message':'following new person'});
+
+
+            User.findOne({_id:req.user._id},function(err,person){
+
+
+
+                User.update({_id:req.body.person_id}, {$push: {followers:person}},{safe:true,upsert:true},function(err,model){
+                    res.json({success:true,'message':'following new person'});
+                });
+
+
+            });
+
+
         });
 
 
     });
+
+
 
 };
 
@@ -22,22 +38,37 @@ exports.getAllFollowing = function(req,res){
     }).populate('following');
 };
 
+exports.getAllFollowers = function(req,res){
+
+};
+
 exports.unFollow = function(req,res){
 
-    var id = req.user._id; // not req.body._id
-    var contentId = req.params.person_id; // not req.body._id
+    var myId = req.user._id; // not req.body._id
+    var personId = req.params.person_id; // not req.body._id
 
 
 
 
 
-    User.findOne({_id:req.user._id}, function(err,user){
-        removeA(user.following,contentId);
+    User.findOne({_id:myId}, function(err,user){
+        removeA(user.following,personId);
         user.save(function(err){
             if(err)
                 res.json({'success':false,'message':'Something went wrong unfollowing'});
-            else
-                res.json({'success':true,'message':"Successfully unfollowed"});
+            else{
+                User.findOne({_id:personId}, function(err,user){
+                    removeA(user.followers,myId);
+                    user.save(function(err){
+                        if(err)
+                            res.json({'success':false,'message':'Something went wrong unfollowing'});
+                        else
+                            res.json({'success':true,'message':"Successfully unfollowed"});
+                    });
+
+                });
+            }
+
         });
 
     });
