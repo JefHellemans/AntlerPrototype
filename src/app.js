@@ -3,7 +3,7 @@
 
     var app = angular.module("app", ["ngRoute"]);
 
-    app.config(function ($routeProvider) {
+    app.config(function ($routeProvider, $locationProvider) {
         $routeProvider
             .when("/home", {
                 templateUrl: "pages/home.html",
@@ -13,19 +13,23 @@
                 templateUrl: "pages/profile.html",
                 controller: "profileController"
             })
-            .when("/balanceHistory/:id", {
+            .when("/profile", {
+                templateUrl: "pages/ownProfile.html",
+                controller: "profileController"
+            })
+            .when("/balanceHistory", {
                 templateUrl: "pages/balanceHistory.html",
                 controller: "balanceController"
             })
-            .when("/deposit/:id", {
+            .when("/deposit", {
                 templateUrl: "pages/deposit.html",
                 controller: "balanceController"
             })
-            .when("/withdraw/:id", {
+            .when("/withdraw", {
                 templateUrl: "pages/withdraw.html",
                 controller: "balanceController"
             })
-            .when("/tradeHistory/:id", {
+            .when("/tradeHistory", {
                 templateUrl: "pages/tradeHistory.html",
                 controller: "tradeController"
             })

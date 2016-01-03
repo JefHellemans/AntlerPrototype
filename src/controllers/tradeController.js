@@ -1,16 +1,20 @@
 (function (){
     "use strict";
 
-    var tradeController = function($scope, $routeParams, $window) {
-        //new code goes here
+    var tradeController = function($scope, $window, userService) {
 
-        $scope.user = {};
-        $scope.user._id = "1";
-        $scope.user.firstName = "Jef";
-        $scope.user.lastName = "Hellemans";
-        $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
-        $scope.user.depositAmount = 0;
-        $scope.user.currentAmount = 2000;
+        var getLoggedInUser = function(){
+            userService.getLoggedInUser().then(onLoggedIn, onLoggedError);
+        };
+
+        var onLoggedIn = function(response){
+            $scope.user = response;
+            $scope.user.currentAmount = 2000;
+        };
+
+        var onLoggedError = function(err){
+            console.log(err);
+        };
 
         $scope.sortType = 'date';
         $scope.sortReverse = false;
@@ -37,7 +41,8 @@
             });
         }
 
+        getLoggedInUser();
     };
 
-    angular.module("app").controller("tradeController", [ "$scope", "$routeParams", "$window", tradeController]);
+    angular.module("app").controller("tradeController", [ "$scope", "$window", "userService", tradeController]);
 })();
