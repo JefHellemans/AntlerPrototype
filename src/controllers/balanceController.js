@@ -10,6 +10,9 @@
         var onLoggedIn = function(response){
             $scope.user = response;
             $scope.user.currentAmount = 2000;
+            $scope.user.traders = 2000;
+            $scope.user.invested = 2000;
+            $scope.user.total = $scope.user.currentAmount + $scope.user.traders + $scope.user.invested;
         };
 
         var onLoggedError = function(err){
@@ -20,10 +23,10 @@
         $scope.sortReverse = false;
 
         $scope.transactions = [];
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "source": "Balance", "destination": "Withdrawal", "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "source": "Balance", "destination": "Deposit", "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "source": "Balance", "destination": "Withdrawal", "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
+        $scope.transactions.push({"date": new Date().toLocaleString(), "source": "Balance", "destination": "Deposit", "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
 
         $scope.deposit = function(user) {
             $scope.user.currentAmount += user.depositAmount;
