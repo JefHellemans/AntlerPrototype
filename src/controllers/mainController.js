@@ -1,11 +1,18 @@
 (function (){
     "use strict";
 
-
-
     var mainController = function($scope, userService){
+        //new code goes here
+        $scope.user = {};
+        $scope.user._id = "1";
+        $scope.user.firstName = "Jef";
+        $scope.user.lastName = "Hellemans";
+        $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
+        $scope.user.currentAmount = 2000;
 
         $scope.isNewTrade = true;
+
+        $scope.homepage = true;
 
         /*var Anna = {id: 9, firstName: "Anna", lastName: "Abcd", followers: 27};
         var Bob = {id: 2, firstName: "Bob", lastName: "Abcd", followers: 28};

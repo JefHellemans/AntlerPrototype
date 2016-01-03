@@ -1,22 +1,20 @@
 (function (){
     "use strict";
 
-
-
     var profileController = function($scope, $routeParams, $window, userService){
-        //new code goes here
 
         var userId = $routeParams.id;
-        $scope.user = userService.getById(userId);
+        var getUser = function(){
+            userService.getById(userId).then(onUserLoaded, onUserError);
+        };
 
-        /*$scope.user = {
-            "id": 1,
-            "firstName": "Marijn",
-            "lastName": "Hosten",
-            "passw1": "123456",
-            "passw2": "123456",
-            "currentAmount": 2000
-        };*/
+        var onUserLoaded = function(response){
+            $scope.user = response;
+        };
+
+        var onUserError = function(err){
+            console.log(err);
+        };
 
         $scope.isEnabled = function (){
             return false;
@@ -26,6 +24,8 @@
             alert("changes saved");
             $window.location.hash = "/home";
         };
+
+        getUser();
     };
 
     angular.module("app").controller("profileController", [ "$scope", "$routeParams", "$window", "userService", profileController]);

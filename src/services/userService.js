@@ -15,14 +15,9 @@
         };
 
         var getById = function(id){
-
-            // API call via $http.get(localhost://8000/api/users/+id)
-
-            return {
-                firstName: "Anna",
-                lastName: "Abdce",
-                password: 123456
-            }
+            return $http.get(url + "/users/" + id).then(function(response){
+                return response.data[0];
+            });
         };
 
         var getLoggedInUser = function() {

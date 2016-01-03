@@ -1,9 +1,6 @@
-@headerHeight: 50px;
-@antlerDarkBlue: #2C3E50;
-@antlerStandardBlue: #2980b9;
-@antlerLightBlue: #36B5DB;
-@antlerSoftRed: #ff353d;
-@lightgrey: #eeeeee;
+@import 'variables.less';
+@import 'dropdown-slide.less';
+@import 'slider.less';
 
 @font-face {
   font-family: 'SourceSansPro';
@@ -52,6 +49,8 @@ table {
     padding: 20px 20px;
     font-size: 18px;
     border-bottom: 2px solid @antlerDarkBlue;
+    cursor: pointer;
+
     &.right {
       text-align: right;
     }
@@ -91,38 +90,96 @@ table {
 
 input#scaleCanvas{
   width: 100px;
+  position: absolute;
+  right: 0;
+  top: 150px;
+  transform: rotate(-90deg);
+}
+
+input#resetOffset {
+  position: absolute;
+  right: 38px;
+  top: 220px;
+  background-color: #ffffff;
+  background-image: url('../images/misc/center.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border-radius: 25%;
+  box-shadow: 0.6px 0.6px 4px rgba(0, 0, 0, 0.5), 0px 0px 0.6px rgba(13, 13, 13, 0.5);
+  height: 25px;
+  width: 25px;
+  border:none;
+  outline:none;
 }
 
 section#header {
   height: @headerHeight;
   width: auto;
-}
 
-section#header div {
-  text-align: center;
-  height: inherit;
-}
+  div {
+    text-align: center;
+    height: @headerHeight;
+    padding: 10px;
 
-section#header div img{
-  height: @headerHeight;
-  width: @headerHeight;
-}
+    a {
+      height: 100%;
+      vertical-align: middle;
 
-section#header div button{
-  width: 100%;
-  margin-top: 10px;
-  background-color: @antlerStandardBlue;
-}
+      span {
+        display: inline-block;
+        vertical-align: middle;
+      }
 
-section#header div ul{
-  width: 50%;
-  margin-left: 15px;
-}
+      img {
+        vertical-align: middle;
+        display: inline-block;
+        width: calc(@headerHeight - 20px);
+        height: calc(@headerHeight - 20px);
+        object-fit: cover;
+        object-position: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
 
-section#header div p a {
-  padding-top: 15px;
-  display: block;
-  color: @antlerStandardBlue;
+      &.home {
+        float: left;
+        background-image: url('../images/misc/home.png');
+        background-size: cover;
+        width: calc(@headerHeight - 20px);
+        height: calc(@headerHeight - 20px);
+        margin-right: calc(-(@headerHeight - 20px));
+
+        span {
+          display: none;
+        }
+      }
+    }
+
+    button {
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: @antlerStandardBlue;
+
+      .caret {
+        margin-left: 5px;
+      }
+    }
+
+    ul {
+      transition: .3s;
+      width: ~"calc(100% - 30px)";
+      margin-left: 15px;
+    }
+
+    p {
+      margin: 0;
+      height: 100%;
+      display: block;
+      color: @antlerStandardBlue;
+    }
+  }
 }
 
 .profileForm input.ng-invalid {

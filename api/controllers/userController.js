@@ -11,3 +11,9 @@ exports.getLoggedInUser = function(req, res){
         res.json(user);
     });
 };
+
+exports.getUserById = function(req, res){
+    User.find({_id: req.params.user_id}, function(err, user){
+        res.json(user);
+    });
+};
