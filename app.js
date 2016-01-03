@@ -172,12 +172,15 @@ router.route('/transactions')
     .post(transactionController.postTransaction)
     .get(transactionController.getTransactionsFromUser);
 
-router.route('/followers')
+router.route('/following')
     .post(followersController.makeNewFollow)
     .get(followersController.getAllFollowing);
 
-router.route('/followers/:person_id')
+router.route('/following/:person_id')
     .delete(followersController.unFollow);
+
+router.route('/followers')
+    .get(followersController.getAllFollowers);
 
 
 
