@@ -176,6 +176,10 @@ router.route('/followers')
     .post(followersController.makeNewFollow)
     .get(followersController.getAllFollowing);
 
+router.route('/followers/:person_id')
+    .delete(followersController.unFollow);
+
+
 
 
 
