@@ -1,6 +1,11 @@
 <div ng-include="'pages/header.html'"></div>
 <div ng-include="'/pages/balanceOverview.html'"></div>
 
-<section>
-
+<section class="resize">
+    <form novalidate>
+        <h2>Withdraw</h2>
+        <label>Amount:</label>
+        <div class="valuta"><input type="number" name="amount" ng-model="user.depositAmount" required /></div>
+        <input type="submit" class="btn btn-primary" value="Save" ng-disabled="isEnabled()" ng-click="deposit(user)"/>
+    </form>
 </section>
