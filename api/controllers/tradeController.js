@@ -46,15 +46,22 @@ exports.getTradesFromCurrentUser = function(req,res){
 
 
 
-        User.findOne({_id:req.user._id},function(err,user){
-            if (!user) {
-                res.json({success: false, message: 'User not found.'});
-            }
-            else{
-                res.json(user.trades);
-            }
+        User.findOne({_id:req.user._id})
+            .lean()
+            .populate({ path: 'trades' })
+            .exec(function(err, docs) {
 
-        }).populate('trades');
+                var options = {
+                    path: 'trades.Company',
+                    model: 'Company'
+                };
+
+                if (err) return res.json(500);
+                User.populate(docs, options, function (err, user) {
+                    res.json(user.trades);
+                });
+            });
+
 
     }
 

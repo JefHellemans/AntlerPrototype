@@ -50,6 +50,7 @@ var router = express.Router();
 var tradeController = require('./api/controllers/tradeController.js');
 var userController = require('./api/controllers/userController.js');
 var companyController = require('./api/controllers/companyController.js');
+var transactionController = require ('./api/controllers/transactionController.js');
 
 
 
@@ -164,6 +165,9 @@ router.route('/trades')
 
 router.route('/trades/:trade_id')
     .get(tradeController.getTrade);
+
+router.route('/transactions')
+    .post(transactionController.postTransaction);
 
 
 

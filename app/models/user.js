@@ -16,7 +16,13 @@ var userSchema = mongoose.Schema({
                     }
                ],
         canBeFound : Boolean,
-        admin:Boolean
+        admin:Boolean,
+        transactions:[
+                        {
+                            type:mongoose.Schema.Types.ObjectId, ref:'Transaction'
+                        }
+                     ],
+        balance:Number
 });
 
 // methods ======================
