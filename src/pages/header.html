@@ -1,6 +1,7 @@
 <section id="header">
-    <div  class="col-sm-4">
-        <p><a ng-href="#/profile/{{user._id}}" ng-bind="user.firstname + ' ' + user.lastname"></a></p>
+    <div class="col-sm-4">
+        <a ng-href="#/home" class="home" ng-hide="homepage"><span>Home</span></a>
+        <p><a ng-href="#/profile/{{user._id}}"><img ng-src="{{user.profilepicture}}"/><span>{{user.firstName}}</span></a></p>
     </div>
     <div class="dropdown col-sm-4">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -16,6 +17,6 @@
         </ul>
     </div>
     <div class="col-sm-4">
-        <p><a id="logout" href="/logout">Log out</a></p>
+        <p><a id="logout" href="/login">Log out</a></p>
     </div>
 </section>

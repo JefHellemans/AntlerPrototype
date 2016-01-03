@@ -8,6 +8,7 @@
         $scope.user.userId = "1";
         $scope.user.firstName = "Jef";
         $scope.user.lastName = "Hellemans";
+        $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
         $scope.user.depositAmount = 0;
         $scope.user.currentAmount = 2000;
 
