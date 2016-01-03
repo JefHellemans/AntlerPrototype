@@ -34,11 +34,12 @@
         };
 
         $scope.newTrade = function(){
-            //nieuwe trade maken via slide animation
             return $scope.isNewTrade = false;
         };
 
-        $scope.confirmTrade = function () {
+        $scope.confirmTrade = function (trade) {
+            console.log(trade);
+
             return $scope.isNewTrade = true;
         };
 
