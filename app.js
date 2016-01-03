@@ -176,10 +176,6 @@ router.route('/followers')
     .post(followersController.makeNewFollow)
     .get(followersController.getAllFollowing);
 
-
-
-
-
 app.use('/api',router);
 
 app.use(function(req, res){
