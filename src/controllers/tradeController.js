@@ -6,8 +6,8 @@
 
         $scope.user = {};
         $scope.user.userId = "1";
-        $scope.user.firstName = "Marijn";
-        $scope.user.lastName = "Hosten";
+        $scope.user.firstName = "Jef";
+        $scope.user.lastName = "Hellemans";
         $scope.user.depositAmount = 0;
         $scope.user.currentAmount = 2000;
 

@@ -5,8 +5,8 @@
         //new code goes here
         $scope.user = {};
         $scope.user.userId = "1";
-        $scope.user.firstName = "Marijn";
-        $scope.user.lastName = "Hosten";
+        $scope.user.firstName = "Jef";
+        $scope.user.lastName = "Hellemans";
         $scope.user.currentAmount = 2000;
 
         $scope.isNewTrade = true;
