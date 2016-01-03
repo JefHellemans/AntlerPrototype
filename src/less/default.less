@@ -40,9 +40,40 @@ canvas {
   background-color: @lightgrey;
 }
 
+section.balanceOverview {
+  margin: 60px auto 0 auto;
+  width: 80%;
+
+  ul {
+    padding: 0;
+    list-style: none;
+    font-size: 20px;
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    li {
+      float: left;
+      width: calc(~"100% / 3");
+      text-align: left;
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+
+      &:nth-child(3) {
+        text-align: right;
+      }
+    }
+  }
+}
+
 table {
   width: 80%;
-  margin: 100px auto;
+  margin: 50px auto;
   table-layout: fixed;
 
   th {
