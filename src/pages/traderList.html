@@ -25,11 +25,22 @@
         </div>
         <div ng-show="isNewTrade" ng-click="newTrade()">
             <h3>Make a new trade</h3>
-            <p>+</a></p>
+            <p>+</p>
         </div>
-        <div ng-hide="isNewTrade">
+        <div id="newTrade" ng-hide="isNewTrade">
             <h3>New trade</h3>
-            <button ng-click="confirmTrade()">confirm</button>
+            <input ng-model="trade.company" placeholder="Company" type="search" name="searchCompany" id="searchCompany">
+            <label for="amount">Amount(€)</label>
+            <input ng-model="trade.amount" id="amount" type="text" placeholder="500">
+            <label for="stock">Stock</label>
+            <input ng-model="trade.stock" id="stock" type="text" placeholder="200">
+            <label for="percentage">Percentage</label>
+            <input ng-model="trade.percentage" id="percentage" type="text" placeholder="5">
+            <label for="rbLong">Long</label>
+            <input ng-model="trade.long" id="rbLong" type="radio" name="longShort[]">
+            <label for="rbShort">Short</label>
+            <input ng-model="trade.short" id="rbShort" type="radio" name="longShort[]">
+            <button class="btn btn-default" ng-click="confirmTrade(trade)">confirm</button>
         </div>
     </div>
 </section>
