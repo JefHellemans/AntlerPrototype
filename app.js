@@ -51,7 +51,7 @@ var tradeController = require('./api/controllers/tradeController.js');
 var userController = require('./api/controllers/userController.js');
 var companyController = require('./api/controllers/companyController.js');
 var transactionController = require ('./api/controllers/transactionController.js');
-
+var followersController = require('./api/controllers/followersController.js');
 
 
 //token authenticate function
@@ -171,6 +171,10 @@ router.route('/trades/:trade_id')
 router.route('/transactions')
     .post(transactionController.postTransaction)
     .get(transactionController.getTransactionsFromUser);
+
+router.route('/followers')
+    .post(followersController.makeNewFollow)
+    .get(followersController.getAllFollowing);
 
 
 

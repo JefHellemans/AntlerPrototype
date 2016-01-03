@@ -22,7 +22,12 @@ var userSchema = mongoose.Schema({
                             type:mongoose.Schema.Types.ObjectId, ref:'Transaction'
                         }
                      ],
-        balance:Number
+        balance:Number,
+        following:[
+                        {
+                            type:mongoose.Schema.Types.ObjectId, ref:'User'
+                        }
+                    ]
 
 });
 
