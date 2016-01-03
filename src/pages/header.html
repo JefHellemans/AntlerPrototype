@@ -1,6 +1,6 @@
 <section id="header">
     <div  class="col-sm-4">
-        <p><a ng-href="#/profile/{{user.userId}}" ng-bind="user.firstName + ' ' + user.lastName"></a></p>
+        <p><a ng-href="#/profile/{{user._id}}" ng-bind="user.firstname + ' ' + user.lastname"></a></p>
     </div>
     <div class="dropdown col-sm-4">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -9,10 +9,10 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a ng-href="#/tradeHistory/{{user.userId}}">Trade history</a></li>
-            <li><a ng-href="#/balanceHistory/{{user.userId}}">Balance history</a></li>
-            <li><a ng-href="#/deposit/{{user.userId}}">Deposit an amount</a></li>
-            <li><a ng-href="#/withdraw/{{user.userId}}">Withdraw an amount</a></li>
+            <li><a ng-href="#/tradeHistory/{{user._id}}">Trade history</a></li>
+            <li><a ng-href="#/balanceHistory/{{user._id}}">Balance history</a></li>
+            <li><a ng-href="#/deposit/{{user._id}}">Deposit an amount</a></li>
+            <li><a ng-href="#/withdraw/{{user._id}}">Withdraw an amount</a></li>
         </ul>
     </div>
     <div class="col-sm-4">

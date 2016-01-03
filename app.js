@@ -154,6 +154,9 @@ router.route('/companies')
 router.route('/users')
     .get(userController.getUsers);
 
+router.route('/loggedInUser')
+    .get(userController.getLoggedInUser);
+
 router.route('/trades')
     .get(tradeController.getTradesFromCurrentUser)
     .post(tradeController.postTrade);
