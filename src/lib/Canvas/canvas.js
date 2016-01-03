@@ -45,6 +45,14 @@ var Canvas = function(x, y, width, height, elementId, objects) {
     }, 10);
 };
 
+Canvas.prototype.setSize = function(width, height) {
+    this.width = width;
+    this.height = height;
+    this.ctx.canvas.width = width;
+    this.ctx.canvas.height = height;
+    this.draw();
+};
+
 Canvas.prototype.clear = function() {
     this.ctx.clearRect(0, 0, this.width, this.height);
 };

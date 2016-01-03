@@ -247,6 +247,10 @@ var tradeCanvas = function() {
         document.getElementById("resetOffset").addEventListener("click", function() {
             canvas.moveToCenter();
         });
+        window.addEventListener("resize", function() {
+            canvas.setSize(window.innerWidth, window.innerHeight - 50);
+            trash.pos = new Vector2D(window.innerWidth - 100, window.innerHeight - 150);
+        });
     }
 
 };
