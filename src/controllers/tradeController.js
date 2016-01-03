@@ -5,7 +5,7 @@
         //new code goes here
 
         $scope.user = {};
-        $scope.user.userId = "1";
+        $scope.user._id = "1";
         $scope.user.firstName = "Jef";
         $scope.user.lastName = "Hellemans";
         $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
