@@ -45,22 +45,6 @@ exports.getTradesFromCurrentUser = function(req,res){
 
 
 
-/*
-        User.findOne({_id:req.user._id},function(err,user){
-            if (!user) {
-                res.json({success: false, message: 'User not found.'});
-            }
-            else{
-
-
-                res.json(user.trades);
-
-
-
-            }
-
-        }).populate('trades');
-*/
 
         User.findOne({_id:req.user._id})
             .lean()
