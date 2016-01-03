@@ -154,6 +154,8 @@ router.route('/companies')
 
 router.route('/users')
     .get(userController.getUsers);
+router.route('/users/:user_id')
+    .get(userController.getUserById);
 
 router.route('/loggedInUser')
     .get(userController.getLoggedInUser);
