@@ -1,14 +1,14 @@
 (function (){
     "use strict";
 
-    var mainController = function($scope, userService){
+    var mainController = function($scope, userService, tradeService){
 
         $scope.isNewTrade = true;
 
         $scope.homepage = true;
 
-        var getUsers = function(){
-            userService.getAll().then(onUsersLoaded, onUsersError);
+        var getFollowing = function(){
+            userService.getAllFollowing().then(onUsersLoaded, onUsersError);
         };
 
         var onUsersLoaded = function(response){
@@ -33,8 +33,6 @@
             console.log(err);
         };
 
-
-
         $scope.newTrade = function(){
             return $scope.isNewTrade = false;
         };
@@ -50,9 +48,9 @@
         };
 
         tradeCanvas();
-        getUsers();
+        getFollowing();
         getLoggedInUser();
     };
 
-    angular.module("app").controller("mainController", [ "$scope", "userService", mainController]);
+    angular.module("app").controller("mainController", [ "$scope", "userService", "tradeService", mainController]);
 })();

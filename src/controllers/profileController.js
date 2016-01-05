@@ -10,6 +10,14 @@
 
         var onTraderLoaded = function(response) {
             $scope.trader = response;
+            // follower amount, trader amount, total trades amount
+            var followers = [];
+            var followerAmount = 0;
+            angular.forEach($scope.trader.followers, function(follower){
+                followers.push(follower);
+                //if(followers[followerAmount])
+                followerAmount++;
+            });
         };
 
         var onTraderError = function(err) {
@@ -34,8 +42,6 @@
         };
 
         $scope.follow = function(trader){
-            console.log(trader);
-            console.log($scope.user);
             userService.followTrader(trader).then(onFollow, onFollowError);
         };
 

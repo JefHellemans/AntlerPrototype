@@ -32,11 +32,18 @@
             });
         };
 
+        var getAllFollowing = function(){
+            return $http.get(url + "/following").then(function(response){
+                return response.data;
+            });
+        };
+
         return{
             getAll: getAll,
             getById: getById,
             getLoggedInUser: getLoggedInUser,
-            followTrader: followTrader
+            followTrader: followTrader,
+            getAllFollowing: getAllFollowing
         };
     };
 
