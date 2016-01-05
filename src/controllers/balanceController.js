@@ -30,11 +30,20 @@
 
         $scope.deposit = function(user) {
             $scope.user.currentAmount += user.depositAmount;
-            $window.location.hash = "/home";
+            $window.location = "/index";
+        };
+
+        $scope.withdraw = function(user){
+            console.log(user);
+            $scope.user.currentAmount -= user.withdrawAmount;
         };
 
         $scope.isEnabled = function() {
-            return ($scope.user.depositAmount === 0 || typeof $scope.user.depositAmount == "undefined");
+            return ($scope.user.depositAmount === 0 || typeof $scope.user.depositAmount === "undefined");
+        };
+
+        $scope.withdrawEnabled = function() {
+            return ($scope.user.currentAmount === 0 || typeof $scope.user.withdrawAmount === "undefined");
         };
 
         getLoggedInUser();

@@ -3,8 +3,7 @@ var mongoose = require('mongoose');
 
 exports.makeNewFollow = function(req,res){
 
-    User.findOne({_id:req.body.person_id},function(err,person){
-
+    User.findOne({_id:req.body._id},function(err,person){
 
 
         User.update({_id:req.user._id}, {$push: {following:person}},{safe:true,upsert:true},function(err,model){
@@ -15,8 +14,8 @@ exports.makeNewFollow = function(req,res){
 
 
 
-                User.update({_id:req.body.person_id}, {$push: {followers:person}},{safe:true,upsert:true},function(err,model){
-                    res.json({success:true,'message':'following new person'});
+                User.update({_id:req.body._id}, {$push: {followers:person}},{safe:true,upsert:true},function(err,model){
+                    res.json({success:true,'message': "Follow succesful!"});
                 });
 
 

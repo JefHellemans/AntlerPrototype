@@ -26,10 +26,17 @@
             });
         };
 
+        var followTrader = function(trader) {
+            return $http.post(url + "/following", trader).then(function(response){
+                return response.data;
+            });
+        };
+
         return{
             getAll: getAll,
             getById: getById,
-            getLoggedInUser: getLoggedInUser
+            getLoggedInUser: getLoggedInUser,
+            followTrader: followTrader
         };
     };
 

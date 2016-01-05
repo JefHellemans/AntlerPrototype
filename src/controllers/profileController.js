@@ -4,23 +4,50 @@
     var profileController = function($scope, $routeParams, $window, userService) {
 
         var userId = $routeParams.id;
-        var getUser = function() {
-            userService.getById(userId).then(onUserLoaded, onUserError);
+        var getTrader = function() {
+            userService.getById(userId).then(onTraderLoaded, onTraderError);
         };
 
-        var onUserLoaded = function(response) {
+        var onTraderLoaded = function(response) {
+            $scope.trader = response;
+        };
+
+        var onTraderError = function(err) {
+            console.log(err);
+        };
+
+        var getUser = function(){
+            userService.getLoggedInUser().then(onLoggedIn, onLoggedError);
+        };
+
+        var onLoggedIn = function(response){
             $scope.user = response;
         };
 
-        var onUserError = function(err) {
+        var onLoggedError = function(err){
             console.log(err);
         };
 
         $scope.submitForm = function(user) {
             alert("changes saved");
-            $window.location.hash = "/home";
+            $window.location = "index";
         };
 
+        $scope.follow = function(trader){
+            console.log(trader);
+            console.log($scope.user);
+            userService.followTrader(trader).then(onFollow, onFollowError);
+        };
+
+        var onFollow = function(response){
+            $window.location = "index";
+        };
+
+        var onFollowError = function(err){
+            console.log(err);
+        };
+
+        getTrader();
         getUser();
     };
 
