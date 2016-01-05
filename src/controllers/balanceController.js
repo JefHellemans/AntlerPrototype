@@ -30,12 +30,12 @@
 
         $scope.deposit = function(user) {
             $scope.user.currentAmount += user.depositAmount;
-            $window.location = "/index";
+            $window.location = "/balance";
         };
 
-        $scope.withdraw = function(user){
-            console.log(user);
+        $scope.withdraw = function(user) {
             $scope.user.currentAmount -= user.withdrawAmount;
+            $window.location = "/balance";
         };
 
         $scope.isEnabled = function() {
