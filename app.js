@@ -182,7 +182,6 @@ router.route('/following/:person_id')
 router.route('/followers')
     .get(followersController.getAllFollowers);
 
-
 app.use('/api',router);
 
 app.use(function(req, res){

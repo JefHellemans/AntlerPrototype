@@ -38,12 +38,13 @@
             });
         };
 
+
         return{
             getAll: getAll,
             getById: getById,
             getLoggedInUser: getLoggedInUser,
             followTrader: followTrader,
-            getAllFollowing: getAllFollowing
+            getAllFollowing: getAllFollowing,
         };
     };
 

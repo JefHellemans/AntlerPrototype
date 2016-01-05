@@ -10,14 +10,29 @@
 
         var onTraderLoaded = function(response) {
             $scope.trader = response;
+
             // follower amount, trader amount, total trades amount
             var followers = [];
             var followerAmount = 0;
             angular.forEach($scope.trader.followers, function(follower){
-                followers.push(follower);
-                //if(followers[followerAmount])
-                followerAmount++;
+
+                if(!followers.indexOf(follower) > -1){
+                    followers.push(follower);
+                    followerAmount++;
+                }
             });
+
+            var following = [];
+            var followingAmount = 0;
+            angular.forEach($scope.trader.following, function(followee){
+                if(!following.indexOf(followee) > -1){
+                    following.push(followee);
+                    followingAmount++;
+                }
+            });
+
+            $scope.trader.followersAmount = followerAmount;
+            $scope.trader.followingAmount = followingAmount;
         };
 
         var onTraderError = function(err) {
@@ -42,7 +57,14 @@
         };
 
         $scope.follow = function(trader){
-            userService.followTrader(trader).then(onFollow, onFollowError);
+            console.log(trader);
+            console.log($scope.user._id);
+            if(trader.followers.indexOf($scope.user._id) > -1){
+                console.log("you can not follow this person");
+            }else {
+                console.log("you can follow this person");
+            }
+            //userService.followTrader(trader).then(onFollow, onFollowError);
         };
 
         var onFollow = function(response){

@@ -4,7 +4,6 @@
     var mainController = function($scope, userService, tradeService){
 
         $scope.isNewTrade = true;
-
         $scope.homepage = true;
 
         var getFollowing = function(){
@@ -27,9 +26,44 @@
             $scope.user = response;
             $scope.user.currentAmount = 2000;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
+            getNewTraders();
         };
 
         var onLoggedError = function(err){
+            console.log(err);
+        };
+
+        var getNewTraders = function(){
+            userService.getAll().then(onNewTraders, onNewTradersError);
+        };
+
+        var onNewTraders = function(response){
+
+            var users = response;
+            var currentFollowing = [];
+            var newTraders = [];
+
+            angular.forEach($scope.user.following, function(followee){
+                currentFollowing.push(followee);
+
+                angular.forEach(users, function(user){
+
+                    var index = users.indexOf(user);
+
+                    if(user._id === followee || user._id === $scope.user._id){
+                        users.splice(index, 1);
+                    }
+                });
+            });
+
+            angular.forEach(users, function(user){
+                 newTraders.push(user);
+            });
+
+            $scope.newTraders = newTraders;
+        };
+
+        var onNewTradersError = function(err){
             console.log(err);
         };
 
