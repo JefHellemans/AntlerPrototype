@@ -185,7 +185,11 @@ router.route('/followers')
 app.use('/api',router);
 
 app.use(function(req, res){
-    res.render('renderHome.jade');
+
+    if(req.isAuthenticated())
+        res.render('renderHome.jade');
+
+    res.render('index.ejs');
 });
 
 app.listen(port);
