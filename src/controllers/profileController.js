@@ -57,14 +57,18 @@
         };
 
         $scope.follow = function(trader){
-            console.log(trader);
-            console.log($scope.user._id);
-            if(trader.followers.indexOf($scope.user._id) > -1){
-                console.log("you can not follow this person");
+
+            if($scope.trader.followersAmount > 0){
+
+                if(!$scope.user._id === $scope.trader._id){
+                    userService.followTrader(trader).then(onFollow, onFollowError);
+                }else {
+                    console.log("volgt al");
+                }
             }else {
-                console.log("you can follow this person");
+                console.log("u mag volgen");
+                userService.followTrader(trader).then(onFollow, onFollowError);
             }
-            //userService.followTrader(trader).then(onFollow, onFollowError);
         };
 
         var onFollow = function(response){
