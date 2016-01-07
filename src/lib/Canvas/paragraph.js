@@ -44,9 +44,8 @@ Paragraph.prototype.fontToText = function(italic, bold, size, font) {
     return t;
 };
 
-Paragraph.prototype.draw = function(ctx, scale, italic, bold, size, font, align, color, scaling, pos, width) {
+Paragraph.prototype.draw = function(ctx, scale, italic, bold, size, font, align, color, scaling, pos, xAdd, width) {
     var f = this.getFont(italic, bold, size, font);
-    var x = pos.x;
     if(typeof this.align !== 'undefined') {
         align = this.align;
     }
@@ -58,28 +57,29 @@ Paragraph.prototype.draw = function(ctx, scale, italic, bold, size, font, align,
             f[2] *= 1 / scale;
         }
         if(align === "center") {
-            pos = pos.addVector(new Vector2D(width, 0).mul(.5));
+            xAdd = 0;
+            pos = pos.addVector(new Vector2D(width, 0).mul(0.5));
         }
         if(align === "right") {
+            xAdd = 0;
             pos = pos.addVector(new Vector2D(width, 0));
         }
         ctx.font = this.fontToText(f[0], f[1], f[2], f[3]);
         ctx.textAlign = align;
         ctx.fillStyle = color;
-        ctx.fillText(this.parts[0], pos.x, pos.y);
+        ctx.fillText(this.parts[0], pos.x + xAdd, pos.y);
     } else {
         for (var i = 0, l = this.parts.length; i < l; i++) {
             if(typeof this.parts[i].draw === 'function') {
-                this.parts[i].draw(ctx, scale, f[0], f[1], f[2], f[3], align, color, scaling, pos, width);
+                this.parts[i].draw(ctx, scale, f[0], f[1], f[2], f[3], align, color, scaling, pos, xAdd, width);
             }
-            if(this.parts[i].length === 1) {
+            if(this.parts[i].parts.length === 1) {
                 if(typeof this.parts[i].measure === 'function') {
                     var s = this.parts[i].measure(ctx, scale, f[0], f[1], f[2], f[3], scaling);
-                    pos.x += s.x;
+                    xAdd += s.x;
                 }
             }
         }
-        pos.x = x;
     }
 };
 
@@ -109,6 +109,7 @@ Paragraph.prototype.measure = function(ctx, scale, italic, bold, size, font, sca
 
 Paragraph.prototype.checkForStyle = function(text, opening, closing, style) {
     var temp = text.split(opening);
+    var v;
     if(temp.length >= 2) {
         var t = temp.shift();
         if(t.length > 0 && !(t instanceof Paragraph)) {
@@ -120,7 +121,7 @@ Paragraph.prototype.checkForStyle = function(text, opening, closing, style) {
             var p = temp[i].split(closing);
             if(opening.indexOf("=") > -1) {
                 p[0] = p[0].split("]");
-                var v = p[0].shift();
+                v = p[0].shift();
                 var split = "";
                 for(var j = 0, m = p[0].length; j < m; j++) {
                     split += p[0][j];

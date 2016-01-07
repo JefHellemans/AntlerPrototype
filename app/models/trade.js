@@ -9,6 +9,7 @@ var tradeSchema = mongoose.Schema({
     AmountInvested: Number,
     PercentageInvested: Number,
     StartStockPrice: Number,
+    StopStockPrice: Number,
     IsShort: Boolean,
     Comment: String,
     ParentTrade:{

@@ -12,6 +12,7 @@ exports.postCompany = function(req,res){
         {
 
             company.Name = req.body.name;
+            company.Ticker = req.body.ticker;
             company.Image = req.body.image;
             company.CurrentStockPrice = req.body.currentstockprice;
 

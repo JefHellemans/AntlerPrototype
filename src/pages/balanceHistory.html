@@ -7,20 +7,12 @@
             <th ng-click="sortType = 'date'; sortReverse = !sortReverse">Date
                 <span ng-show="sortType == 'date' && !sortReverse" class="caret"></span>
                 <span ng-show="sortType == 'date' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-            <th ng-click="sortType = 'source'; sortReverse = !sortReverse">Source
-                <span ng-show="sortType == 'source' && !sortReverse" class="caret"></span>
-                <span ng-show="sortType == 'source' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-            <th ng-click="sortType = 'destination'; sortReverse = !sortReverse">Destination
-                <span ng-show="sortType == 'destination' && !sortReverse" class="caret"></span>
-                <span ng-show="sortType == 'destination' && sortReverse" class="dropup"><span class="caret"></span></span></th>
             <th ng-click="sortType = 'change'; sortReverse = !sortReverse" class="right">Change
                 <span ng-show="sortType == 'change' && !sortReverse" class="caret"></span>
                 <span ng-show="sortType == 'change' && sortReverse" class="dropup"><span class="caret"></span></span></th>
         </tr>
         <tr ng-repeat="transaction in transactions | orderBy:sortType:sortReverse">
             <td>{{transaction.date}}</td>
-            <td>{{transaction.source}}</td>
-            <td>{{transaction.destination}}</td>
             <td ng-if="transaction.change >= 0" class="positive">{{transaction.change.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
             <td ng-if="transaction.change < 0" class="negative">{{transaction.change.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
         </tr>

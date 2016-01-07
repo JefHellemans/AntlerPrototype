@@ -27,9 +27,23 @@
             $scope.user.currentAmount = 2000;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
             getNewTraders();
+            getTrades();
         };
 
         var onLoggedError = function(err){
+            console.log(err);
+        };
+
+        var getTrades = function() {
+            tradeService.getTradesFromUser().then(onTradesLoaded, onTradesError);
+        };
+
+        var onTradesLoaded = function(response) {
+            $scope.user.trades = response;
+            tradeCanvas($scope.user);
+        };
+
+        var onTradesError = function(err) {
             console.log(err);
         };
 
@@ -94,7 +108,6 @@
             console.log(err);
         };
 
-        tradeCanvas();
         getFollowing();
         getLoggedInUser();
         getCompanies();

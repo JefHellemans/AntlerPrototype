@@ -50,6 +50,7 @@ Canvas.prototype.setSize = function(width, height) {
     this.height = height;
     this.ctx.canvas.width = width;
     this.ctx.canvas.height = height;
+    this.center = new Vector2D(width / 2, height / 2);
     this.draw();
 };
 

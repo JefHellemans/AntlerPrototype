@@ -56,10 +56,10 @@ var Drawable = function() {
                     div = this.img.height;
                 }
             }
-            var clip = new Vector2D(this.img.width, this.img.height).div(div).mulVector(this.size).subVector(this.size).mul(-.5);
+            var clip = new Vector2D(this.img.width, this.img.height).div(div).mulVector(this.size).subVector(this.size).mul(-0.5);
             var p = new Vector2D(0, 0).subVector(this.size.div(2));
             if(!this.scale) {
-                clip.mul()
+                clip.mul();
             }
             ctx.drawImage(this.img, clip.x, clip.y, this.size.x, this.size.y, p.x, p.y, this.size.x, this.size.y);
         } else {
@@ -190,7 +190,7 @@ var Drawable = function() {
                         space *= 1 / scale;
                     }
                     height += space;
-                    this.text[i].draw(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textAlign, this.textColor, this.textScaling, paragraphPos, w);
+                    this.text[i].draw(ctx, scale, this.textItalic, this.textBold, this.textSize, this.textFont, this.textAlign, this.textColor, this.textScaling, paragraphPos, 0, w);
                     paragraphPos = paragraphPos.addVector(new Vector2D(0, height));
                 }
             } else {

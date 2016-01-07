@@ -1,4 +1,5 @@
-var Trade = function(stockPrice, traders, pos) {
+var Trade = function(id, stockPrice, traders, pos) {
+    this.id = id;
     this.stockPrice = stockPrice;
     this.traders = traders;
     this.drawable = new Drawable();

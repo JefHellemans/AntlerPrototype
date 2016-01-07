@@ -6,7 +6,9 @@
     var tradeService = function ($http) {
 
         var getTradesFromUser = function () {
-
+            return $http.get(url + "/trades").then(function(response){
+                return response.data;
+            });
         };
 
         var getCompanies = function() {

@@ -10,6 +10,7 @@ var userSchema = mongoose.Schema({
         lastname     : String,
         email        : String,
         password     : String,
+        image        : String,
         trades :[
                     {
                         type:mongoose.Schema.Types.ObjectId, ref: 'Trade'

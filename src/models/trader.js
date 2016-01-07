@@ -1,9 +1,9 @@
-function Trader(name, amount, inAt, type, comment) {
+function Trader(name, amount, inAt, isShort, comment) {
     this.name = name;
     this.amount = amount;
     this.inAt = inAt;
     this.comment = comment;
-    this.type = type;
+    this.isShort = isShort;
     this.difference = 0;
     this.drawable = new Drawable();
 
@@ -34,7 +34,7 @@ function Trader(name, amount, inAt, type, comment) {
         var diff = Math.floor((stockPrice - this.inAt) * this.amount * 100) / 100;
         var pos = "#36B5DB";
         var neg = "#E74C3C";
-        if(this.type === 0) {
+        if(!this.isShort) {
             this.difference = diff;
         } else {
             this.difference = -diff;
@@ -45,13 +45,13 @@ function Trader(name, amount, inAt, type, comment) {
             preset += neg + "]";
         }
         preset += this.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/align]\n[i][color=";
-        if(this.type === 0) {
+        if(!this.isShort) {
             preset += pos + "]";
         } else {
             preset += neg + "]";
         }
         preset += amount;
-        if(this.type === 0) {
+        if(!this.isShort) {
             preset += " long at ";
         } else {
             preset += " short at ";

@@ -22,7 +22,7 @@
                 <span ng-show="sortType == 'difference' && !sortReverse" class="caret"></span>
                 <span ng-show="sortType == 'difference' && sortReverse" class="dropup"><span class="caret"></span></span></th>
         </tr>
-        <tr ng-repeat="trade in trades | orderBy:sortType:sortReverse">
+        <tr ng-repeat="trade in user.trades | orderBy:sortType:sortReverse">
             <td>{{trade.date}}</td>
             <td>{{trade.shares}}</td>
             <td>{{trade.type}}</td>
