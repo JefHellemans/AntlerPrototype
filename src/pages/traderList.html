@@ -34,16 +34,16 @@
             <form>
 
             <div class="form-group">
-                <input ng-model="trade.company" placeholder="Company" type="search" name="searchCompany" id="searchCompany">
+                <input ng-model="trade.Company" placeholder="Company" type="search" name="searchCompany" id="searchCompany">
 
                 <label for="amount">Amount(€)</label>
-                <input ng-model="trade.amount" id="amount" type="number" placeholder="500">
+                <input ng-model="trade.AmountInvested" id="amount" type="number" placeholder="500">
 
                 <label for="stock">Stock</label>
                 <input ng-model="trade.stock" id="stock" type="number" placeholder="200">
 
                 <label for="percentage">Percentage</label>
-                <input ng-model="trade.percentage" id="percentage" type="number" placeholder="5">
+                <input ng-model="trade.PercentageInvested" id="percentage" type="number" placeholder="5">
 
                 <label for="rbLong">Long</label>
                 <input ng-model="trade.longShort" value="long" id="rbLong" type="radio" name="longShort">
@@ -52,7 +52,7 @@
                 <input ng-model="trade.longShort" value="short" id="rbShort" type="radio" name="longShort">
 
                 <label for="comment">Comment</label>
-                <input ng-model="trade.comment" type="text" id="comment" placeholder="I made this trade because...">
+                <input ng-model="trade.Comment" type="text" id="comment" placeholder="I made this trade because...">
             </div>
 
 

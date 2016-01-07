@@ -31,8 +31,18 @@
                 }
             });
 
+            var trades = [];
+            var total = 0;
+            angular.forEach($scope.trader.trades, function(trade){
+                if(!trades.indexOf(trade) > -1){
+                    trades.push(trade);
+                    total++;
+                }
+            });
+
             $scope.trader.followersAmount = followerAmount;
             $scope.trader.followingAmount = followingAmount;
+            $scope.trader.total = total;
         };
 
         var onTraderError = function(err) {

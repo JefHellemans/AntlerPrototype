@@ -71,19 +71,33 @@
             return $scope.isNewTrade = false;
         };
 
-
         $scope.confirmTrade = function (trade) {
-            console.log(trade);
+            tradeService.postTrade(trade, $scope.companies).then(onTradePosted, onTradeError);
+        };
 
-            //post met trade info naar trade api
-            //tradeService.makeTrade(trade);
-
+        var onTradePosted = function(response){
+            console.log(response);
             return $scope.isNewTrade = true;
+        };
+        var onTradeError = function(err){
+            console.log(err);
+        };
+
+        var getCompanies = function(){
+            tradeService.getCompanies().then(onCompanies, onCompaniesError);
+        };
+
+        var onCompanies = function(response){
+            $scope.companies = response;
+        };
+        var onCompaniesError = function(err){
+            console.log(err);
         };
 
         tradeCanvas();
         getFollowing();
         getLoggedInUser();
+        getCompanies();
     };
 
     angular.module("app").controller("mainController", [ "$scope", "userService", "tradeService", mainController]);
