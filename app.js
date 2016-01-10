@@ -7,6 +7,8 @@ var flash = require("connect-flash");
 var path = require("path");
 var jwt = require("jsonwebtoken");
 
+
+
 var morgan = require("morgan");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -26,6 +28,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended:true
 }));
+
+app.use(bodyParser.urlencoded({uploadDir:'/path/to/temporary/directory/to/store/uploaded/files',extended:true}));
 
 
 app.set('views', __dirname + "/src/pages");
@@ -192,5 +196,18 @@ app.use(function(req, res){
     res.render('index.ejs');
 });
 
-app.listen(port);
-console.log("Server started on port: " + port);
+
+
+var server = app.listen(port, function(){
+    console.log("Server started on port: " + port);
+});
+
+var io = require('socket.io').listen(server);
+
+io.on('connection', function(socket){
+    console.log("Trader connected");
+
+    socket.on('disconnect', function(){
+        console.log("Trader disconnected");
+    })
+});

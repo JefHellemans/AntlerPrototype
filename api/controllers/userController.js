@@ -1,4 +1,6 @@
 var User = require('../../app/models/user');
+var path = require('path'),
+    fs = require('fs');
 
 exports.getUsers = function(req,res){
   User.find({},function(err,users){
@@ -17,3 +19,4 @@ exports.getUserById = function(req, res){
         res.json(user);
     });
 };
+

@@ -24,6 +24,7 @@
     "ejs": "^2.3.4",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
+    "fs": "0.0.2",
     "jade": "^1.11.0",
     "jsonwebtoken": "^5.5.0",
     "method-override": "^2.3.5",
@@ -31,7 +32,9 @@
     "morgan": "^1.6.1",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "socket.io": "^1.4.3"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
