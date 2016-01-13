@@ -204,10 +204,5 @@ var server = app.listen(port, function(){
 
 var io = require('socket.io').listen(server);
 
-io.on('connection', function(socket){
-    console.log("Trader connected");
-
-    socket.on('disconnect', function(){
-        console.log("Trader disconnected");
-    })
-});
+//sockets aanroepen
+require('./sockets.js')(io);
