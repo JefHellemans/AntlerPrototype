@@ -90,7 +90,6 @@
         };
 
         var onTradePosted = function(response){
-            console.log(response);
             return $scope.isNewTrade = true;
         };
         var onTradeError = function(err){

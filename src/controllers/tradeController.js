@@ -23,7 +23,6 @@
 
         var onTradesLoaded = function(response) {
             $scope.user.trades = response;
-            console.log(response);
             tradeCanvas($scope.user);
         };
 
