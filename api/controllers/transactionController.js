@@ -5,6 +5,7 @@ var User = require('../../app/models/user');
 exports.postTransaction = function(req,res){
     var transaction = new Transaction();
     var amountchange = req.body.amountchange;
+    console.log("AMOUNTCHANGE", amountchange);
     transaction.amountchange = amountchange;
 
     transaction.save(function(err){
@@ -15,16 +16,13 @@ exports.postTransaction = function(req,res){
                 user.balance = 0;
             }
             var amountchangenumber = Number(amountchange);
-            user.balance+=amountchangenumber;
+            user.balance += amountchangenumber;
             user.markModified('balance');
             user.save();
         });
         User.update({_id:req.user._id}, {$push: {transactions:transaction}},{safe:true,upsert:true},function(err,model){
             console.log(err);
         });
-
-
-
 
         res.json({message:'transaction added', data:transaction});
 

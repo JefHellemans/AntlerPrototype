@@ -1,7 +1,7 @@
 (function (){
     "use strict";
 
-    var balanceController = function($scope, $routeParams, $window, userService) {
+    var balanceController = function($scope, $routeParams, $window, userService, transactionService) {
 
         var authenticate = function(config){
             userService.authenticate(config).then(onAuthenticated, onAuthError);
@@ -22,11 +22,12 @@
         var onLoggedIn = function(response){
             var config = {email: response.email, password: response.password};
             authenticate(config);
+            for(var i = 0, l = response.transactions.length; i < l; i++) {
+                var d = response.transactions[i].date;
+                response.transactions[i].date = new Date(d);
+                console.log(response.transactions[i].amountchange);
+            }
             $scope.user = response;
-            $scope.user.currentAmount = 2000;
-            $scope.user.traders = 2000;
-            $scope.user.invested = 2000;
-            $scope.user.total = $scope.user.currentAmount + $scope.user.traders + $scope.user.invested;
         };
 
         var onLoggedError = function(err){
@@ -34,17 +35,23 @@
         };
 
         $scope.sortType = 'date';
-        $scope.sortReverse = false;
+        $scope.sortReverse = true;
         $scope.change = 0;
 
         $scope.deposit = function() {
-            $scope.user.currentAmount += $scope.change;
-            $window.location = "/balance";
+            transactionService.postTransaction($scope.change, $scope.token).then(onTransactionPosted, onTransactionError);
         };
 
         $scope.withdraw = function() {
-            $scope.user.currentAmount -= $scope.change;
+            transactionService.postTransaction(-$scope.change, $scope.token).then(onTransactionPosted, onTransactionError);
+        };
+
+        var onTransactionPosted = function() {
             $window.location = "/balance";
+        };
+
+        var onTransactionError = function(err) {
+            console.log(err);
         };
 
         $scope.changeField = function(withdraw) {
@@ -59,8 +66,16 @@
             return ($scope.change <= 0);
         };
 
+        $scope.transactionClass = function(transaction) {
+            if(transaction.amountchange >= 0) {
+                return "positive";
+            } else {
+                return "negative";
+            }
+        };
+
         getLoggedInUser();
     };
 
-    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", "$window", "userService", balanceController]);
+    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", "$window", "userService", "transactionService", balanceController]);
 })();
