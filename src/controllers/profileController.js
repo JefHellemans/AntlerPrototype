@@ -27,35 +27,38 @@
             // follower amount, trader amount, total trades amount
             var followers = [];
             var followerAmount = 0;
-            angular.forEach($scope.trader.followers, function(follower){
+            if($scope.trader){
+                angular.forEach($scope.trader.followers, function(follower){
 
-                if(!followers.indexOf(follower) > -1){
-                    followers.push(follower);
-                    followerAmount++;
-                }
-            });
+                    if(!followers.indexOf(follower) > -1){
+                        followers.push(follower);
+                        followerAmount++;
+                    }
+                });
 
-            var following = [];
-            var followingAmount = 0;
-            angular.forEach($scope.trader.following, function(followee){
-                if(!following.indexOf(followee) > -1){
-                    following.push(followee);
-                    followingAmount++;
-                }
-            });
+                var following = [];
+                var followingAmount = 0;
+                angular.forEach($scope.trader.following, function(followee){
+                    if(!following.indexOf(followee) > -1){
+                        following.push(followee);
+                        followingAmount++;
+                    }
+                });
 
-            var trades = [];
-            var total = 0;
-            angular.forEach($scope.trader.trades, function(trade){
-                if(!trades.indexOf(trade) > -1){
-                    trades.push(trade);
-                    total++;
-                }
-            });
+                var trades = [];
+                var total = 0;
+                angular.forEach($scope.trader.trades, function(trade){
+                    if(!trades.indexOf(trade) > -1){
+                        trades.push(trade);
+                        total++;
+                    }
+                });
 
-            $scope.trader.followersAmount = followerAmount;
-            $scope.trader.followingAmount = followingAmount;
-            $scope.trader.total = total;
+                $scope.trader.followersAmount = followerAmount;
+                $scope.trader.followingAmount = followingAmount;
+                $scope.trader.total = total;
+            }
+
         };
 
         var onTraderError = function(err) {
@@ -68,6 +71,11 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
+            $scope.user.currentAmount = response.balance;
+            $scope.user.followersAmount = response.followers.length;
+            $scope.user.followingAmount = response.following.length;
+            $scope.user.total = response.trades.length;
+            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
             var config = {email: response.email, password: response.password};
             authenticate(config);
         };

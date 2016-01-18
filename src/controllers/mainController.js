@@ -89,7 +89,6 @@
         };
 
         $scope.confirmTrade = function (trade) {
-            console.log(trade);
             if(trade != null){
                 if(trade.Company != null && trade.AmountInvested != null
                     && trade.stock != null && trade.PercentageInvested != null
@@ -104,7 +103,7 @@
         };
 
         var onTradePosted = function(response){
-            return $scope.isNewTrade = true;
+            return $scope.isNewTrade = false;
         };
         var onTradeError = function(err){
             console.log(err);

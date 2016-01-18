@@ -12,6 +12,7 @@ var tradeSchema = mongoose.Schema({
     StopStockPrice: Number,
     IsShort: Boolean,
     Comment: String,
+    Date: { type: Date, default: Date.now },
     ParentTrade:{
         type:mongoose.Schema.Types.ObjectId, ref: 'Trade'
     }

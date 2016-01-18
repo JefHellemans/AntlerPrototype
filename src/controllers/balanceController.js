@@ -28,6 +28,8 @@
                 console.log(response.transactions[i].amountchange);
             }
             $scope.user = response;
+            $scope.user.currentAmount = response.balance;
+            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
         };
 
         var onLoggedError = function(err){
