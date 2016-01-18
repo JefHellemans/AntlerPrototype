@@ -26,6 +26,10 @@
   src: url("SourceSansPro-BoldItalic.ttf");
 }
 
+html {
+  min-width: 800px;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -190,7 +194,7 @@ input#resetOffset {
   background-position: center;
   cursor: pointer;
   border-radius: 25%;
-  box-shadow: 0.6px 0.6px 4px rgba(0, 0, 0, 0.5), 0px 0px 0.6px rgba(13, 13, 13, 0.5);
+  box-shadow: 0.6px 0.6px 4px rgba(0, 0, 0, 0.5), 0 0 0.6px rgba(13, 13, 13, 0.5);
   height: 25px;
   width: 25px;
   border:none;
@@ -200,6 +204,8 @@ input#resetOffset {
 section#header {
   height: @headerHeight;
   width: auto;
+  min-width: 800px;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, .05);
 
   div {
     text-align: center;
@@ -270,91 +276,216 @@ section#header {
   background-color: @antlerSoftRed;
 }
 
-section div#traderList {
-  height: 100px;
+section.dock {
+  position: fixed;
   bottom: 0;
-  position: absolute;
-  display: block;
-  background-color: white;
-  width: auto;
-  padding: 0 10px 0 10px;
+  left: 50%;
+  height: 107px;
+  width: 750px;
+  margin-left: -375px;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, .05);
+  border-radius: 5px 5px 0 0;
 
-  div{
-    float: left;
-    margin: 0 10px 0 0;
-  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 
-  a {
-    text-decoration: none;
-  }
-  
-  div:nth-child(3){
+    li {
+      display: inline-block;
 
-    cursor: pointer;
+      &:last-of-type {
+        float: right;
+      }
 
-    &:hover {
-      color: @antlerStandardBlue;
-    }
+      a {
+        width: 75px;
+        height: 75px;
+        display: block;
+        text-align: center;
 
-    h3 {
-      border: none;
-    }
+        img {
+          width: 50px;
+          height: 50px;
+        }
 
-    p {
-      font-size: 26px;
-      text-align: center;
-      margin: 20px 0 0 0;
+        .glyphicon {
+          font-size: 42px;
+          margin-bottom: 5px;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
     }
   }
 
   h3 {
-    margin: 5px 0 5px 10px;
-    font-size: 16px;
-    border-right: 1px solid @antlerStandardBlue;
-  }
-
-  ul {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-  }
-
-  ul li {
-    display: inline-block;
-    margin-right: 20px;
+    font-size: 12px;
+    font-weight: bold;
     text-align: center;
-
-    img{
-      width: @headerHeight;
-      height: @headerHeight;
-      display: block;
-    }
-
-    span {
-      text-align: center;
-    }
+    margin: 10px 0;
   }
 
+  .current {
+    width: 375px;
+    background-color: #ffffff;
+    border-right: 1px solid @mediumgrey;
+    border-top-left-radius: 5px;
+    height: 100%;
+    float: left;
+  }
 
-  div#newTrade {
-    width: 10%;
-    height: auto;
-    margin: 0 10px 0 0;
+  .recommended {
+    width: 300px;
+    background-color: #ffffff;
+    border-right: 1px solid @mediumgrey;
+    height: 100%;
+    float: left;
+  }
 
-    h3 {
-      margin: 5px -20px 20px 10px;
+  .makeTrade {
+    background-color: #ffffff;
+    width: 75px;
+    height: 100%;
+    float: left;
+    border: none;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+
+    p {
+      font-size: 75px;
+      text-align: center;
+      margin: -25px auto 0 auto;
+    }
+  }
+}
+
+.newTrade {
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  margin-left: 50px;
+  width: 325px;
+  padding: 25px;
+  transform: scale(0, 0);
+  transform-origin: bottom right;
+  transition: .3s ease-out;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, .05);
+  background-color: #ffffff;
+  border-radius: 5px;
+
+  &.open {
+    transform: scale(1, 1);
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  form {
+    margin-top: 20px;
+
+    .third {
+      width: ~'calc((100% - 20px) / 3)';
+      display: inline-block;
+      margin: 0 5px;
+      padding: 0;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      &:nth-child(3) {
+        margin-right: 0;
+      }
     }
 
-    button {
-      margin: 0 10px 40px 10px;
+    .rb {
+      width: 50%;
+      display: block;
+      float: left;
+
+      label {
+        display: inline-block;
+        width: auto;
+        margin-right: 5px;
+      }
+      input {
+        display: inline-block;
+        width: auto;
+      }
     }
 
     input {
-      margin: auto auto 15px 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      outline: none;
+      border: 1px solid #cdcdcd;
+      font-size: 12px;
+      padding: 5px;
+      display: inline-block;
+      border-radius: 4px;
     }
 
-    label {
-      margin: auto auto auto 10px;
+    button {
+      margin: 0;
+      background-color: @antlerStandardBlue;
+      border: 1px solid @antlerDarkBlue;
+      color: #ffffff;
+      border-radius: 4px;
+
+      &:hover {
+        border: 1px solid @antlerDarkBlue;
+        color: #ffffff;
+        background-color: darken(@antlerStandardBlue, 5%);
+      }
     }
 
+    .extra {
+      display: block;
+
+      &:before {
+        display: inline-block;
+        padding: 5px 0;
+        width: 25%;
+        text-align: center;
+        font-size: 12px;
+        border: 1px solid @antlerDarkBlue;
+        border-right: none;
+        border-radius: 4px 0 0 4px;
+        background-color: @antlerStandardBlue;
+        color: #ffffff;
+      }
+
+      input {
+        border-radius: 0 4px 4px 0;
+        border-left: none;
+        width: 75%;
+      }
+
+      &.valuta {
+        &:before {
+          content: "€";
+        }
+      }
+
+      &.number {
+        &:before {
+          content: "#";
+        }
+      }
+
+      &.percentage {
+        &:before {
+          content: "%";
+        }
+      }
+    }
   }
 }

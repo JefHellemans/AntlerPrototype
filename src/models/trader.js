@@ -5,6 +5,8 @@ function Trader(name, amount, inAt, isShort, comment) {
     this.comment = comment;
     this.isShort = isShort;
     this.difference = 0;
+
+    console.log(this.amount, this.inAt);
     this.drawable = new Drawable();
 
     this.drawable.color = "#ffffff";

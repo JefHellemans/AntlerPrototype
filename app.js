@@ -7,8 +7,6 @@ var flash = require("connect-flash");
 var path = require("path");
 var jwt = require("jsonwebtoken");
 
-
-
 var morgan = require("morgan");
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');

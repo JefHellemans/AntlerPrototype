@@ -3,7 +3,7 @@
 
     var mainController = function($scope, userService, tradeService){
 
-        $scope.isNewTrade = true;
+        $scope.isNewTrade = false;
         $scope.homepage = true;
 
 
@@ -41,8 +41,12 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
+            $scope.user.currentAmount = 2000;
             $scope.user.currentAmount = 0;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
+
+            getNewTraders();
+            tradeCanvas($scope.user);
             var config = {email: response.email, password: response.password};
             authenticate(config);
         };
@@ -88,7 +92,15 @@
         };
 
         $scope.newTrade = function(){
-            return $scope.isNewTrade = false;
+            return $scope.isNewTrade = !$scope.isNewTrade;
+        };
+
+        $scope.isNewTradeOpen = function() {
+            if($scope.isNewTrade) {
+                return "open";
+            } else {
+                return "";
+            }
         };
 
         $scope.confirmTrade = function (trade) {
