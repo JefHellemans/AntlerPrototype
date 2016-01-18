@@ -9,9 +9,23 @@ exports.getUsers = function(req,res){
 };
 
 exports.getLoggedInUser = function(req, res){
-    User.find({_id: req.user._id}, function(err, user){
-        res.json(user);
-    });
+
+    User.findOne({_id:req.user._id})
+        .lean()
+        .populate([{ path: 'trades' }, {path:'transactions'}])
+        .exec(function(err, docs) {
+
+            var options = {
+                path: 'trades.Company',
+                model: 'Company'
+            };
+
+            if (err) return res.json(500);
+            User.populate(docs, options, function (err, user) {
+                res.json(user);
+            });
+        });
+
 };
 
 exports.getUserById = function(req, res){
