@@ -1,10 +1,15 @@
 var User = require('./app/models/user');
+var Company = require('./app/models/company');
 var mongoose = require('mongoose');
 
 
 module.exports = function(io){
 
     var traders = [];
+    var companiesarray;
+    Company.find(function(err,companies){
+        companiesarray = companies;
+    });
 
     io.on('connection', function(socket){
         console.log("Trader connected with id: " + socket.id);
@@ -49,12 +54,25 @@ module.exports = function(io){
             }
         })
 
-        var intervalID = setInterval(function(){
-            console.log("updating prices");
-        }, 5000);
+
 
 
     });
+
+    var intervalID = setInterval(function(){
+        for (var i=0; i<companiesarray.length; i++) {
+
+             companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4
+            companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100
+
+
+        }
+
+
+
+        //console.log(companiesarray);
+        io.sockets.emit('priceUpdate', Date.now() + "");
+    }, 5000);
 
     function trader(id, antlerid){
         this.id = id;
