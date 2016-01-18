@@ -54,27 +54,26 @@
         var onNewTraders = function(response){
 
             var users = response;
-            var currentFollowing = [];
             var newTraders = [];
 
             angular.forEach($scope.user.following, function(followee){
-                currentFollowing.push(followee);
 
                 angular.forEach(users, function(user){
-
                     var index = users.indexOf(user);
-
                     if(user._id === followee || user._id === $scope.user._id){
                         users.splice(index, 1);
                     }
                 });
             });
 
-            angular.forEach(users, function(user){
-                if($scope.user._id != user._id){
-                    newTraders.push(user);
-                }
+            angular.forEach($scope.user.following, function(followee){
+                angular.forEach(users, function(user){
+                    if(user._id != followee){
+                        newTraders.push(user);
+                    }
+                });
             });
+
 
             $scope.newTraders = newTraders;
         };
