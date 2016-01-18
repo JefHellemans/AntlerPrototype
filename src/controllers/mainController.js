@@ -24,7 +24,7 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
-            $scope.user.currentAmount = response.balance;
+            $scope.user.currentAmount = 0;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
             getNewTraders();
             getTrades();
@@ -54,29 +54,16 @@
         var onNewTraders = function(response){
 
             var users = response;
-            var currentFollowing = [];
-            var newTraders = [];
-
-            angular.forEach($scope.user.following, function(followee){
-                currentFollowing.push(followee);
-
-                angular.forEach(users, function(user){
-
-                    var index = users.indexOf(user);
-
-                    if(user._id === followee || user._id === $scope.user._id){
-                        users.splice(index, 1);
-                    }
-                });
-            });
 
             angular.forEach(users, function(user){
-                if($scope.user._id != user._id){
-                    newTraders.push(user);
+                var index = users.indexOf(user);
+                if(user._id === $scope.user._id){
+                    users.splice(index, 1);
                 }
             });
 
-            $scope.newTraders = newTraders;
+            $scope.newTraders = users;
+
         };
 
         var onNewTradersError = function(err){
