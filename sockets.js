@@ -9,6 +9,20 @@ module.exports = function(io){
     var companiesarray;
     Company.find(function(err,companies){
         companiesarray = companies;
+        var intervalID = setInterval(function(){
+            for (var i=0; i<companiesarray.length; i++) {
+
+                companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4
+                companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100
+
+
+            }
+
+
+
+            //console.log(companiesarray);
+            io.sockets.emit('priceUpdate', Date.now() + "");
+        }, 5000);
     });
 
     io.on('connection', function(socket){
@@ -59,20 +73,7 @@ module.exports = function(io){
 
     });
 
-    var intervalID = setInterval(function(){
-        for (var i=0; i<companiesarray.length; i++) {
 
-             companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4
-            companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100
-
-
-        }
-
-
-
-        //console.log(companiesarray);
-        io.sockets.emit('priceUpdate', Date.now() + "");
-    }, 5000);
 
     function trader(id, antlerid){
         this.id = id;

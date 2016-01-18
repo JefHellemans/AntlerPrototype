@@ -74,7 +74,7 @@ exports.postTrade=function(req,res){
                                 tradeTwo.Comment = req.body.Comment;
                                 tradeTwo.StopStockPrice = -1;
                                 tradeTwo.Company=req.body.CompanyId;
-                                tradeTwo.ParentTrade = trade;
+                                tradeTwo.ParentTrade = trade._id;
 
 
 

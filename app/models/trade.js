@@ -13,9 +13,7 @@ var tradeSchema = mongoose.Schema({
     IsShort: Boolean,
     Comment: String,
     Date: { type: Date, default: Date.now },
-    ParentTrade:{
-        type:mongoose.Schema.Types.ObjectId, ref: 'Trade'
-    }
+    ParentTrade:String
 
 });
 
