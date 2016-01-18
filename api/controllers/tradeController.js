@@ -110,10 +110,6 @@ exports.getTradesFromCurrentUser = function(req,res){
     }
     else{
 
-
-
-
-
         User.findOne({_id:req.user._id})
             .lean()
             .populate({ path: 'trades' })
