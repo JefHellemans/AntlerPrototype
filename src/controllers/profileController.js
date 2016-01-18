@@ -72,7 +72,6 @@
                 if ($scope.trader.followers.indexOf($scope.user._id) == -1) {
                     userService.followTrader(trader).then(onFollow, onFollowError);
                 } else {
-                    console.log("U volgt deze persoon al");
                     $scope.errorText = "U volgt deze persoon al";
                 }
             }

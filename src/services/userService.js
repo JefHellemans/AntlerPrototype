@@ -22,7 +22,7 @@
 
         var getLoggedInUser = function() {
             return $http.get(url + "/loggedInUser").then(function(response){
-                return response.data[0];
+                return response.data;
             });
         };
 
