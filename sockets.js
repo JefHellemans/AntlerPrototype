@@ -49,6 +49,11 @@ module.exports = function(io){
             }
         })
 
+        var intervalID = setInterval(function(){
+            console.log("updating prices");
+        }, 5000);
+
+
     });
 
     function trader(id, antlerid){

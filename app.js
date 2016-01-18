@@ -71,26 +71,9 @@ router.post('/authenticate', function(req, res) {
             res.json({ success: false, message: 'Authentication failed. User not found.' });
         } else if (user) {
 
-            // check if password matches
-            user.verifyPassword(req.body.password, function (err, isMatch) {
-                var errortje = false;
-                if (err) {
-                    //res.json({ success: false, message: 'Something went wrong' + err });
-                    errortje = true;
-                }
 
-                // Password did not match
-                if (!isMatch) {
-                    //res.json({ success: false, message: 'Password did not match' });
-                    errortje = true;
-                }
+            if(user.password == req.body.password){
 
-
-                //success
-                // if user is found and password is right
-                // create a token
-
-                if(!errortje){
                     var token = jwt.sign(user, app.get('superSecret'), {
                         expiresInMinutes: 1440 // expires in 24 hours
                     });
@@ -102,12 +85,13 @@ router.post('/authenticate', function(req, res) {
                         token: token
                     });
                 }
-                else{
-                    res.json({success:false,message:'Error'});
-                }
 
+            }
 
-            });
+            else{
+            res.json({success:false,message:'Error'});
+
+            
         }
 
 
