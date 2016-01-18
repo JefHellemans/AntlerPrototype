@@ -25,7 +25,6 @@
             for(var i = 0, l = response.transactions.length; i < l; i++) {
                 var d = response.transactions[i].date;
                 response.transactions[i].date = new Date(d);
-                console.log(response.transactions[i].amountchange);
             }
             $scope.user = response;
             $scope.user.currentAmount = response.balance;

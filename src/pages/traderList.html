@@ -12,20 +12,20 @@
     </div>
     <div class="recommended">
         <h3>Top traders for you</h3>
-        <ul>
-            <li ng-repeat="t in newTraders">
+        <ul><!--
+            --><li ng-repeat="t in newTraders">
                 <a ng-href="user/{{t._id}}">
                     <img src="../dist/images/logos/antlerlogo.png" alt="profilepicture">
                     <span>{{t.firstname}}</span>
                 </a>
-            </li>
-            <li>
+            </li><!--
+            --><li>
                 <a ng-href="user/search">
                     <span class="glyphicon glyphicon-search"></span>
                     <span>Search</span>
                 </a>
-            </li>
-        </ul>
+            </li><!--
+        --></ul>
     </div>
 
     <div class="makeTrade" ng-click="newTrade()">
@@ -39,21 +39,24 @@
 
     <form>
         <div class="form-group">
-            <input ng-model="trade.Company" placeholder="Company" type="search" name="searchCompany" id="searchCompany"><!--
+            <input list="searchCompany" ng-model="trade.Company" name="Company" placeholder="Company">
+            <datalist ng-model="trade.Company" id="searchCompany">
+                <option ng-repeat="company in companies">{{company.Name}}</option>
+            </datalist><!--
 
             --><div class="third">
                 <label for="amount">Price</label>
-                <div class="extra valuta"><input ng-model="trade.AmountInvested" id="amount" type="number" placeholder="500"></div>
+                <div class="extra valuta"><input ng-model="trade.AmountInvested" ng-step="companyStockPrice()" id="amount" type="number" ng-disabled="isAmountFieldEnabled(trade)" ng-change="changeNewTradeField('AmountInvested')"></div>
             </div><!--
 
             --><div class="third">
                 <label for="stock">Stock</label>
-                <div class="extra number"><input ng-model="trade.stock" id="stock" type="number" placeholder="200"></div>
+                <div class="extra number"><input ng-model="trade.stock" id="stock" type="number" ng-disabled="isAmountFieldEnabled(trade)" ng-change="changeNewTradeField('stock')"></div>
             </div><!--
 
             --><div class="third">
-                <label for="percentage">Percentage</label>
-                <div class="extra percentage"><input ng-model="trade.PercentageInvested" step="0.01" id="percentage" type="number" placeholder="5"></div>
+                <label for="investedPercentage">Percentage</label>
+                <div class="extra percentage"><input ng-model="trade.PercentageInvested" id="investedPercentage" type="number" ng-disabled="isAmountFieldEnabled(trade)" ng-change="changeNewTradeField('PercentageInvested')"></div>
             </div><!--
 
             --><div class="rb">
@@ -70,7 +73,6 @@
             <input ng-model="trade.Comment" type="text" id="comment" placeholder="I made this trade because...">
         </div>
 
-        <button class="btn btn-default" ng-click="confirmTrade(trade)">confirm</button>
+        <button class="btn btn-default" ng-click="confirmTrade(trade)" ng-disabled="isNewTradeEnabled(trade)">confirm</button>
     </form>
-    <p ng-bind="errorText"></p>
 </div>

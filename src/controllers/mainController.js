@@ -5,7 +5,14 @@
 
         $scope.isNewTrade = false;
         $scope.homepage = true;
-
+        $scope.trade = {
+            "Company": "",
+            "AmountInvested": 0,
+            "stock": 0,
+            "PercentageInvested": 0,
+            "longShort": "",
+            "Comment": ""
+        };
 
         var authenticate = function(config){
             userService.authenticate(config).then(onAuthenticated, onAuthError);
@@ -43,7 +50,6 @@
             $scope.user = response;
             $scope.user.currentAmount = response.balance;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
-
 
             var config = {email: response.email, password: response.password};
             authenticate(config);
@@ -88,22 +94,88 @@
             }
         };
 
-        $scope.confirmTrade = function (trade) {
-            if(trade != null){
-                if(trade.Company != null && trade.AmountInvested != null
-                    && trade.stock != null && trade.PercentageInvested != null
-                    && trade.longShort != null && trade.Comment != null) {
-                    tradeService.postTrade(trade, $scope.companies, $scope.token).then(onTradePosted, onTradeError);
-                }else {
-
+        $scope.changeNewTradeField = function(what) {
+            var companyName = $scope.trade.Company;
+            var stockPrice;
+            var stock;
+            for(var i = 0, l = $scope.companies.length; i < l; i++) {
+                if(companyName === $scope.companies[i].Name) {
+                    stockPrice = $scope.companies[i].CurrentStockPrice;
                 }
-            }else {
-                $scope.errorText = "Gelieve alles in te vullen";
+            }
+            if(stockPrice !== undefined) {
+                if (what === "AmountInvested") {
+                    if($scope.trade.AmountInvested < 0) {
+                        $scope.trade.AmountInvested = 0;
+                    }
+                    stock = Math.floor($scope.trade.AmountInvested / stockPrice);
+                    if(stock !== $scope.trade.stock) {
+                        setStockAmount(stock, stockPrice);
+                    }
+                } else if(what === "stock") {
+                    if($scope.trade.stock < 0) {
+                        $scope.trade.stock = 0;
+                    }
+                    setStockAmount($scope.trade.stock, stockPrice);
+                } else if(what === "PercentageInvested") {
+                    if($scope.trade.PercentageInvested < 0) {
+                        $scope.trade.PercentageInvested = 0;
+                    }
+                    var amount = Math.floor(($scope.trade.PercentageInvested / 100) * $scope.user.balance);
+                    stock = Math.floor(amount / stockPrice);
+                    setStockAmount(stock, stockPrice);
+                }
             }
         };
 
+        var setStockAmount = function(stock, price) {
+            var amount = stock * price;
+            var percentage = Math.floor((amount / $scope.user.balance) * 10000) / 100;
+            $scope.trade.stock = stock;
+            $scope.trade.AmountInvested = amount;
+            $scope.trade.PercentageInvested = percentage;
+        };
+
+        $scope.companyStockPrice = function() {
+            var companyName = $scope.trade.Company;
+            var stockPrice = 1;
+            for(var i = 0, l = $scope.companies.length; i < l; i++) {
+                if(companyName === $scope.companies[i].Name) {
+                    stockPrice = $scope.companies[i].CurrentStockPrice;
+                }
+            }
+            return stockPrice;
+        };
+
+        $scope.isAmountFieldEnabled = function(trade) {
+            if(trade !== undefined) {
+                if(trade.Company !== undefined && trade.Company !== "") {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        $scope.confirmTrade = function (trade) {
+            tradeService.postTrade(trade, $scope.companies, $scope.token).then(onTradePosted, onTradeError);
+        };
+
+        $scope.isNewTradeEnabled = function(trade) {
+            if(trade !== undefined) {
+                if(trade.Company !== undefined && trade.Company !== "" &&
+                    ((trade.AmountInvested !== undefined && trade.AmountInvested !== "" && trade.AmountInvested > 0) ||
+                    (trade.stock !== undefined && trade.stock !== "" && trade.stock > 0) ||
+                    (trade.PercentageInvested !== undefined && trade.PercentageInvested !== "" && trade.PercentageInvested > 0)) &&
+                    trade.longShort !== undefined && trade.longShort !== "" &&
+                    trade.Comment !== undefined && trade.Comment !== "") {
+                    return false;
+                }
+            }
+            return true;
+        };
+
         var onTradePosted = function(response){
-            return $scope.isNewTrade = false;
+            return $scope.isNewTrade = true;
         };
         var onTradeError = function(err){
             console.log(err);
