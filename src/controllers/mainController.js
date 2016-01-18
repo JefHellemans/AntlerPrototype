@@ -14,7 +14,6 @@
         var onAuthenticated = function(response){
             $scope.token = response.token;
             getFollowing();
-            getLoggedInUser();
             getCompanies();
             getNewTraders();
             getTrades();
@@ -41,12 +40,11 @@
         };
 
         var onLoggedIn = function(response){
-            var config = {email: response.email, password: response.password};
-            authenticate(config);
             $scope.user = response;
             $scope.user.currentAmount = 0;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
-
+            var config = {email: response.email, password: response.password};
+            authenticate(config);
         };
 
         var onLoggedError = function(err){
