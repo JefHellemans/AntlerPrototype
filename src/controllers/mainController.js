@@ -24,7 +24,7 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
-            $scope.user.currentAmount = 2000;
+            $scope.user.currentAmount = response.balance;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
             getNewTraders();
             getTrades();
@@ -86,7 +86,17 @@
         };
 
         $scope.confirmTrade = function (trade) {
-            tradeService.postTrade(trade, $scope.companies).then(onTradePosted, onTradeError);
+            if(trade != null){
+                if(trade.Company != null && trade.AmountInvested != null
+                    && trade.stock != null && trade.PercentageInvested != null
+                    && trade.longShort != null && trade.Comment != null) {
+                    tradeService.postTrade(trade, $scope.companies).then(onTradePosted, onTradeError);
+                }else {
+
+                }
+            }else {
+                $scope.errorText = "Gelieve alles in te vullen";
+            }
         };
 
         var onTradePosted = function(response){

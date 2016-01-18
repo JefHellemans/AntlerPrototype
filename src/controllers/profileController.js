@@ -67,17 +67,14 @@
         };
 
         $scope.follow = function(trader){
+            if($scope.user._id != trader._id) {
 
-            if($scope.trader.followersAmount > 0){
-
-                if(!$scope.user._id === $scope.trader._id){
+                if ($scope.trader.followers.indexOf($scope.user._id) == -1) {
                     userService.followTrader(trader).then(onFollow, onFollowError);
-                }else {
-                    console.log("volgt al");
+                } else {
+                    console.log("U volgt deze persoon al");
+                    $scope.errorText = "U volgt deze persoon al";
                 }
-            }else {
-                console.log("u mag volgen");
-                userService.followTrader(trader).then(onFollow, onFollowError);
             }
         };
 

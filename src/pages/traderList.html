@@ -55,9 +55,8 @@
                 <input ng-model="trade.Comment" type="text" id="comment" placeholder="I made this trade because...">
             </div>
 
-
-
             <button class="btn btn-default" ng-click="confirmTrade(trade)">confirm</button>
+                <p ng-bind="errorText"></p>
             </form>
         </div>
     </div>

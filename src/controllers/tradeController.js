@@ -9,7 +9,7 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
-            $scope.user.currentAmount = 2000;
+            $scope.user.currentAmount = response.balance;
             getTrades();
         };
 
