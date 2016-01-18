@@ -71,7 +71,9 @@
             });
 
             angular.forEach(users, function(user){
-                 newTraders.push(user);
+                if($scope.user._id != user._id){
+                    newTraders.push(user);
+                }
             });
 
             $scope.newTraders = newTraders;
