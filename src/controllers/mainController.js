@@ -16,6 +16,7 @@
             getFollowing();
             getCompanies();
             getNewTraders();
+            tradeCanvas($scope.user);
         };
 
         var onAuthError = function(err){
@@ -40,12 +41,10 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
-            $scope.user.currentAmount = 2000;
-            $scope.user.currentAmount = 0;
+            $scope.user.currentAmount = response.balance;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
 
-            getNewTraders();
-            tradeCanvas($scope.user);
+
             var config = {email: response.email, password: response.password};
             authenticate(config);
         };
@@ -90,6 +89,7 @@
         };
 
         $scope.confirmTrade = function (trade) {
+            console.log(trade);
             if(trade != null){
                 if(trade.Company != null && trade.AmountInvested != null
                     && trade.stock != null && trade.PercentageInvested != null

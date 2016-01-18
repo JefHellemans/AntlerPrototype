@@ -41,6 +41,7 @@
                 trade.IsShort = true;
             }
 
+            trade.PercentageInvested = Number("0.0" + trade.PercentageInvested);
             trade.CompanyId = 0;
 
             angular.forEach(companies, function(company){

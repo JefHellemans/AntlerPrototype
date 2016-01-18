@@ -9,7 +9,7 @@
 
         var onAuthenticated = function(response){
             $scope.token = response.token;
-            getTrades();
+            //getTrades();
         };
 
         var getLoggedInUser = function(){

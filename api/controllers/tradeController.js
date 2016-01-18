@@ -21,6 +21,8 @@ exports.postTrade=function(req,res){
         trade.Comment = req.body.Comment;
         trade.StopStockPrice = -1;
         trade.Company=req.body.CompanyId;
+        console.log("DEBUG: " + req.body.AmountInvested);
+        console.log("DEBUG: " + trade.AmountInvested);
         makeTransactionForTrade(req.body.AmountInvested, req.user._id);
         trade.save(function(err){
             if(err)
@@ -75,6 +77,7 @@ function makeTransactionForTrade(amnchng, userid){
         var transaction = new Transaction();
         var amountchange = amnchng;
         transaction.amountchange = amountchange;
+
 
         transaction.save(function(err){
             if(err)
