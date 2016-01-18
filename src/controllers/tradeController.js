@@ -9,7 +9,11 @@
 
         var onAuthenticated = function(response){
             $scope.token = response.token;
-            //getTrades();
+            getTrades();
+        };
+
+        var onAuthError = function(err){
+            console.log(err);
         };
 
         var getLoggedInUser = function(){

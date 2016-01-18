@@ -29,6 +29,7 @@
             return $http.post(url + "/trades", trade, {
                 headers: {'x-access-token': token}
             }).then(function(response){
+                console.log(response);
                 return response.data;
             });
         };
@@ -41,7 +42,7 @@
                 trade.IsShort = true;
             }
 
-            trade.PercentageInvested = Number("0.0" + trade.PercentageInvested);
+            trade.PercentageInvested = Number(trade.PercentageInvested/100);
             trade.CompanyId = 0;
 
             angular.forEach(companies, function(company){
