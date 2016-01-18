@@ -3,9 +3,22 @@
 
     var profileController = function($scope, $routeParams, $window, userService) {
 
+        var authenticate = function(config){
+            userService.authenticate(config).then(onAuthenticated, onAuthError);
+        };
+
+        var onAuthenticated = function(response){
+            $scope.token = response.token;
+            getTrader();
+        };
+
+        var onAuthError = function(err){
+            console.log(err);
+        };
+
         var userId = $routeParams.id;
         var getTrader = function() {
-            userService.getById(userId).then(onTraderLoaded, onTraderError);
+            userService.getById(userId, $scope.token).then(onTraderLoaded, onTraderError);
         };
 
         var onTraderLoaded = function(response) {
@@ -50,11 +63,13 @@
         };
 
         var getUser = function(){
-            userService.getLoggedInUser().then(onLoggedIn, onLoggedError);
+            userService.getLoggedInUser($scope.token).then(onLoggedIn, onLoggedError);
         };
 
         var onLoggedIn = function(response){
             $scope.user = response;
+            var config = {email: response.email, password: response.password};
+            authenticate(config);
         };
 
         var onLoggedError = function(err){
@@ -70,7 +85,7 @@
             if($scope.user._id != trader._id) {
 
                 if ($scope.trader.followers.indexOf($scope.user._id) == -1) {
-                    userService.followTrader(trader).then(onFollow, onFollowError);
+                    userService.followTrader(trader, $scope.token).then(onFollow, onFollowError);
                 } else {
                     $scope.errorText = "U volgt deze persoon al";
                 }
@@ -85,7 +100,6 @@
             console.log(err);
         };
 
-        getTrader();
         getUser();
     };
 

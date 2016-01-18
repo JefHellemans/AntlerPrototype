@@ -3,11 +3,25 @@
 
     var balanceController = function($scope, $routeParams, $window, userService) {
 
+        var authenticate = function(config){
+            userService.authenticate(config).then(onAuthenticated, onAuthError);
+        };
+
+        var onAuthenticated = function(response){
+            $scope.token = response.token;
+        };
+
+        var onAuthError = function(err){
+            console.log(err);
+        };
+
         var getLoggedInUser = function(){
             userService.getLoggedInUser().then(onLoggedIn, onLoggedError);
         };
 
         var onLoggedIn = function(response){
+            var config = {email: response.email, password: response.password};
+            authenticate(config);
             $scope.user = response;
             $scope.user.currentAmount = 2000;
             $scope.user.traders = 2000;

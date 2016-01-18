@@ -6,8 +6,26 @@
         $scope.isNewTrade = true;
         $scope.homepage = true;
 
+
+        var authenticate = function(config){
+            userService.authenticate(config).then(onAuthenticated, onAuthError);
+        };
+
+        var onAuthenticated = function(response){
+            $scope.token = response.token;
+            getFollowing();
+            getLoggedInUser();
+            getCompanies();
+            getNewTraders();
+            getTrades();
+        };
+
+        var onAuthError = function(err){
+            console.log(err);
+        };
+
         var getFollowing = function(){
-            userService.getAllFollowing().then(onUsersLoaded, onUsersError);
+            userService.getAllFollowing($scope.token).then(onUsersLoaded, onUsersError);
         };
 
         var onUsersLoaded = function(response){
@@ -23,11 +41,12 @@
         };
 
         var onLoggedIn = function(response){
+            var config = {email: response.email, password: response.password};
+            authenticate(config);
             $scope.user = response;
             $scope.user.currentAmount = 0;
             $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
-            getNewTraders();
-            getTrades();
+
         };
 
         var onLoggedError = function(err){
@@ -35,7 +54,7 @@
         };
 
         var getTrades = function() {
-            tradeService.getTradesFromUser().then(onTradesLoaded, onTradesError);
+            tradeService.getTradesFromUser($scope.token).then(onTradesLoaded, onTradesError);
         };
 
         var onTradesLoaded = function(response) {
@@ -48,7 +67,7 @@
         };
 
         var getNewTraders = function(){
-            userService.getAll().then(onNewTraders, onNewTradersError);
+            userService.getAll($scope.token).then(onNewTraders, onNewTradersError);
         };
 
         var onNewTraders = function(response){
@@ -79,7 +98,7 @@
                 if(trade.Company != null && trade.AmountInvested != null
                     && trade.stock != null && trade.PercentageInvested != null
                     && trade.longShort != null && trade.Comment != null) {
-                    tradeService.postTrade(trade, $scope.companies).then(onTradePosted, onTradeError);
+                    tradeService.postTrade(trade, $scope.companies, $scope.token).then(onTradePosted, onTradeError);
                 }else {
 
                 }
@@ -96,7 +115,7 @@
         };
 
         var getCompanies = function(){
-            tradeService.getCompanies().then(onCompanies, onCompaniesError);
+            tradeService.getCompanies($scope.token).then(onCompanies, onCompaniesError);
         };
 
         var onCompanies = function(response){
@@ -106,9 +125,7 @@
             console.log(err);
         };
 
-        getFollowing();
         getLoggedInUser();
-        getCompanies();
     };
 
     angular.module("app").controller("mainController", [ "$scope", "userService", "tradeService", mainController]);

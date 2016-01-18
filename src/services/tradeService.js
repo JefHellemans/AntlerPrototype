@@ -5,24 +5,31 @@
 
     var tradeService = function ($http) {
 
-        var getTradesFromUser = function () {
-            return $http.get(url + "/trades").then(function(response){
+        var getTradesFromUser = function (token) {
+
+            return $http.get(url + "/trades", {
+                headers: {'x-access-token': token}
+            }).then(function(response){
                 return response.data;
             });
         };
 
-        var getCompanies = function() {
-            return $http.get(url + "/companies").then(function(response){
+        var getCompanies = function(token) {
+            return $http.get(url + "/companies", {
+                headers: {'x-access-token': token}
+            }).then(function(response){
                 return response.data;
             });
         };
 
-        var postTrade = function(trade, companies){
+        var postTrade = function(trade, companies, token){
             // companyId, isShort, AmountInvested, PercentageInvested, StartStockPrice, Comment, StartStockPrice
             fillProperties(trade, companies);
 
-            return $http.post(url + "/trades", trade, function(response){
-               return response;
+            return $http.post(url + "/trades", trade, {
+                headers: {'x-access-token': token}
+            }).then(function(response){
+                return response.data;
             });
         };
 

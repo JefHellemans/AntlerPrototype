@@ -60,6 +60,10 @@ var followersController = require('./api/controllers/followersController.js');
 
 //token authenticate function
 var User = require('./app/models/user');
+
+router.route('/loggedInUser')
+    .get(userController.getLoggedInUser);
+
 router.post('/authenticate', function(req, res) {
 
     // find the user
@@ -99,7 +103,7 @@ router.post('/authenticate', function(req, res) {
     });
 });
 
-/*
+
  //deze functie wordt gebruikt om api te beveiligen
  router.use(function(req, res, next) {
 
@@ -132,7 +136,7 @@ router.post('/authenticate', function(req, res) {
  }
  });
  //einde beveiligfunctie
- */
+
 
 //maak hier de api routes
 
@@ -145,8 +149,7 @@ router.route('/users')
 router.route('/users/:user_id')
     .get(userController.getUserById);
 
-router.route('/loggedInUser')
-    .get(userController.getLoggedInUser);
+
 
 router.route('/trades')
     .get(tradeController.getTradesFromCurrentUser)
