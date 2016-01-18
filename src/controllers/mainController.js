@@ -16,7 +16,6 @@
             getFollowing();
             getCompanies();
             getNewTraders();
-            getTrades();
         };
 
         var onAuthError = function(err){
@@ -52,19 +51,6 @@
         };
 
         var onLoggedError = function(err){
-            console.log(err);
-        };
-
-        var getTrades = function() {
-            tradeService.getTradesFromUser($scope.token).then(onTradesLoaded, onTradesError);
-        };
-
-        var onTradesLoaded = function(response) {
-            $scope.user.trades = response;
-            tradeCanvas($scope.user);
-        };
-
-        var onTradesError = function(err) {
             console.log(err);
         };
 
