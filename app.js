@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({uploadDir:'/path/to/temporary/directory/to/store/
 
 
 app.set('views', __dirname + "/src/pages");
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 
 app.use(session({
     secret:'ilovemoosemoosemoose',//sesion secret
@@ -191,7 +191,7 @@ app.use('/api',router);
 app.use(function(req, res){
 
     if(req.isAuthenticated())
-        res.render('renderHome.jade');
+        res.render('../index.ejs');
 
     res.render('index.ejs');
 });

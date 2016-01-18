@@ -11,7 +11,7 @@
                 <span ng-show="sortType == 'change' && !sortReverse" class="caret"></span>
                 <span ng-show="sortType == 'change' && sortReverse" class="dropup"><span class="caret"></span></span></th>
         </tr>
-        <tr ng-repeat="transaction in transactions | orderBy:sortType:sortReverse">
+        <tr ng-repeat="transaction in user.transactions | orderBy:sortType:sortReverse">
             <td>{{transaction.date}}</td>
             <td ng-if="transaction.change >= 0" class="positive">{{transaction.change.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
             <td ng-if="transaction.change < 0" class="negative">{{transaction.change.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>

@@ -4,7 +4,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', isLoggedIn, function(req, res) {
-        res.render('renderHome.jade');
+        res.render('../index.ejs');
     });
 
     // =====================================

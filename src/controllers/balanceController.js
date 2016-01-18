@@ -21,29 +21,28 @@
 
         $scope.sortType = 'date';
         $scope.sortReverse = false;
+        $scope.change = 0;
 
-        $scope.transactions = [];
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-        $scope.transactions.push({"date": new Date().toLocaleString(), "change": ((Math.floor((Math.random() * 20000)) / 100) - 100)});
-
-        $scope.deposit = function(user) {
-            $scope.user.currentAmount += user.depositAmount;
+        $scope.deposit = function() {
+            $scope.user.currentAmount += $scope.change;
             $window.location = "/balance";
         };
 
-        $scope.withdraw = function(user) {
-            $scope.user.currentAmount -= user.withdrawAmount;
+        $scope.withdraw = function() {
+            $scope.user.currentAmount -= $scope.change;
             $window.location = "/balance";
+        };
+
+        $scope.changeField = function(withdraw) {
+            if($scope.change === undefined) {
+                $scope.change = 0;
+            } else if(withdraw && $scope.change > $scope.user.currentAmount) {
+                $scope.change = $scope.user.currentAmount;
+            }
         };
 
         $scope.isEnabled = function() {
-            return ($scope.user.depositAmount === 0 || typeof $scope.user.depositAmount === "undefined");
-        };
-
-        $scope.withdrawEnabled = function() {
-            return ($scope.user.currentAmount === 0 || typeof $scope.user.withdrawAmount === "undefined");
+            return ($scope.change <= 0);
         };
 
         getLoggedInUser();
