@@ -25,11 +25,9 @@
         var postTrade = function(trade, companies, token){
             // companyId, isShort, AmountInvested, PercentageInvested, StartStockPrice, Comment, StartStockPrice
             fillProperties(trade, companies);
-
             return $http.post(url + "/trades", trade, {
                 headers: {'x-access-token': token}
             }).then(function(response){
-                console.log(response);
                 return response.data;
             });
         };

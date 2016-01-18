@@ -1,22 +1,20 @@
 <div ng-include="'/pages/header.html'"></div>
 
-<form class="form-horizontal profileForm">
-    <h3>My profile</h3>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">First Name:</label>
-        <div class="col-sm-10">
-            <input type="text" name="firstName" ng-model="user.firstname">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Last Name:</label>
-        <div class="col-sm-10">
-            <input type="text" name="lastName" ng-model="user.lastname">
-        </div>
-    </div>
-    <div>
-        <input type="submit" class="btn btn-primary" value="Save changes" ng-click="submitForm(user)"/>
-    </div>
-</form>
-
-
+<section>
+    <table>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Followers</th>
+            <th>Following</th>
+            <th>Total trades</th>
+        </tr>
+        <tr>
+            <td ng-bind="user.firstname"></td>
+            <td ng-bind="user.lastname"></td>
+            <td ng-bind="user.followersAmount"></td>
+            <td ng-bind="user.followingAmount"></td>
+            <td ng-bind="user.total"></td>
+        </tr>
+    </table>
+</section>

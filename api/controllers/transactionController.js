@@ -5,7 +5,6 @@ var User = require('../../app/models/user');
 exports.postTransaction = function(req,res){
     var transaction = new Transaction();
     var amountchange = req.body.amountchange;
-    console.log("AMOUNTCHANGE", amountchange);
     transaction.amountchange = amountchange;
 
     transaction.save(function(err){

@@ -21,8 +21,6 @@ exports.postTrade=function(req,res){
         trade.Comment = req.body.Comment;
         trade.StopStockPrice = -1;
         trade.Company=req.body.CompanyId;
-        console.log("DEBUG: " + req.body.AmountInvested);
-        console.log("DEBUG: " + trade.AmountInvested);
         makeTransactionForTrade(req.body.AmountInvested, req.user._id);
         trade.save(function(err){
             if(err)
@@ -38,7 +36,6 @@ exports.postTrade=function(req,res){
                         var bal = Number(folluser.balance);
                         var perc = Number(trade.PercentageInvested);
                         var changetheamount = bal * perc;
-                        console.log(changetheamount);
                         var tradeTwo = new Trade();
                         tradeTwo.AmountInvested = changetheamount;
                         tradeTwo.PercentageInvested = req.body.PercentageInvested;

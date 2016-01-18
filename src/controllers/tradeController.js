@@ -23,6 +23,7 @@
         var onLoggedIn = function(response){
             $scope.user = response;
             $scope.user.currentAmount = response.balance;
+            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
             var config = {email: response.email, password: response.password};
             authenticate(config);
         };
