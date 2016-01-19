@@ -13,6 +13,14 @@
             "longShort": "",
             "Comment": ""
         };
+        var gotFollowing = false;
+        var gotAuthenticated = false;
+
+        var makeCanvas = function() {
+            if(gotFollowing && gotAuthenticated) {
+                tradeCanvas($scope.user, $scope.traders);
+            }
+        };
 
         var authenticate = function(config){
             userService.authenticate(config).then(onAuthenticated, onAuthError);
@@ -23,8 +31,9 @@
             getFollowing();
             getCompanies();
             getNewTraders();
-            tradeCanvas($scope.user);
             connectSockets();
+            gotAuthenticated = true;
+            makeCanvas();
         };
 
         var onAuthError = function(err){
@@ -37,6 +46,8 @@
 
         var onUsersLoaded = function(response){
             $scope.traders = response;
+            gotFollowing = true;
+            makeCanvas();
         };
 
         var onUsersError = function(err){
