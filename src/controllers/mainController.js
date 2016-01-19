@@ -19,10 +19,13 @@
 
         var gotFollowing = false;
         var gotAuthenticated = false;
+        var canvas;
+        var makeNewTradeOnCanvas = false;
+        var newTrade;
 
         var makeCanvas = function() {
             if(gotFollowing && gotAuthenticated) {
-                tradeCanvas($scope.user, $scope.traders);
+                canvas = new tradeCanvas($scope.user, $scope.traders);
             }
         };
 
@@ -64,13 +67,12 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
+            console.log("Trades:", response.trades.length, response.trades);
             $scope.user.currentAmount = response.balance;
             $scope.user.profilepicture = response.imageUrl;
 
             var config = {email: response.email, password: response.password};
             authenticate(config);
-
-
         };
 
         var onLoggedError = function(err){
@@ -218,7 +220,8 @@
         };
 
         var onTradePosted = function(response){
-            doTradeSocket();
+            console.log(response);
+            doTradeSocket(response.data._id);
             $scope.trade = {
                 "Company": "",
                 "AmountInvested": 0,
@@ -243,31 +246,75 @@
             console.log(err);
         };
 
+        var getUserAgain = function() {
+            userService.getById($scope.user._id, $scope.token).then(onReUser, onReUserError);
+        };
+
+        var onReUser = function(response) {
+            $scope.user = response;
+            console.log("Trades:", response.trades.length, response.trades);
+            $scope.user.currentAmount = response.balance;
+            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
+            addTradeToCanvas();
+        };
+
+        var onReUserError = function(err) {
+            console.log(err);
+        };
+
         var socket;
         var doSockets =  function(){
-            var hostname = window.location.protocol + "//"+ window.location.host ;
-            socket = io.connect(hostname);
+            if(!gotAuthenticated) {
+                var hostname = window.location.protocol + "//" + window.location.host;
+                socket = io.connect(hostname);
 
 
-            socket.on("socketID", function(object){
-                console.log(object.id);
-                socket.emit("attachAntlerId", {antlerid: $scope.user._id});
-            });
+                socket.on("socketID", function (object) {
+                    console.log(object.id);
+                    socket.emit("attachAntlerId", {antlerid: $scope.user._id});
+                });
 
-            socket.on("newTradeFromFollowing", function(object){
-                console.log("SOCKETS: " , object.trade);
-                // nieuwe trade op canvas plaatsen
+                socket.on("newTradeFromFollowing", function (object) {
+                    newTrade = object;
+                    makeNewTradeOnCanvas = true;
+                    if (canvas !== undefined) {
+                        getUserAgain();
+                    }
+                });
 
-            });
-
-            socket.on("priceUpdate", function(companiesArray){
-                console.log(companiesArray);
-                // prijs update doorgeven aan canvas
-            });
-
+                socket.on("priceUpdate", function (companiesarray) {
+                    if (canvas !== undefined) {
+                        canvas.updatePrices(companiesarray);
+                    }
+                });
+            }
         };
-        function doTradeSocket(){
-            socket.emit("newTrade", {traderid: $scope.user._id, trade: $scope.trade});
+
+        var addTradeToCanvas = function() {
+            if(makeNewTradeOnCanvas && newTrade !== undefined) {
+                var trade;
+                var trader;
+                for(var j = 0, m = $scope.user.trades.length; j < m; j++) {
+                    if($scope.user.trades[j].ParentTrade === newTrade.tradeid) {
+                        console.log("match found");
+                        trade = $scope.user.trades[j];
+                        break;
+                    }
+                }
+                for(var i = 0, l = $scope.traders.length; i < l; i++) {
+                    if($scope.traders[i]._id === newTrade.traderid) {
+                        trader = $scope.traders[i];
+                        break;
+                    }
+                }
+                canvas.addTrade(trade, trader);
+            }
+            makeNewTradeOnCanvas = false;
+            newTrade = undefined;
+        };
+
+        function doTradeSocket(id){
+            socket.emit("newTrade", {traderid: $scope.user._id, tradeid: id});
         }
 
         $scope.filterQuery = "";

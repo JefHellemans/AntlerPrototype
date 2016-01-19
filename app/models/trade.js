@@ -13,8 +13,8 @@ var tradeSchema = mongoose.Schema({
     IsShort: Boolean,
     Comment: String,
     Date: { type: Date, default: Date.now },
-    ParentTrade:String
-
+    ParentTrade:String,
+    IsNew: Boolean
 });
 
 

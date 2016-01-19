@@ -21,6 +21,7 @@ exports.postTrade=function(req,res){
         trade.Comment = req.body.Comment;
         trade.StopStockPrice = -1;
         trade.Company=req.body.CompanyId;
+        trade.IsNew = true;
         //makeTransactionForTrade(req.body.AmountInvested, req.user._id);
 
 
@@ -79,7 +80,7 @@ exports.postTrade=function(req,res){
                                 tradeTwo.StopStockPrice = -1;
                                 tradeTwo.Company=req.body.CompanyId;
                                 tradeTwo.ParentTrade = trade._id;
-
+                                tradeTwo.IsNew = true;
 
 
 
@@ -113,6 +114,7 @@ exports.postTrade=function(req,res){
                                             User.update({_id:folluser._id}, {$push: {trades:tradeTwo}},{safe:true,upsert:true},function(err,model){
                                                 if(err)
                                                     console.log("weird error here: " + err);
+                                                console.log("trade api done, added to db");
                                             });
                                         });
 
@@ -145,9 +147,6 @@ exports.postTrade=function(req,res){
 
 
             });
-
-
-
 
             //res.json({message:'transaction added', data:transaction});
 
