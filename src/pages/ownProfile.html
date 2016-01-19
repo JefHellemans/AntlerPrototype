@@ -1,7 +1,7 @@
 <div ng-include="'/pages/header.html'"></div>
 
 <section class="profile">
-    <img ng-src="{{user.profilepicture}}" />
+    <img ng-src="{{user.profilepciture}}" />
     <h2>{{user.firstname + " " + user.lastname}}</h2>
     <ul>
         <li>Amount of Followers: {{user.followersAmount}}</li>
@@ -9,3 +9,16 @@
         <li>Total trades: {{user.total}}</li>
     </ul>
 </section>
+
+<form class="searchForm">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-1">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="user.url" placeholder="Paste your url">
+                    <span class="input-group-btn">
+                        <button ng-click="uploadImage(user)" class="btn btn-default" type="button">Submit</button>
+                    </span>
+            </div>
+        </div>
+    </div>
+</form>

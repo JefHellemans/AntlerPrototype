@@ -1,7 +1,7 @@
 (function (){
     "use strict";
 
-    var balanceController = function($scope, $routeParams, $window, userService, transactionService) {
+    var balanceController = function($scope, $routeParams, $window, userService, transactionService, tradeService) {
 
         var authenticate = function(config){
             userService.authenticate(config).then(onAuthenticated, onAuthError);
@@ -9,6 +9,7 @@
 
         var onAuthenticated = function(response){
             $scope.token = response.token;
+            getTradesFromUser();
         };
 
         var onAuthError = function(err){
@@ -28,7 +29,8 @@
             }
             $scope.user = response;
             $scope.user.currentAmount = response.balance;
-            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
+            $scope.user.profilepicture = response.imageUrl;
+
         };
 
         var onLoggedError = function(err){
@@ -75,8 +77,24 @@
             }
         };
 
+        var getTradesFromUser = function(){
+            tradeService.getTradesFromUser($scope.token).then(onTradesLoaded, onTradesError);
+        };
+
+        var onTradesLoaded = function(response){
+            var invested = 0;
+            angular.forEach(response, function(trade){
+                invested += trade.AmountInvested;
+            });
+            $scope.user.invested = invested;
+        };
+
+        var onTradesError = function(err){
+            console.log(err);
+        };
+
         getLoggedInUser();
     };
 
-    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", "$window", "userService", "transactionService", balanceController]);
+    angular.module("app").controller("balanceController", [ "$scope", "$routeParams", "$window", "userService", "transactionService", "tradeService",balanceController]);
 })();

@@ -75,7 +75,7 @@
             $scope.user.followersAmount = response.followers.length;
             $scope.user.followingAmount = response.following.length;
             $scope.user.total = response.trades.length;
-            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
+            $scope.user.profilepicture = response.imageUrl;
             var config = {email: response.email, password: response.password};
             authenticate(config);
         };
@@ -105,6 +105,21 @@
         };
 
         var onFollowError = function(err){
+            console.log(err);
+        };
+
+        $scope.uploadImage = function(user){
+            if(user.url != ""){
+                userService.uploadUrl(user, $scope.token).then(onUploaded, onUploadError);
+            }
+        };
+
+        var onUploaded = function(response){
+            console.log(response);
+            $scope.user.url = response.imageUrl;
+        };
+
+        var onUploadError = function(err){
             console.log(err);
         };
 

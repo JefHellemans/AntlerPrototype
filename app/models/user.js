@@ -33,7 +33,8 @@ var userSchema = mongoose.Schema({
                         {
                             type:mongoose.Schema.Types.ObjectId, ref:'User'
                         }
-                    ]
+                    ],
+        imageUrl: {type: String, default: "http://localhost:3000/dist/images/logos/antlerlogo.png"}
 
 });
 

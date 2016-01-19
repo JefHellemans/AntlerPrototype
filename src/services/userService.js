@@ -57,13 +57,22 @@
             })
         };
 
+        var uploadUrl = function(user, token){
+            return $http.post(url + "/users/" + user._id, user, {
+                headers: {'x-access-token': token}
+            }).then(function(response){
+                return response.data;
+            });
+        };
+
         return{
             getAll: getAll,
             getById: getById,
             getLoggedInUser: getLoggedInUser,
             followTrader: followTrader,
             getAllFollowing: getAllFollowing,
-            authenticate: authenticate
+            authenticate: authenticate,
+            uploadUrl: uploadUrl
         };
     };
 

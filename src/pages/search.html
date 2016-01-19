@@ -3,7 +3,7 @@
 <section>
     <form class="form searchForm">
         <div class="col-md-4 col-md-offset-4">
-                <input type="text" class="form-control" placeholder="Looking for someone?" ng-model="filterQuery">
+            <input type="text" class="form-control" placeholder="Looking for someone?" ng-model="filterQuery">
         </div>
     </form>
 
@@ -45,23 +45,23 @@
         </div>
         <table>
             <tr>
-                <th ng-click="sortType = 'name'; sortReverse = !sortReverse">Name
-                    <span ng-show="sortType == 'name' && !sortReverse" class="caret"></span>
-                    <span ng-show="sortType == 'name' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-                <th ng-click="sortType = 'firstName'; sortReverse = !sortReverse">First Name
-                    <span ng-show="sortType == 'firstName' && !sortReverse" class="caret"></span>
-                    <span ng-show="sortType == 'firstName' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-                <th ng-click="sortType = 'amount'; sortReverse = !sortReverse">Amount of trades
-                    <span ng-show="sortType == 'amount' && !sortReverse" class="caret"></span>
-                    <span ng-show="sortType == 'amount' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-                <th ng-click="sortType = 'followers'; sortReverse = !sortReverse" class="right">Followers
-                    <span ng-show="sortType == 'followers' && !sortReverse" class="caret"></span>
-                    <span ng-show="sortType == 'followers' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-                <th ng-click="sortType = 'following'; sortReverse = !sortReverse" class="right">Following
-                    <span ng-show="sortType == 'following' && !sortReverse" class="caret"></span>
-                    <span ng-show="sortType == 'following' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortTypeNew = 'name'; sortReverseNew = !sortReverseNew">Name
+                    <span ng-show="sortTypeNew == 'name' && !sortReverseNew" class="caret"></span>
+                    <span ng-show="sortTypeNew == 'name' && sortReverseNew" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortTypeNew = 'firstName'; sortReverseNew = !sortReverseNew">First Name
+                    <span ng-show="sortTypeNew == 'firstName' && !sortReverseNew" class="caret"></span>
+                    <span ng-show="sortTypeNew == 'firstName' && sortReverseNew" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortTypeNew = 'amount'; sortReverseNew = !sortReverseNew">Amount of trades
+                    <span ng-show="sortTypeNew == 'amount' && !sortReverseNew" class="caret"></span>
+                    <span ng-show="sortTypeNew == 'amount' && sortReverseNew" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortTypeNew = 'followers'; sortReverseNew = !sortReverseNew" class="right">Followers
+                    <span ng-show="sortTypeNew == 'followers' && !sortReverseNew" class="caret"></span>
+                    <span ng-show="sortTypeNew == 'followers' && sortReverseNew" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortTypeNew = 'following'; sortReverseNew = !sortReverseNew" class="right">Following
+                    <span ng-show="sortTypeNew == 'following' && !sortReverseNew" class="caret"></span>
+                    <span ng-show="sortTypeNew == 'following' && sortReverseNew" class="dropup"><span class="caret"></span></span></th>
             </tr>
-            <tr ng-repeat="trader in newTraders | orderBy:sortType:sortReverse | filter:filterTraders">
+            <tr ng-repeat="trader in newTraders | orderBy:sortTypeNew:sortReverseNew | filter:filterTraders">
                 <td><a href="user/{{trader._id}}">{{trader.lastname}}</a></td>
                 <td><a href="user/{{trader._id}}">{{trader.firstname}}</a></td>
                 <td>{{trader.trades.length}}</td>
