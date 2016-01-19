@@ -37,7 +37,7 @@
 <div class="newTrade" ng-class="isNewTradeOpen()">
     <h3>New trade</h3>
 
-    <form>
+    <form novalidate>
         <div class="form-group">
             <input list="searchCompany" ng-model="trade.Company" name="Company" ng-change="changeCompanyField()" placeholder="Company">
             <datalist ng-model="trade.Company" id="searchCompany">
