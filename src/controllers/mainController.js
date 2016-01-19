@@ -12,7 +12,6 @@
             "longShort": "",
             "Comment": ""
         };
-        $scope.traders = {};
 
         $scope.sortTypeNew = 'name';
         $scope.sortReverseNew = true;
