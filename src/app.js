@@ -17,6 +17,10 @@
                 templateUrl: "pages/ownProfile.html",
                 controller: "profileController"
             })
+            .when("/search", {
+                templateUrl: "pages/search.html",
+                controller: "mainController"
+            })
             .when("/balance", {
                 templateUrl: "pages/balanceHistory.html",
                 controller: "balanceController"

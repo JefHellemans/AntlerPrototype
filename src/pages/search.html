@@ -1,0 +1,74 @@
+<div ng-include="'/pages/header.html'"></div>
+
+<section>
+    <form class="form searchForm">
+        <div class="col-md-4 col-md-offset-4">
+                <input type="text" class="form-control" placeholder="Looking for someone?" ng-model="filterQuery">
+        </div>
+    </form>
+
+    <div class="col-md-12">
+        <div class="col-md-5">
+            <h2>You are already following these people:</h2>
+        </div>
+        <table>
+            <tr>
+                <th ng-click="sortType = 'name'; sortReverse = !sortReverse">Name
+                    <span ng-show="sortType == 'name' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'name' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'firstName'; sortReverse = !sortReverse">First Name
+                    <span ng-show="sortType == 'firstName' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'firstName' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'amount'; sortReverse = !sortReverse">Amount of trades
+                    <span ng-show="sortType == 'amount' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'amount' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'followers'; sortReverse = !sortReverse" class="right">Followers
+                    <span ng-show="sortType == 'followers' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'followers' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'following'; sortReverse = !sortReverse" class="right">Following
+                    <span ng-show="sortType == 'following' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'following' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                 </tr>
+            <tr ng-repeat="trader in traders | orderBy:sortType:sortReverse | filter:filterTraders">
+                <td><a href="user/{{trader._id}}">{{trader.lastname}}</a></td>
+                <td><a href="user/{{trader._id}}">{{trader.firstname}}</a></td>
+                <td>{{trader.trades.length}}</td>
+                <td>{{trader.followers.length}}</td>
+                <td>{{trader.following.length}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-5">
+            <h2>Discover new traders:</h2>
+        </div>
+        <table>
+            <tr>
+                <th ng-click="sortType = 'name'; sortReverse = !sortReverse">Name
+                    <span ng-show="sortType == 'name' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'name' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'firstName'; sortReverse = !sortReverse">First Name
+                    <span ng-show="sortType == 'firstName' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'firstName' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'amount'; sortReverse = !sortReverse">Amount of trades
+                    <span ng-show="sortType == 'amount' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'amount' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'followers'; sortReverse = !sortReverse" class="right">Followers
+                    <span ng-show="sortType == 'followers' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'followers' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+                <th ng-click="sortType = 'following'; sortReverse = !sortReverse" class="right">Following
+                    <span ng-show="sortType == 'following' && !sortReverse" class="caret"></span>
+                    <span ng-show="sortType == 'following' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            </tr>
+            <tr ng-repeat="trader in newTraders | orderBy:sortType:sortReverse | filter:filterTraders">
+                <td><a href="user/{{trader._id}}">{{trader.lastname}}</a></td>
+                <td><a href="user/{{trader._id}}">{{trader.firstname}}</a></td>
+                <td>{{trader.trades.length}}</td>
+                <td>{{trader.followers.length}}</td>
+                <td>{{trader.following.length}}</td>
+            </tr>
+        </table>
+    </div>
+
+</section>

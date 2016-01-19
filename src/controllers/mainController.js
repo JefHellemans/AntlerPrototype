@@ -4,7 +4,6 @@
     var mainController = function($scope, userService, tradeService){
 
         $scope.isNewTrade = false;
-        $scope.homepage = true;
         $scope.trade = {
             "Company": "",
             "AmountInvested": 0,
@@ -13,6 +12,7 @@
             "longShort": "",
             "Comment": ""
         };
+        $scope.traders = {};
         var gotFollowing = false;
         var gotAuthenticated = false;
 
@@ -80,6 +80,8 @@
         var onNewTraders = function(response){
 
             var users = response;
+            var newTraders = [];
+
 
             angular.forEach(users, function(user){
                 var index = users.indexOf(user);
@@ -88,7 +90,20 @@
                 }
             });
 
-            $scope.newTraders = users;
+            angular.forEach(users, function(user){
+
+                if(user.followers.length > 0){
+                    angular.forEach(user.followers, function(follower){
+                        if(!follower == $scope.user._id){
+                            newTraders.push(user);
+                        }
+                    });
+                }else {
+                    newTraders.push(user);
+                }
+
+            });
+            $scope.newTraders = newTraders;
 
         };
 
@@ -241,8 +256,8 @@
 
             });
 
-            socket.on("priceUpdate", function(companiesarray){
-                console.log(companiesarray);
+            socket.on("priceUpdate", function(companiesArray){
+                console.log(companiesArray);
                 // prijs update doorgeven aan canvas
             });
 
@@ -250,6 +265,18 @@
         function doTradeSocket(){
             socket.emit("newTrade", {traderid: $scope.user._id, trade: $scope.trade});
         }
+
+        $scope.filterQuery = "";
+        $scope.filterTraders = function(trader){
+            if($scope.filterQuery === ""){
+                return true;
+            }
+            if(trader.firstname.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) >= 0 ||
+             trader.lastname.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) >= 0){
+                return true;
+            }
+            return false;
+        };
 
         getLoggedInUser();
 
