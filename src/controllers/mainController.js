@@ -51,6 +51,7 @@
         };
 
         var onUsersLoaded = function(response){
+            console.log(response);
             $scope.traders = response;
             gotFollowing = true;
             makeCanvas();
@@ -83,7 +84,6 @@
         };
 
         var onNewTraders = function(response){
-
             var users = response;
             var newTraders = [];
 
@@ -95,14 +95,23 @@
                 }
             });
 
-            angular.forEach(users, function(user){
 
+
+            angular.forEach(users, function(user){
                 if(user.followers.length > 0){
+
+                    var found = false;
+
                     angular.forEach(user.followers, function(follower){
-                        if(!follower == $scope.user._id){
-                            newTraders.push(user);
+                        if(follower == $scope.user._id){
+                            found = true;
+
                         }
                     });
+
+                    if(!found){
+                        newTraders.push(user);
+                    }
                 }else {
                     newTraders.push(user);
                 }
@@ -273,7 +282,7 @@
                     newTrade = object;
                     makeNewTradeOnCanvas = true;
                     if (canvas !== undefined) {
-                        getUserAgain();
+                        //getUserAgain();
                     }
                 });
 
