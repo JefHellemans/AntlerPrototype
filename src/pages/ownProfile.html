@@ -1,20 +1,11 @@
 <div ng-include="'/pages/header.html'"></div>
 
-<section>
-    <table>
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Followers</th>
-            <th>Following</th>
-            <th>Total trades</th>
-        </tr>
-        <tr>
-            <td ng-bind="user.firstname"></td>
-            <td ng-bind="user.lastname"></td>
-            <td ng-bind="user.followersAmount"></td>
-            <td ng-bind="user.followingAmount"></td>
-            <td ng-bind="user.total"></td>
-        </tr>
-    </table>
+<section class="profile">
+    <img ng-src="{{user.profilepicture}}" />
+    <h2>{{user.firstname + " " + user.lastname}}</h2>
+    <ul>
+        <li>Amount of Followers: {{user.followersAmount}}</li>
+        <li>Following traders: {{user.followingAmount}}</li>
+        <li>Total trades: {{user.total}}</li>
+    </ul>
 </section>

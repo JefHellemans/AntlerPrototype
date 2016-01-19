@@ -37,6 +37,14 @@ body {
   color: @antlerDarkBlue;
 }
 
+a {
+  color: @antlerStandardBlue;
+
+  &:hover {
+    color: @antlerDarkBlue;
+  }
+}
+
 canvas {
   position: absolute;
   z-index: -1;
@@ -44,7 +52,7 @@ canvas {
   background-color: @lightgrey;
 }
 
-section.balanceOverview {
+section.balanceOverview, section.profile {
   margin: 60px auto 0 auto;
   width: 80%;
 
@@ -276,6 +284,31 @@ section#header {
   background-color: @antlerSoftRed;
 }
 
+section.profile {
+  text-align: center;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  img {
+    vertical-align: middle;
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  button {
+    float: none;
+    display: block;
+    margin: 50px auto 10px auto;
+  }
+}
+
 section.dock {
   position: fixed;
   bottom: 0;
@@ -309,10 +342,10 @@ section.dock {
         .glyphicon {
           font-size: 42px;
           margin-bottom: 5px;
+        }
 
-          &:hover {
-            text-decoration: none;
-          }
+        &:hover {
+          text-decoration: none;
         }
       }
     }
@@ -359,10 +392,15 @@ section.dock {
     border-top-right-radius: 5px;
     cursor: pointer;
 
+    &:hover p {
+      color: @antlerDarkBlue;
+    }
+
     p {
       font-size: 75px;
       text-align: center;
       margin: -25px auto 0 auto;
+      color: @antlerStandardBlue;
     }
   }
 }
@@ -443,7 +481,7 @@ section.dock {
       }
     }
 
-    input {
+    input, textarea {
       width: 100%;
       margin-bottom: 15px;
       outline: none;
@@ -456,6 +494,10 @@ section.dock {
       &[disabled] {
         cursor: not-allowed;
       }
+    }
+
+    textarea {
+      resize: vertical;
     }
 
     button {

@@ -38,6 +38,20 @@
 
         var onTradesLoaded = function(response) {
             $scope.user.trades = response;
+            $scope.user.tradeHistory = [];
+            for(var i = 0, l = $scope.user.trades.length; i < l; i++) {
+                var t = $scope.user.trades[i];
+                if(t.stopStockPrice >= 0) {
+                    t.Date = new Date(t.Date);
+                    t.stock = Math.floor(t.AmountInvested / t.StartStockPrice);
+                    if(t.IsShort) {
+                        t.difference = (t.StartStockPrice - t.StopStockPrice) * t.stock;
+                    } else {
+                        t.difference = (t.StopStockPrice - t.StartStockPrice) * t.stock;
+                    }
+                    $scope.user.tradeHistory.push(t);
+                }
+            }
             tradeCanvas($scope.user);
         };
 

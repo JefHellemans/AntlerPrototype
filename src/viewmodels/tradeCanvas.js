@@ -60,8 +60,6 @@ var tradeCanvas = function(user) {
             ctx.restore();
         };
 
-        console.log(user);
-
         //load trades
         var diff = 0;
         for(var i = 0, l = user.trades.length; i < l; i++) {
@@ -70,13 +68,11 @@ var tradeCanvas = function(user) {
             if(t.StopStockPrice !== undefined || t.StopStockPrice < 0) {
                 var c;
                 var trader;
-                console.log(t);
                 //if trade is started by current user, trader is current user
                 if (typeof t.parentTrade === 'undefined') {
                     trader = new Trader(user.firstname + " " + user.lastname, (t.AmountInvested / t.StartStockPrice), t.StartStockPrice, t.IsShort, t.Comment);
                     trader.drawable.setImage(user.profilepicture);
                 } else {
-                    console.log(t);
                 }
                 //if the company is already being drawn on screen, add the trader to the company
                 var companyFound = false;

@@ -3,12 +3,12 @@
 <section>
     <table>
         <tr>
-            <th ng-click="sortType = 'date'; sortReverse = !sortReverse">Date
-                <span ng-show="sortType == 'date' && !sortReverse" class="caret"></span>
-                <span ng-show="sortType == 'date' && sortReverse" class="dropup"><span class="caret"></span></span></th>
-            <th ng-click="sortType = 'shares'; sortReverse = !sortReverse">Shares
-                <span ng-show="sortType == 'shares' && !sortReverse" class="caret"></span>
-                <span ng-show="sortType == 'shares' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'Date'; sortReverse = !sortReverse">Date
+                <span ng-show="sortType == 'Date' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'Date' && sortReverse" class="dropup"><span class="caret"></span></span></th>
+            <th ng-click="sortType = 'stock'; sortReverse = !sortReverse">Shares
+                <span ng-show="sortType == 'stock' && !sortReverse" class="caret"></span>
+                <span ng-show="sortType == 'stock' && sortReverse" class="dropup"><span class="caret"></span></span></th>
             <th ng-click="sortType = 'type'; sortReverse = !sortReverse">Long/Short
                 <span ng-show="sortType == 'type' && !sortReverse" class="caret"></span>
                 <span ng-show="sortType == 'type' && sortReverse" class="dropup"><span class="caret"></span></span></th>
@@ -22,12 +22,13 @@
                 <span ng-show="sortType == 'difference' && !sortReverse" class="caret"></span>
                 <span ng-show="sortType == 'difference' && sortReverse" class="dropup"><span class="caret"></span></span></th>
         </tr>
-        <tr ng-repeat="trade in user.trades | orderBy:sortType:sortReverse">
-            <td>{{trade.date}}</td>
-            <td>{{trade.shares}}</td>
-            <td>{{trade.type}}</td>
-            <td class="right">{{trade.inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
-            <td class="right">{{trade.outAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
+        <tr ng-repeat="trade in user.tradeHistory | orderBy:sortType:sortReverse">
+            <td>{{trade.Date.toLocaleString('be-NL')}}</td>
+            <td>{{trade.stock}}</td>
+            <td ng-if="trade.IsShort">Short</td>
+            <td ng-if="!trade.IsShort">Long</td>
+            <td class="right">{{trade.StartStockPrice.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
+            <td class="right">{{trade.StopStockPrice.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
             <td ng-if="trade.difference < 0" class="negative">{{trade.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
             <td ng-if="trade.difference >= 0" class="positive">{{trade.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'})}}</td>
         </tr>

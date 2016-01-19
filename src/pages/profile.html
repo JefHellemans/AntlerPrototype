@@ -1,22 +1,12 @@
 <div ng-include="'/pages/header.html'"></div>
 
-<section>
-    <table>
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Followers</th>
-            <th>Following</th>
-            <th>Total trades</th>
-        </tr>
-        <tr>
-            <td ng-bind="trader.firstname"></td>
-            <td ng-bind="trader.lastname"></td>
-            <td ng-bind="trader.followersAmount"></td>
-            <td ng-bind="trader.followingAmount"></td>
-            <td ng-bind="trader.total"></td>
-        </tr>
-    </table>
+<section class="profile">
+    <img ng-src="{{trader.profilepicture}}" />
+    <h2>{{trader.firstname + " " + trader.lastname}}</h2>
+    <ul>
+        <li>Amount of Followers: {{trader.followersAmount}}</li>
+        <li>Following traders: {{trader.followingAmount}}</li>
+        <li>Total trades: {{trader.total}}</li>
+    </ul>
     <button class="col-sm-offset-1 col-sm-1 btn btn-default" ng-click="follow(trader)">Follow</button>
-    <p class="col-sm-2" ng-bind="errorText"></p>
 </section>
