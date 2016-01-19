@@ -244,7 +244,6 @@
             socket.emit("newTrade", {traderid: $scope.user._id, trade: $scope.trade});
         }
 
-
         getLoggedInUser();
 
     };
