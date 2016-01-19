@@ -1,4 +1,4 @@
-var tradeCanvas = function(user) {
+var tradeCanvas = function(user, traders) {
     if(document.getElementById("trades") !== null) {
         //declare basic vars;
         var objects = [];
@@ -69,10 +69,24 @@ var tradeCanvas = function(user) {
                 var c;
                 var trader;
                 //if trade is started by current user, trader is current user
-                if (typeof t.parentTrade === 'undefined') {
+                if (typeof t.ParentTrade === 'undefined') {
                     trader = new Trader(user.firstname + " " + user.lastname, (t.AmountInvested / t.StartStockPrice), t.StartStockPrice, t.IsShort, t.Comment);
                     trader.drawable.setImage(user.profilepicture);
                 } else {
+                    var found = false;
+                    for(var index = 0, length = traders.length; index < length; index++) {
+                        for(var jndex = 0, mength = traders[index].trades.length; jndex < mength; jndex++) {
+                            if(t.ParentTrade === traders[index].trades[jndex]) {
+                                trader = new Trader(traders[index].firstname + " " + traders[index].lastname, (t.AmountInvested / t.StartStockPrice), t.StartStockPrice, t.IsShort, t.Comment);
+                                trader.drawable.setImage('http://localhost:3000/dist/images/profiles/profile.jpg');
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(found) {
+                            break;
+                        }
+                    }
                 }
                 //if the company is already being drawn on screen, add the trader to the company
                 var companyFound = false;

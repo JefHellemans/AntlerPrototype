@@ -44,7 +44,7 @@ function Trader(name, amount, inAt, isShort, comment) {
         } else {
             preset += neg + "]";
         }
-        preset += this.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/align]\n[i][color=";
+        preset += this.difference.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/align]\\n[i][color=";
         if(!this.isShort) {
             preset += pos + "]";
         } else {
@@ -56,7 +56,7 @@ function Trader(name, amount, inAt, isShort, comment) {
         } else {
             preset += " short at ";
         }
-        preset += inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/i]\n";
+        preset += inAt.toLocaleString('be-NL', {style: 'currency', currency: 'EUR'}) + "[/color][/i]\\n";
         this.drawable.setText(preset + this.comment);
     };
 

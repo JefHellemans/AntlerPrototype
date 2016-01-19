@@ -31,7 +31,7 @@ exports.postTrade=function(req,res){
 
         var transaction = new Transaction();
         var amountchange = req.body.AmountInvested;
-        transaction.amountchange = amountchange;
+        transaction.amountchange = -amountchange;
         var userid = req.user._id;
 
 
@@ -42,8 +42,8 @@ exports.postTrade=function(req,res){
                 if(user.balance===undefined){
                     user.balance = 0;
                 }
-                var amountchangenumber = Number(amountchange*-1);
-                user.balance+=amountchangenumber;
+                var amountchangenumber = Number(amountchange);
+                user.balance -= amountchangenumber;
                 user.markModified('balance');
                 user.save();
             });
@@ -65,6 +65,11 @@ exports.postTrade=function(req,res){
                                 var bal = Number(folluser.balance);
                                 var perc = Number(trade.PercentageInvested);
                                 var changetheamount = bal * perc;
+                                if(changetheamount < req.body.StartStockPrice) {
+                                    return;
+                                }
+                                var multiplier = Math.floor(changetheamount / req.body.StartStockPrice);
+                                changetheamount = multiplier * req.body.StartStockPrice;
                                 var tradeTwo = new Trade();
                                 tradeTwo.AmountInvested = changetheamount;
                                 tradeTwo.PercentageInvested = req.body.PercentageInvested;
@@ -80,7 +85,7 @@ exports.postTrade=function(req,res){
 
                                 var transaction = new Transaction();
 
-                                transaction.amountchange = changetheamount;
+                                transaction.amountchange = -changetheamount;
 
                                 //save transactie voor volger
                                 transaction.save(function(err){
@@ -90,8 +95,8 @@ exports.postTrade=function(req,res){
                                         if(user.balance===undefined){
                                             user.balance = 0;
                                         }
-                                        var amountchangenumber = Number(changetheamount*-1);
-                                        user.balance+=amountchangenumber;
+                                        var amountchangenumber = Number(changetheamount);
+                                        user.balance -= amountchangenumber;
                                         user.markModified('balance');
                                         user.save();
                                     });
