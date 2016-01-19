@@ -14,14 +14,8 @@ module.exports = function(io){
 
                 companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4;
                 companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100
-
-
             }
-
-
-
-            //console.log(companiesarray);
-            io.sockets.emit('priceUpdate', Date.now() + "");
+            io.sockets.emit('priceUpdate', companiesarray);
         }, 5000);
     });
 
@@ -45,11 +39,7 @@ module.exports = function(io){
                     }
 
                 }
-
-
             }).populate('followers');
-
-
         });
 
         socket.on('attachAntlerId',function(data){
@@ -64,14 +54,7 @@ module.exports = function(io){
                 }
             }
         })
-
-
-
-
     });
-
-
-
     function trader(id, antlerid){
         this.id = id;
         this.antlerid = antlerid;

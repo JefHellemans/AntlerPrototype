@@ -237,6 +237,13 @@
 
             socket.on("newTradeFromFollowing", function(object){
                 console.log("SOCKETS: " , object.trade);
+                // nieuwe trade op canvas plaatsen
+
+            });
+
+            socket.on("priceUpdate", function(companiesarray){
+                console.log(companiesarray);
+                // prijs update doorgeven aan canvas
             });
 
         };
