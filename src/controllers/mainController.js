@@ -24,7 +24,7 @@
             getCompanies();
             getNewTraders();
             tradeCanvas($scope.user);
-            connectSockets();
+            doSockets();
         };
 
         var onAuthError = function(err){
@@ -212,25 +212,30 @@
         var onCompaniesError = function(err){
             console.log(err);
         };
-        var hostname = window.location.protocol + "//"+ window.location.host ;
-        var socket = io.connect(hostname);
 
-        var connectSockets = function(){
+        var socket;
+        var doSockets =  function(){
+            var hostname = window.location.protocol + "//"+ window.location.host ;
+            socket = io.connect(hostname);
+
 
             socket.on("socketID", function(object){
-                //console.log(object.id);
-                socket.emit("attachAntlerID", {antlerid: $scope.user._id});
+                console.log(object.id);
+                socket.emit("attachAntlerId", {antlerid: $scope.user._id});
+            });
+
+            socket.on("newTradeFromFollowing", function(object){
+                console.log("SOCKETS: " , object.trade);
             });
 
         };
-        socket.on("newTradeFromFollowing", function(trade){
-            console.log("SOCKETS: " + trade);
-        });
-        var doTradeSocket = function(){
+        function doTradeSocket(){
             socket.emit("newTrade", {traderid: $scope.user._id, trade: $scope.trade});
-        };
+        }
+
 
         getLoggedInUser();
+
     };
 
     angular.module("app").controller("mainController", [ "$scope", "userService", "tradeService", mainController]);

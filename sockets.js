@@ -30,18 +30,13 @@ module.exports = function(io){
         socket.emit('socketID', { id : socket.id});
 
         socket.on('newTrade', function(data){
-            console.log("SOCKETS: TRADERS1 : " + traders);
             var followers;
-            console.log(data);
             User.findOne({_id:data.traderid}, function(err,person){
                 followers = person.followers;
-                console.log("SOCKETS: PERSON: " + person);
                 for(var i = 0; i<followers.length; i++){
-
                     for(var ii = 0; ii<traders.length;ii++){
-                        console.log("SOCKETS: TRADERS2: " + traders);
                         if(followers[i]._id==traders[ii].antlerid){
-                            console.log("gevonden");
+                            console.log("Sockets ok!");
                             if (io.sockets.connected[traders[ii].id]) {
                                 io.sockets.connected[traders[ii].id].emit('newTradeFromFollowing', {trade:data.trade} );
                             }
