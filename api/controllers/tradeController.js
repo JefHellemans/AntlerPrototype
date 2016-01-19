@@ -58,6 +58,8 @@ exports.postTrade=function(req,res){
                         res.send(err);
                     User.update({_id:req.user._id}, {$push: {trades:trade}},{safe:true,upsert:true},function(err,model){
                         //make trade for all followers too
+                        var count = 0;
+                        var goal = req.user.followers.length
                         for(var i = 0; i<req.user.followers.length;i++){
                             var followerId = req.user.followers[i];
 
@@ -81,8 +83,6 @@ exports.postTrade=function(req,res){
                                 tradeTwo.Company=req.body.CompanyId;
                                 tradeTwo.ParentTrade = trade._id;
                                 tradeTwo.IsNew = true;
-
-
 
                                 var transaction = new Transaction();
 
@@ -114,7 +114,11 @@ exports.postTrade=function(req,res){
                                             User.update({_id:folluser._id}, {$push: {trades:tradeTwo}},{safe:true,upsert:true},function(err,model){
                                                 if(err)
                                                     console.log("weird error here: " + err);
-                                                console.log("trade api done, added to db");
+                                                count++;
+                                                if(count === goal) {
+                                                    res.json({message:'trade added', data:trade});
+                                                    console.log("trades made, send back");
+                                                }
                                             });
                                         });
 
@@ -141,7 +145,7 @@ exports.postTrade=function(req,res){
                         }
                     });
 
-                    res.json({message:'trade added', data:trade});
+                    //res.json({message:'trade added', data:trade});
 
                 });
 

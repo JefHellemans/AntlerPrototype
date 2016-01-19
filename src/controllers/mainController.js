@@ -323,7 +323,7 @@
                 return true;
             }
             if(trader.firstname.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) >= 0 ||
-             trader.lastname.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) >= 0){
+                trader.lastname.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) >= 0){
                 return true;
             }
             return false;

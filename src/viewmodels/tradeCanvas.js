@@ -79,7 +79,7 @@ var tradeCanvas = function(user, traders) {
                         for(var jndex = 0, mength = traders[index].trades.length; jndex < mength; jndex++) {
                             if(t.ParentTrade === traders[index].trades[jndex]) {
                                 trader = new Trader(traders[index].firstname + " " + traders[index].lastname, (t.AmountInvested / t.StartStockPrice), t.StartStockPrice, t.IsShort, t.Comment);
-                                trader.drawable.setImage('http://localhost:3000/dist/images/profiles/profile.jpg');
+                                trader.drawable.setImage(traders[index].imageUrl);
                                 found = true;
                                 break;
                             }
