@@ -51,6 +51,7 @@
             });
         }
 
+
         return {
             getTradesFromUser: getTradesFromUser,
             postTrade: postTrade,

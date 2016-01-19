@@ -219,7 +219,7 @@
         };
 
         var onTradePosted = function(response){
-            console.log(response);
+            //console.log(response);
             doTradeSocket(response.data._id);
             $scope.trade = {
                 "Company": "",
