@@ -30,7 +30,7 @@ exports.postTrade=function(req,res){
 
 
         var transaction = new Transaction();
-        var amountchange = req.body.AmountInvested
+        var amountchange = req.body.AmountInvested;
         transaction.amountchange = amountchange;
         var userid = req.user._id;
 
@@ -60,7 +60,6 @@ exports.postTrade=function(req,res){
                         for(var i = 0; i<req.user.followers.length;i++){
                             var followerId = req.user.followers[i];
 
-                            trade.ParentTrade = trade;
                             User.findOne({_id:followerId},function(err,folluser){
 
                                 var bal = Number(folluser.balance);
@@ -87,7 +86,7 @@ exports.postTrade=function(req,res){
                                 transaction.save(function(err){
                                     if(err)
                                         console.log(err);
-                                    User.findOne({_id:followerId},function(err,user){
+                                    User.findOne({_id:folluser._id},function(err,user){
                                         if(user.balance===undefined){
                                             user.balance = 0;
                                         }
@@ -98,7 +97,7 @@ exports.postTrade=function(req,res){
                                     });
 
                                     //steek transactie in userprofile van volger
-                                    User.update({_id:followerId}, {$push: {transactions:transaction}},{safe:true,upsert:true},function(err,model){
+                                    User.update({_id:folluser._id}, {$push: {transactions:transaction}},{safe:true,upsert:true},function(err,model){
 
 
                                         //save de trade
@@ -106,7 +105,7 @@ exports.postTrade=function(req,res){
                                             if(err)
                                                 console.log(err);
                                             //steek hem in userprofile
-                                            User.update({_id:followerId}, {$push: {trades:tradeTwo}},{safe:true,upsert:true},function(err,model){
+                                            User.update({_id:folluser._id}, {$push: {trades:tradeTwo}},{safe:true,upsert:true},function(err,model){
                                                 if(err)
                                                     console.log("weird error here: " + err);
                                             });
