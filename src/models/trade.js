@@ -47,40 +47,34 @@ var Trade = function(id, stockPrice, traders, pos) {
     this.drawable.textPadding = new Vector2D(10, 10);
     this.drawable.textReplace = 15;
 
-    var me = this;
-    setInterval(function() {
-        var d = Math.random() / 10;
-        var pOm = Math.floor(Math.random() * 2);
-        if(pOm === 1) {
-            d = -d;
+    this.setStockPrice = function(stockPrice) {
+        this.stockPrice = stockPrice;
+        this.difference = 0;
+        for(var i = 0, l = this.traders.length; i < l; i++) {
+            this.traders[i].changeStockPrice(this.stockPrice);
+            this.difference += this.traders[i].difference;
         }
-        me.stockPrice = Math.floor((me.stockPrice + d) * 100) / 100;
-        me.difference = 0;
-        for(var i = 0, l = me.traders.length; i < l; i++) {
-            me.traders[i].changeStockPrice(me.stockPrice);
-            me.difference += me.traders[i].difference;
-        }
-        me.difference = Math.floor(me.difference * 100) / 100;
-        if(!me.open) {
-            me.drawable.setText(me.difference.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
-            if(me.difference >= 0) {
-                me.drawable.textBackground = "#36B5DB";
-                me.drawable.textReplaceColor = "#36B5DB";
+        this.difference = Math.floor(this.difference * 100) / 100;
+        if(!this.open) {
+            this.drawable.setText(this.difference.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
+            if(this.difference >= 0) {
+                this.drawable.textBackground = "#36B5DB";
+                this.drawable.textReplaceColor = "#36B5DB";
             } else {
-                me.drawable.textBackground = "#E74C3C";
-                me.drawable.textReplaceColor = "#E74C3C";
+                this.drawable.textBackground = "#E74C3C";
+                this.drawable.textReplaceColor = "#E74C3C";
             }
         } else {
-            if(me.difference >= 0) {
-                me.drawable.textReplaceColor = "#36B5DB";
+            if(this.difference >= 0) {
+                this.drawable.textReplaceColor = "#36B5DB";
             } else {
-                me.drawable.textReplaceColor = "#E74C3C";
+                this.drawable.textReplaceColor = "#E74C3C";
             }
-            me.drawable.textBackground = "#2C3E50";
-            me.drawable.setText(me.stockPrice.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
+            this.drawable.textBackground = "#2C3E50";
+            this.drawable.setText(this.stockPrice.toLocaleString('be-NL', { style: 'currency', currency: 'EUR'}));
         }
-        me.drawable.requestRedraw = true;
-    }, 2000);
+        this.drawable.requestRedraw = true;
+    };
 
     this.interaction = function(mousePos, scale) {
         var mouseDifference = mousePos.subVector(this.drawable.pos.mul(scale));

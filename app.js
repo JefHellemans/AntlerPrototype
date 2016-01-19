@@ -173,12 +173,13 @@ router.route('/followers')
 
 app.use('/api',router);
 
-app.use(function(req, res){
+app.use('*', function(req, res) {
 
-    if(req.isAuthenticated())
+    if(req.isAuthenticated()) {
         res.render('../index.ejs');
-
-    res.render('index.ejs');
+    } else {
+        res.render('index.ejs');
+    }
 });
 
 

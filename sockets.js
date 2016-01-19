@@ -12,11 +12,14 @@ module.exports = function(io){
         var intervalID = setInterval(function(){
             for (var i=0; i<companiesarray.length; i++) {
 
-                companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4;
-                companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100
+                companiesarray[i].CurrentStockPrice += (Math.random() * 2) - 1;
+                companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100;
+                if(companiesarray[i].CurrentStockPrice < 0) {
+                    companiesarray[i].CurrentStockPrice = 0;
+                }
             }
             io.sockets.emit('priceUpdate', companiesarray);
-        }, 5000);
+        }, 2000);
     });
 
     io.on('connection', function(socket){
@@ -30,9 +33,11 @@ module.exports = function(io){
                 for(var i = 0; i<followers.length; i++){
                     for(var ii = 0; ii<traders.length;ii++){
                         if(followers[i]._id==traders[ii].antlerid){
+                            data.user = followers[i];
                             console.log("Sockets ok!");
                             if (io.sockets.connected[traders[ii].id]) {
-                                io.sockets.connected[traders[ii].id].emit('newTradeFromFollowing', {trade:data.trade} );
+                                console.log("send Socket to user");
+                                io.sockets.connected[traders[ii].id].emit('newTradeFromFollowing', data );
                             }
                         }
 

@@ -72,6 +72,7 @@ var tradeCanvas = function(user, traders) {
                 if (typeof t.ParentTrade === 'undefined') {
                     trader = new Trader(user.firstname + " " + user.lastname, (t.AmountInvested / t.StartStockPrice), t.StartStockPrice, t.IsShort, t.Comment);
                     trader.drawable.setImage(user.profilepicture);
+                    trader.isNew = t.IsNew;
                 } else {
                     var found = false;
                     for(var index = 0, length = traders.length; index < length; index++) {
@@ -344,6 +345,21 @@ var tradeCanvas = function(user, traders) {
             canvas.setSize(window.innerWidth, window.innerHeight - 50);
             trash.pos = new Vector2D(window.innerWidth - 100, window.innerHeight - 150);
         });
+
+        this.updatePrices = function(companies) {
+            for(var i = 0, l = canvas.objects.length; i < l; i++) {
+                for(var j = 0, m = companies.length; j < m; j++) {
+                    if(canvas.objects[i].id === companies[j]._id) {
+                        canvas.objects[i].setStockPrice(companies[j].CurrentStockPrice);
+                        break;
+                    }
+                }
+            }
+        };
+
+        this.addTrade = function(trade, trader) {
+            console.log(trade, trader);
+        };
     }
 
 };
