@@ -29,7 +29,7 @@ exports.getLoggedInUser = function(req, res){
 };
 
 exports.getUserById = function(req, res){
-    User.find({_id: req.params.user_id}, function(err, user){
+    User.find({_id: req.params.user_id}).populate({path: 'trades'}).exec(function(err, user){
         res.json(user);
     });
 };

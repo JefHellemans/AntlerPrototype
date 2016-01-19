@@ -250,11 +250,7 @@
         };
 
         var onReUser = function(response) {
-            $scope.user = response;
-            console.log("Trades:", response.trades.length, response.trades);
-            $scope.user.currentAmount = response.balance;
-            $scope.user.profilepicture = "../dist/images/profiles/profile.jpg";
-            addTradeToCanvas();
+            addTradeToCanvas(response);
         };
 
         var onReUserError = function(err) {
@@ -289,14 +285,16 @@
             }
         };
 
-        var addTradeToCanvas = function() {
+        var addTradeToCanvas = function(response) {
             if(makeNewTradeOnCanvas && newTrade !== undefined) {
                 var trade;
                 var trader;
-                for(var j = 0, m = $scope.user.trades.length; j < m; j++) {
-                    if($scope.user.trades[j].ParentTrade === newTrade.tradeid) {
+                console.log(response.trades);
+                console.log(newTrade.tradeid);
+                for(var j = 0, m = response.trades.length; j < m; j++) {
+                    if(response.trades[j].ParentTrade === newTrade.tradeid) {
                         console.log("match found");
-                        trade = $scope.user.trades[j];
+                        trade = response.trades[j];
                         break;
                     }
                 }
