@@ -116,7 +116,7 @@
 
         var onUploaded = function(response){
             console.log(response);
-            $scope.user.url = response.imageUrl;
+            $scope.user.profilepicture = response.imageUrl;
         };
 
         var onUploadError = function(err){

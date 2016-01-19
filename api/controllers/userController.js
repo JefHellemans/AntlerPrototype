@@ -37,10 +37,10 @@ exports.getUserById = function(req, res){
 exports.uploadUrl = function(req, res){
     User.find({_id: req.params.user_id}, function(err, user){
 
-        console.log(req.body.url);
-        if(req.body.url != ""){
+        console.log(req.body.profilepicture);
+        if(req.body.profilepicture != ""){
 
-            User.update({_id: req.params.user_id}, {$set: {imageUrl:req.body.url}},{safe:true,upsert:true},function(err,model){
+            User.update({_id: req.params.user_id}, {$set: {imageUrl:req.body.profilepicture}},{safe:true,upsert:true},function(err,model){
                 console.log(err);
                 res.json({message: "Image uploaded", success: true});
             });
