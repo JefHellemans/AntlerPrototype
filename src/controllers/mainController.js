@@ -195,26 +195,21 @@
         var onCompaniesError = function(err){
             console.log(err);
         };
+        var hostname = window.location.protocol + "//"+ window.location.host ;
+        var socket = io.connect(hostname);
 
         var connectSockets = function(){
-
-            var hostname = window.location.protocol + "//"+ window.location.host ;
-            var socket = io.connect(hostname);
 
             socket.on("socketID", function(object){
                 //console.log(object.id);
                 socket.emit("attachAntlerID", {antlerid: $scope.user._id});
             });
 
-            socket.on("newTradeFromFollowing", function(trade){
-               console.log("SOCKETS: " + trade);
-            });
-
-            $scope.socket = socket;
         };
-
+        socket.on("newTradeFromFollowing", function(trade){
+            console.log("SOCKETS: " + trade);
+        });
         var doTradeSocket = function(){
-            var socket = $scope.socket;
             socket.emit("newTrade", {traderid: $scope.user._id, trade: $scope.trade});
         };
 
