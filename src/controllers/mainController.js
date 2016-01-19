@@ -24,6 +24,7 @@
             getCompanies();
             getNewTraders();
             tradeCanvas($scope.user);
+            connectSockets();
         };
 
         var onAuthError = function(err){
@@ -53,6 +54,8 @@
 
             var config = {email: response.email, password: response.password};
             authenticate(config);
+
+
         };
 
         var onLoggedError = function(err){
@@ -175,6 +178,7 @@
         };
 
         var onTradePosted = function(response){
+            doTradeSocket();
             return $scope.isNewTrade = true;
         };
         var onTradeError = function(err){
@@ -190,6 +194,28 @@
         };
         var onCompaniesError = function(err){
             console.log(err);
+        };
+
+        var connectSockets = function(){
+
+            var hostname = window.location.protocol + "//"+ window.location.host ;
+            var socket = io.connect(hostname);
+
+            socket.on("socketID", function(object){
+                //console.log(object.id);
+                socket.emit("attachAntlerID", {antlerid: $scope.user._id});
+            });
+
+            socket.on("newTradeFromFollowing", function(trade){
+               console.log("SOCKETS: " + trade);
+            });
+
+            $scope.socket = socket;
+        };
+
+        var doTradeSocket = function(){
+            var socket = $scope.socket;
+            socket.emit("newTrade", {traderid: $scope.user._id, trade: $scope.trade});
         };
 
         getLoggedInUser();
