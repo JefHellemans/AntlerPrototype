@@ -165,9 +165,12 @@
         };
 
         $scope.confirmTrade = function (trade) {
-            trade.Comment = trade.Comment.replace(new RegExp('\n', 'g'), '\\n');
-            tradeService.postTrade(trade, $scope.companies, $scope.token).then(onTradePosted, onTradeError);
-            $scope.isNewTrade = false;
+            if($scope.user.balance >= trade.AmountInvested){
+                trade.Comment = trade.Comment.replace(new RegExp('\n', 'g'), '\\n');
+                $scope.isNewTrade = false;
+                tradeService.postTrade(trade, $scope.companies, $scope.token).then(onTradePosted, onTradeError);
+            }
+
         };
 
         $scope.isNewTradeEnabled = function(trade) {

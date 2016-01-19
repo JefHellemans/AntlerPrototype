@@ -12,7 +12,7 @@ module.exports = function(io){
         var intervalID = setInterval(function(){
             for (var i=0; i<companiesarray.length; i++) {
 
-                companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4
+                companiesarray[i].CurrentStockPrice += (Math.random() * 5) - 4;
                 companiesarray[i].CurrentStockPrice = Math.round(companiesarray[i].CurrentStockPrice * 100) / 100
 
 
@@ -30,14 +30,16 @@ module.exports = function(io){
         socket.emit('socketID', { id : socket.id});
 
         socket.on('newTrade', function(data){
+            console.log("SOCKETS: TRADERS1 : " + traders);
             var followers;
             console.log(data);
             User.findOne({_id:data.traderid}, function(err,person){
                 followers = person.followers;
+                console.log("SOCKETS: PERSON: " + person);
                 for(var i = 0; i<followers.length; i++){
 
                     for(var ii = 0; ii<traders.length;ii++){
-
+                        console.log("SOCKETS: TRADERS2: " + traders);
                         if(followers[i]._id==traders[ii].antlerid){
                             console.log("gevonden");
                             if (io.sockets.connected[traders[ii].id]) {
