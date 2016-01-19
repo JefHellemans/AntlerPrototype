@@ -4,7 +4,7 @@
         <ul>
             <li ng-repeat="t in traders">
                 <a ng-href="user/{{t._id}}">
-                    <img src="../dist/images/logos/antlerlogo.png" alt="profilepicture">
+                    <img src="{{t.imageUrl}}" alt="profilepicture">
                     <span>{{t.firstname}}</span>
                 </a>
             </li>
@@ -15,7 +15,7 @@
         <ul><!--
             --><li ng-repeat="t in newTraders">
                 <a ng-href="user/{{t._id}}">
-                    <img src="../dist/images/logos/antlerlogo.png" alt="profilepicture">
+                    <img src="{{t.imageUrl}}" alt="profilepicture">
                     <span>{{t.firstname}}</span>
                 </a>
             </li><!--

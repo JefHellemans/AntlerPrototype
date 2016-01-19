@@ -57,6 +57,7 @@
                 $scope.trader.followersAmount = followerAmount;
                 $scope.trader.followingAmount = followingAmount;
                 $scope.trader.total = total;
+                $scope.trader.profilepicture = response.imageUrl;
             }
 
         };

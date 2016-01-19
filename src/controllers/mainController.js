@@ -67,7 +67,7 @@
 
         var onLoggedIn = function(response){
             $scope.user = response;
-            console.log("Trades:", response.trades.length, response.trades);
+            //console.log("Trades:", response.trades.length, response.trades);
             $scope.user.currentAmount = response.balance;
             $scope.user.profilepicture = response.imageUrl;
 
