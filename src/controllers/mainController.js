@@ -281,6 +281,12 @@
                 socket.on("newTradeFromFollowing", function (object) {
                     newTrade = object;
                     makeNewTradeOnCanvas = true;
+
+                    var traderList = document.getElementsByClassName("ng-binding")[0];
+                    var textNode = document.createTextNode("You have a new trade!");
+                    var p = document.createElement("p");
+                    p.appendChild(textNode);
+                    traderList.appendChild(p);
                     if (canvas !== undefined) {
                         //getUserAgain();
                     }
